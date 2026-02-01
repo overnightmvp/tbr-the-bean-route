@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Header } from '@/components/navigation/Header'
 import { Button } from '@/components/ui'
+
+export const metadata: Metadata = {
+  title: 'How to Hire a Mobile Coffee Cart | The Bean Route',
+  description: 'Step-by-step guide to booking a mobile coffee cart for your event in Melbourne. From first inquiry to great coffee.',
+}
 
 export default function HowToHire() {
   return (

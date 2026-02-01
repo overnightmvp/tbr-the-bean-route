@@ -1,4 +1,4 @@
-// CBW Coffee Design System - Design Tokens
+// The Bean Route Design System - Design Tokens
 // The single source of truth for all design decisions
 
 export const designTokens = {

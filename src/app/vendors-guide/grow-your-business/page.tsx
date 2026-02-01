@@ -1,5 +1,11 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Header } from '@/components/navigation/Header'
+
+export const metadata: Metadata = {
+  title: 'Grow Your Mobile Coffee Cart Business | The Bean Route',
+  description: "How to stand out in Melbourne's mobile coffee scene. Pricing, response times, repeat clients — the honest playbook.",
+}
 
 export default function GrowYourBusiness() {
   return (
@@ -54,7 +60,7 @@ export default function GrowYourBusiness() {
               <h2 className="text-xl font-bold" style={{ color: '#1A1A1A' }}>Respond to inquiries fast</h2>
             </div>
             <p className="text-neutral-600 leading-relaxed mb-3">
-              When someone submits an inquiry through CBW, they're actively looking. They might have 2–3 carts in mind. The vendor who responds first and sounds professional gets the edge.
+              When someone submits an inquiry through The Bean Route, they're actively looking. They might have 2–3 carts in mind. The vendor who responds first and sounds professional gets the edge.
             </p>
             <p className="text-neutral-600 leading-relaxed">
               Aim to reply within a few hours. A quick, helpful response — even if it's just "Thanks, I can confirm availability and pricing by end of day" — signals that you're reliable. That matters more than you think.
@@ -123,7 +129,7 @@ export default function GrowYourBusiness() {
               <h2 className="text-xl font-bold" style={{ color: '#1A1A1A' }}>Keep your listing current</h2>
             </div>
             <p className="text-neutral-600 leading-relaxed">
-              Your CBW listing is your first impression. If your pricing has changed, update it. If you've added a new menu item or a second barista, let us know. A stale listing means missed inquiries and contractors who move on to someone else.
+              Your listing is your first impression. If your pricing has changed, update it. If you've added a new menu item or a second barista, let us know. A stale listing means missed inquiries and contractors who move on to someone else.
             </p>
           </div>
         </div>
@@ -132,7 +138,7 @@ export default function GrowYourBusiness() {
         <div className="mt-14 rounded-xl p-6" style={{ backgroundColor: '#FAF5F0' }}>
           <h3 className="text-sm font-bold mb-3" style={{ color: '#3B2A1A' }}>The honest truth about growing a coffee cart business</h3>
           <p className="text-sm text-neutral-600 leading-relaxed mb-3">
-            It's not overnight. The first few bookings come from hustle — direct outreach, showing up at local events, building a name. CBW helps with the long game: being discoverable when someone's planning an event and searching for a cart.
+            It's not overnight. The first few bookings come from hustle — direct outreach, showing up at local events, building a name. The Bean Route helps with the long game: being discoverable when someone's planning an event and searching for a cart.
           </p>
           <p className="text-sm text-neutral-600 leading-relaxed">
             The operators who make it work treat it like a business, not just a side gig. Good coffee is the minimum. The business around it — pricing, communication, reliability — is what separates the ones who grow.

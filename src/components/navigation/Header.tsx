@@ -21,8 +21,8 @@ export function Header({ variant = 'landing' }: HeaderProps) {
               <span className="text-[#F5C842] font-bold text-sm">C</span>
             </div>
             <div className="flex flex-col leading-none">
-              <span className="text-lg font-bold tracking-tight" style={{ color: '#3B2A1A' }}>CBW</span>
-              <span className="text-xs font-medium tracking-widest uppercase" style={{ color: '#A0785A' }}>Coffee</span>
+              <span className="text-lg font-bold tracking-tight" style={{ color: '#3B2A1A' }}>TBR</span>
+              <span className="text-xs font-medium tracking-widest uppercase" style={{ color: '#A0785A' }}>The Bean Route</span>
             </div>
           </Link>
 

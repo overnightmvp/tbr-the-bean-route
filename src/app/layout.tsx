@@ -2,8 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "7DAY - Curated Team Event Marketplace for HR Teams",
-  description: "Transform team event planning with our curated marketplace. Self-service platform, budget controls, one-click approvals. Setup in 5 minutes.",
+  title: "The Bean Route — Melbourne's Mobile Coffee Cart Marketplace",
+  description: "Find and book mobile coffee carts for your next event in Melbourne. Corporate mornings, weddings, festivals — free to inquire.",
+  openGraph: {
+    title: "The Bean Route — Melbourne's Mobile Coffee Cart Marketplace",
+    description: "Find and book mobile coffee carts for your next event in Melbourne. Corporate mornings, weddings, festivals — free to inquire.",
+    type: "website",
+    url: "https://thebeanroute.com.au",
+  },
 };
 
 export default function RootLayout({

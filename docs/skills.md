@@ -1,8 +1,8 @@
-# CBW Coffee — Project Skills
+# The Bean Route — Project Skills
 
 ## What This Project Requires
 
-CBW Coffee is a Melbourne mobile coffee cart marketplace. Two audiences: **Vendors** (coffee cart operators) and **Contractors** (event planners, corporates, venue managers who hire carts). The tech is a repurposed Next.js marketplace. The revenue is lead fees.
+The Bean Route is a Melbourne mobile coffee cart marketplace. Two audiences: **Vendors** (coffee cart operators) and **Contractors** (event planners, corporates, venue managers who hire carts). The tech is a repurposed Next.js marketplace. The revenue is lead fees.
 
 This document defines every skill needed to build, launch, and grow it.
 

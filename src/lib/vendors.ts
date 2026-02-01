@@ -1,4 +1,4 @@
-// CBW Coffee — Vendor Data
+// The Bean Route — Vendor Data
 // Hardcoded seed data for Melbourne mobile coffee cart vendors.
 // Replace with real vendor records once gathered from Facebook group.
 

@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Header } from '@/components/navigation/Header'
 import { Button } from '@/components/ui'
+
+export const metadata: Metadata = {
+  title: 'How to Get Listed on The Bean Route',
+  description: 'Get your mobile coffee cart listed on The Bean Route in under 10 minutes. Free listing, direct inquiries, no middleman.',
+}
 
 export default function GetListed() {
   return (
@@ -21,7 +27,7 @@ export default function GetListed() {
             Vendor Guide
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4" style={{ color: '#1A1A1A' }}>
-            How to get your coffee cart listed on CBW
+            How to get your coffee cart listed on The Bean Route
           </h1>
           <p className="text-lg text-neutral-600 leading-relaxed">
             Getting listed is free and takes less than 10 minutes. Here's exactly what you need and what happens next.
@@ -132,7 +138,7 @@ export default function GetListed() {
               </div>
               <div>
                 <div className="font-semibold text-sm mb-1" style={{ color: '#1A1A1A' }}>Your listing goes live</div>
-                <p className="text-sm text-neutral-600">You'll get a dedicated vendor page at cbw.com.au/vendors/your-business-name. Event planners can find you by suburb, event type, or price.</p>
+                <p className="text-sm text-neutral-600">You'll get a dedicated vendor page at thebeanroute.com.au/vendors/your-business-name. Event planners can find you by suburb, event type, or price.</p>
               </div>
             </div>
 
@@ -156,7 +162,7 @@ export default function GetListed() {
           <div className="space-y-4">
             <div className="bg-white rounded-lg border border-neutral-200 p-4">
               <div className="font-semibold text-sm mb-1" style={{ color: '#1A1A1A' }}>Is it really free?</div>
-              <p className="text-sm text-neutral-600">Yes. Listing on CBW is free at launch. No fees, no monthly charges, no commission on bookings. We'll be transparent if that ever changes.</p>
+              <p className="text-sm text-neutral-600">Yes. Listing on The Bean Route is free at launch. No fees, no monthly charges, no commission on bookings. We'll be transparent if that ever changes.</p>
             </div>
             <div className="bg-white rounded-lg border border-neutral-200 p-4">
               <div className="font-semibold text-sm mb-1" style={{ color: '#1A1A1A' }}>Can I update my listing later?</div>
@@ -168,7 +174,7 @@ export default function GetListed() {
             </div>
             <div className="bg-white rounded-lg border border-neutral-200 p-4">
               <div className="font-semibold text-sm mb-1" style={{ color: '#1A1A1A' }}>How do I get listed right now?</div>
-              <p className="text-sm text-neutral-600">Email us at hello@cbw.com.au with your details, or reach out through the contact form. We'll get you set up.</p>
+              <p className="text-sm text-neutral-600">Email us at hello@thebeanroute.com.au with your details, or reach out through the contact form. We'll get you set up.</p>
             </div>
           </div>
         </div>
@@ -177,7 +183,7 @@ export default function GetListed() {
         <div className="rounded-xl p-8 text-center" style={{ background: 'linear-gradient(135deg, #3B2A1A 0%, #6B4226 100%)' }}>
           <h2 className="text-xl font-bold text-white mb-2">Ready to get listed?</h2>
           <p className="text-sm mb-6" style={{ color: '#A0785A' }}>Email us with your details and we'll have you live within 24 hours.</p>
-          <a href="mailto:hello@cbw.com.au">
+          <a href="mailto:hello@thebeanroute.com.au">
             <Button className="bg-[#F5C842] text-[#1A1A1A] hover:bg-[#E8B430] font-semibold">
               Email to get listed
             </Button>

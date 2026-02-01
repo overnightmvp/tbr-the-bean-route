@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Header } from '@/components/navigation/Header'
 import { Button } from '@/components/ui'
+
+export const metadata: Metadata = {
+  title: 'Grow Your Coffee Cart Business | The Bean Route',
+  description: 'The Bean Route connects Melbourne coffee cart operators with event planners. Get listed, get inquiries, grow your business.',
+}
 
 export default function VendorsGuideHub() {
   return (
@@ -17,7 +23,7 @@ export default function VendorsGuideHub() {
             Grow your mobile coffee cart business
           </h1>
           <p className="text-lg text-neutral-600 max-w-2xl leading-relaxed">
-            CBW connects Melbourne's best coffee cart operators with event planners, corporates, and venue managers. These guides show you how to get listed and make the most of it.
+            The Bean Route connects Melbourne's best coffee cart operators with event planners, corporates, and venue managers. These guides show you how to get listed and make the most of it.
           </p>
         </div>
 
@@ -34,7 +40,7 @@ export default function VendorsGuideHub() {
                 How to get listed
               </h2>
               <p className="text-sm text-neutral-600 leading-relaxed">
-                Everything you need to know about getting your coffee cart on CBW. What information we need, how your listing looks, and what to expect once you're live.
+                Everything you need to know about getting your coffee cart on The Bean Route. What information we need, how your listing looks, and what to expect once you're live.
               </p>
             </div>
           </Link>
@@ -50,19 +56,19 @@ export default function VendorsGuideHub() {
                 Grow your business
               </h2>
               <p className="text-sm text-neutral-600 leading-relaxed">
-                How to turn inquiries into bookings, build a reputation in Melbourne's event scene, and make the most of your CBW listing.
+                How to turn inquiries into bookings, build a reputation in Melbourne's event scene, and make the most of your listing.
               </p>
             </div>
           </Link>
         </div>
 
-        {/* Why CBW */}
+        {/* Why The Bean Route */}
         <div className="bg-white rounded-xl border border-neutral-200 p-6 sm:p-8 mb-12">
-          <h3 className="text-sm font-bold uppercase tracking-wider mb-6" style={{ color: '#3B2A1A' }}>Why vendors list on CBW</h3>
+          <h3 className="text-sm font-bold uppercase tracking-wider mb-6" style={{ color: '#3B2A1A' }}>Why vendors list on The Bean Route</h3>
           <div className="grid sm:grid-cols-3 gap-6">
             <div>
               <div className="text-lg font-bold mb-1" style={{ color: '#F5C842' }}>Free</div>
-              <p className="text-sm text-neutral-600">Listing on CBW is completely free at launch. No fees, no subscriptions, no catch.</p>
+              <p className="text-sm text-neutral-600">Listing on The Bean Route is completely free at launch. No fees, no subscriptions, no catch.</p>
             </div>
             <div>
               <div className="text-lg font-bold mb-1" style={{ color: '#F5C842' }}>Direct</div>
@@ -70,7 +76,7 @@ export default function VendorsGuideHub() {
             </div>
             <div>
               <div className="text-lg font-bold mb-1" style={{ color: '#F5C842' }}>Local</div>
-              <p className="text-sm text-neutral-600">CBW is Melbourne-focused. Your listing is seen by event planners who are actively looking for coffee carts in your suburbs.</p>
+              <p className="text-sm text-neutral-600">We're Melbourne-focused. Your listing is seen by event planners who are actively looking for coffee carts in your suburbs.</p>
             </div>
           </div>
         </div>
@@ -86,7 +92,7 @@ export default function VendorsGuideHub() {
             </p>
             <Link href="/vendors-guide/get-listed">
               <Button className="bg-[#F5C842] text-[#1A1A1A] hover:bg-[#E8B430] font-semibold">
-                Get listed on CBW
+                Get listed on The Bean Route
               </Button>
             </Link>
           </div>

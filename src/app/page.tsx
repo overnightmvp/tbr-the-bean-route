@@ -95,13 +95,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why CBW */}
+      {/* Why The Bean Route */}
       <section className="py-20 bg-white border-t border-neutral-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4" style={{ color: '#1A1A1A' }}>
-                Why Melbourne chooses CBW
+                Why Melbourne chooses The Bean Route
               </h2>
               <p className="text-neutral-600 mb-8 leading-relaxed">
                 We started in Camberwell because we believed Melbourne deserved a better way to find
@@ -109,7 +109,7 @@ export default function Home() {
               </p>
               <div className="space-y-4">
                 {[
-                  { label: 'Vetted vendors', detail: 'Every cart on CBW is reviewed. Quality and reliability, not just proximity.' },
+                  { label: 'Vetted vendors', detail: 'Every cart on The Bean Route is reviewed. Quality and reliability, not just proximity.' },
                   { label: 'Transparent pricing', detail: 'Hourly rates upfront. No hidden fees, no surprises on the day.' },
                   { label: 'Melbourne locals', detail: 'We know the suburbs. We know the carts. We match them properly.' },
                 ].map((item) => (

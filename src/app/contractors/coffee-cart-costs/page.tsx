@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Header } from '@/components/navigation/Header'
 import { Button } from '@/components/ui'
+
+export const metadata: Metadata = {
+  title: 'Coffee Cart Costs & Pricing | The Bean Route',
+  description: 'Honest Melbourne pricing for mobile coffee carts. What\'s included, what affects cost, and how to budget your event.',
+}
 
 export default function CoffeeCartCosts() {
   return (

@@ -96,7 +96,7 @@ export default function AdminPortal() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-bold tracking-tight" style={{ color: '#1A1A1A' }}>
-              CBW Admin — Inquiries
+              The Bean Route — Inquiries
             </h1>
             <p className="text-neutral-600 text-sm mt-1">Manage vendor inquiries and track conversions</p>
           </div>

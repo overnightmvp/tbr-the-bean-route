@@ -1,4 +1,4 @@
-# CBW Coffee — Backlog & Workflow
+# The Bean Route — Backlog & Workflow
 
 ## Current State
 
@@ -20,7 +20,7 @@
 
 ## GitHub Worktrees Setup
 
-CBW uses Git worktrees to allow parallel work on multiple features without context-switching costs.
+The Bean Route uses Git worktrees to allow parallel work on multiple features without context-switching costs.
 All branches below are created from `main` and pushed to origin. Activate a worktree when you're ready to work on that stream.
 
 ### Repository
@@ -112,9 +112,9 @@ Each sprint is **5 working days**. One person can run this solo. Sprints are sma
 | S0-1 | Create fresh Supabase project, run vendors + inquiries schema | `setup` | Tables exist, RLS enabled |
 | S0-2 | Update .env.local with new Supabase credentials | `setup` | App connects to new DB |
 | S0-3 | Deploy to Vercel, confirm build passes | `setup` | Production URL works |
-| S0-4 | Update Tailwind config with CBW brand palette | `rebrand` | Colors render correctly |
+| S0-4 | Update Tailwind config with The Bean Route brand palette | `rebrand` | Colors render correctly |
 | S0-5 | Update design tokens (primary, neutrals, accents) | `rebrand` | All components use new palette |
-| S0-6 | Update Header with CBW wordmark and nav links | `rebrand` | Header looks branded |
+| S0-6 | Update Header with The Bean Route wordmark and nav links | `rebrand` | Header looks branded |
 | S0-7 | Delete CompanyQuiz and AIChatWidget | `rebrand` | Components removed, no broken imports |
 | S0-8 | Create docs/skills.md | `setup` | File exists at docs/skills.md |
 | S0-9 | Create docs/backlog.md | `setup` | File exists at docs/backlog.md |
@@ -132,10 +132,10 @@ Each sprint is **5 working days**. One person can run this solo. Sprints are sma
 | S1-2 | Run Claude vendor structuring prompt → JSON vendor records | `vendors` | 10–20 valid vendor records |
 | S1-3 | Create src/lib/vendors.ts with hardcoded vendor data | `vendors` | File exports getAllVendors(), getVendorBySlug() |
 | S1-4 | Update Supabase types (replace Experience → Vendor, Booking → Inquiry) | `vendors` | Types compile, no errors |
-| S1-5 | Rewrite landing page (hero, vendor carousel, how it works, CTA) | `landing` | Page renders with CBW content |
+| S1-5 | Rewrite landing page (hero, vendor carousel, how it works, CTA) | `landing` | Page renders with The Bean Route content |
 | S1-6 | Update HorizontalExperiences → VendorCarousel with vendor data | `landing` | Carousel shows real vendors |
 | S1-7 | Rewrite SimpleBookingModal → InquiryModal (contractor fields) | `inquiry-flow` | Form submits to Supabase inquiries table |
-| S1-8 | Update admin dashboard labels and fields for CBW | `admin` | Leads appear correctly in admin |
+| S1-8 | Update admin dashboard labels and fields for The Bean Route | `admin` | Leads appear correctly in admin |
 | S1-9 | Smoke test full flow: browse → inquire → check admin | `main` | End-to-end works |
 
 **Merge order:** `vendors` → `main`, then `landing` + `inquiry-flow` → `main`, then `admin` → `main`
@@ -166,7 +166,7 @@ Each sprint is **5 working days**. One person can run this solo. Sprints are sma
 | S3-2 | Create /contractors/how-to-hire guide | `content-pillars` | Full guide content, CTA to browse vendors |
 | S3-3 | Create /contractors/coffee-cart-costs pricing guide | `content-pillars` | Realistic Melbourne pricing info |
 | S3-4 | Create /vendors-guide hub page | `content-pillars` | Page renders with links to guides |
-| S3-5 | Create /vendors-guide/get-listed onboarding guide | `content-pillars` | How to get on CBW |
+| S3-5 | Create /vendors-guide/get-listed onboarding guide | `content-pillars` | How to get on The Bean Route |
 | S3-6 | Create /vendors-guide/grow-your-business guide | `content-pillars` | Value prop for vendor listing |
 | S3-7 | Add sitemap.xml generation | `content-pillars` | All pages indexed |
 

@@ -5,7 +5,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// CBW Coffee — Database Types
+// The Bean Route — Database Types
 
 export type Vendor = {
   id: string
