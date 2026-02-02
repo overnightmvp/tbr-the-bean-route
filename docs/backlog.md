@@ -1,208 +1,266 @@
-# The Bean Route — Backlog & Workflow
+# The Bean Route — Product Backlog
 
-## Current State
+---
 
-**Remote:** `https://github.com/overnightmvp/cbw-coffee-club.git`
-**Branch:** `main` — all Sprints 0–3 shipped in a single commit.
-**Lint:** clean. **Build:** passing.
+## Brutal Assessment
 
-| Sprint | Status | What shipped |
+The scaffolding is solid. Two matching flows, admin tooling, registration wizard, job board. Clean code, consistent patterns. But **the product doesn't work end-to-end yet.** Three things will kill it before it gets traction:
+
+1. **No notifications exist.** Every submission promises "we'll be in touch" or "we'll email you." None of those emails are sent. An inquiry, a quote, a vendor application — they all land in the database and stop dead. Admin sees them, but admin has no outbound channel either.
+
+2. **The browse page is fake.** `/app` renders 10 hardcoded vendors from `vendors.ts`. The `vendors` Supabase table is empty and unused. When an application is approved in admin, no vendor row is created. The marketplace and the database are disconnected.
+
+3. **Admin is wide open.** `/admin` has zero authentication. Anyone with the URL can read every inquiry (names, emails, phone numbers), approve or reject vendor applications, and manage jobs. This is a data privacy problem today, not a future one.
+
+Fix these three. Everything else is secondary.
+
+---
+
+## What Works Right Now (Smoke Tests)
+
+Verify these before building anything new:
+
+| # | Flow | How | Confirm |
+|---|---|---|---|
+| 1 | Browse → Inquire | `/app` → pick vendor → "Get a Quote" → fill → submit | Success state. Row in `inquiries` with status `pending`. |
+| 2 | Admin manages inquiry | `/admin` → Inquiries tab | Row visible. Status buttons work. Detail modal shows all fields. |
+| 3 | Register as vendor | `/vendors/register` → 3 steps → submit | Success state. Row in `vendor_applications` with status `pending`. |
+| 4 | Admin approves application | `/admin` → Applications → Approve | Status → `approved`. (Bug: no vendor row is created.) |
+| 5 | Post a job | `/jobs/create` → 3 steps → submit | Success state. Row in `jobs`. "View your job" link works. |
+| 6 | Submit a quote | `/jobs/{id}` → "Submit a Quote" → fill → submit | Success state. Row in `quotes`. Quote appears in detail after modal closes. |
+| 7 | Admin manages jobs | `/admin` → Jobs tab | Jobs listed. Quotes counted. Detail modal shows quotes. Close works. |
+| 8 | Job board filters | `/jobs` | Filter by event type, suburb, budget. Results update. |
+| 9 | Vendor detail page | `/app` → "View" on any card | Page loads. Inquiry modal works from here. |
+| 10 | Landing page | `/` | Carousel scrolls. Both CTAs link correctly. |
+| 11 | Get Listed CTA | `/vendors-guide/get-listed` | Button links to `/vendors/register` (not mailto). |
+| 12 | Nav completeness | Any page | Jobs link present in desktop + mobile nav. All links resolve. |
+
+**Form validation smoke tests** — on every form, clear required fields and click Next/Submit. Errors should appear inline. Specifically:
+- Vendor registration: description under 30 chars → blocked
+- Job creation: past date → blocked by min attribute
+- Job creation: budget min > max → error
+- Quote and inquiry modals: empty required fields → errors
+- Email fields: invalid format → error
+
+---
+
+## Epic Breakdown
+
+| Epic | Priority | Why |
 |---|---|---|
-| Sprint 0 | ✅ Done | Rebrand (palette, tokens, header), deleted quiz + AI widget, docs |
-| Sprint 1 | ✅ Done | Vendor data layer, landing page, inquiry modal, admin dashboard |
-| Sprint 2 | ✅ Done | Vendor profile pages, contractor browsing page with filters |
-| Sprint 3 | ✅ Done | 6 content pillar pages (contractors + vendors-guide) |
-| S0-1 to S0-3 | ⏳ Pending | Fresh Supabase project + Vercel deploy (manual setup — see below) |
-| S1-1 to S1-2 | ⏳ Pending | Real vendor data from Facebook group (10 placeholders in vendors.ts now) |
-| S3-7 | ⏳ Pending | sitemap.xml generation |
+| E1: Email Notifications | P0 | Dead end without this. Nothing converts. |
+| E2: Connect Browse to Real Data | P0 | The marketplace is fiction right now. |
+| E3: Protect Admin | P0 | PII is exposed. Fix before any real users. |
+| E4: Clarify the Two Flows | P1 | Users won't know which flow to use. |
+| E5: Quote & Inquiry Acceptance | P1 | Closes the loop. Enables conversion. |
+| E6: Vendor Self-Service | P2 | Removes admin as a bottleneck at scale. |
+| E7: Cleanup & Hardening | P2 | Technical debt and missing guardrails. |
 
 ---
 
-## GitHub Worktrees Setup
+## E1: Email Notifications
 
-The Bean Route uses Git worktrees to allow parallel work on multiple features without context-switching costs.
-All branches below are created from `main` and pushed to origin. Activate a worktree when you're ready to work on that stream.
+> *Every flow is a dead end without this. Single email utility, one template per event type.*
 
-### Repository
+### US-1.1 — Notify vendor on new inquiry
+**As a** vendor, **when** someone submits an inquiry for my cart, **I want** an email so I can respond.
+- Triggered: on insert into `inquiries`
+- To: vendor's `contact_email` (from hardcoded data or `vendors` table)
+- Contains: planner's name, email, phone, event details, estimated cost
+- Fallback: if no vendor email, send to `hello@thebeanroute.com.au`
+
+### US-1.2 — Confirm inquiry submission to planner
+**As an** event planner, **after** submitting an inquiry, **I want** a confirmation email.
+- To: `contact_email` from the inquiry form
+- Contains: vendor name, summary of what was submitted
+
+### US-1.3 — Notify event owner on new quote
+**As an** event owner, **when** a vendor quotes on my job, **I want** an email.
+- Triggered: on insert into `quotes`
+- To: job owner's `contact_email` (from `jobs` table)
+- Contains: vendor name, price/hr, message, vendor email
+
+### US-1.4 — Confirm quote submission to vendor
+**As a** vendor, **after** submitting a quote, **I want** confirmation it was received.
+- To: vendor's `contact_email` from the quote form
+- Contains: job title, quoted price
+
+### US-1.5 — Notify applicant on application decision
+**As a** vendor applicant, **when** admin approves or rejects my application, **I want** an email.
+- Triggered: on status change in `vendor_applications`
+- Approved email: "Your listing is live" + next steps
+- Rejected email: generic + invitation to reapply
+
+**Build note:** One `sendEmail(to, subject, text)` function. Resend is the simplest integration for Next.js. All triggers can be implemented as Supabase Edge Functions or called directly after the database write in the client component (simpler for MVP).
+
+---
+
+## E2: Connect Browse to Real Data
+
+> *The browse page must show database vendors. Approved applications must create vendor rows.*
+
+### US-2.1 — Browse fetches from Supabase
+**As a** user, **I want** `/app` to show real vendors from the database.
+- Replace `getAllVendors()` import with a Supabase fetch on mount
+- Filters work against real data
+- Empty state if no vendors exist
+- Existing filter UX unchanged
+
+### US-2.2 — Approving an application creates a vendor listing
+**As an** admin, **when** I approve a vendor application, **the vendor should appear on the browse page.**
+- On status → `approved`: insert into `vendors` table
+- Map fields: business_name, specialty, suburbs, price_min/max, capacity_min/max, description, contact_email, contact_phone, website
+- Generate slug from business_name (lowercase, hyphens)
+- Set `verified = false` initially
+- Tags populated from `event_types` array
+
+### US-2.3 — Vendor detail pages work for database vendors
+**As a** user, **I want** `/vendors/[slug]` to load data from Supabase.
+- Fetch vendor by slug from `vendors` table
+- Inquiry modal references the real `vendor_id`
+- 404 if slug doesn't match any vendor
+
+### US-2.4 — Remove dead code
+- Delete `src/lib/vendors.ts`
+- Delete `src/lib/experiences.ts`
+- Remove all imports. Build must pass.
+
+---
+
+## E3: Protect Admin
+
+> *Minimum: no unauthenticated access to PII.*
+
+### US-3.1 — Admin requires authentication
+**As an** admin, **I want** `/admin` to require login before showing any data.
+
+**Simplest MVP path:**
+1. Hardcode one admin email (e.g. `admin@thebeanroute.com.au`)
+2. User enters email on `/admin` → if it matches, send a 6-digit code via email (uses E1 infrastructure)
+3. User enters code → session stored in cookie or localStorage
+4. All admin data fetches gated on valid session
+5. Logout clears session
+
+### US-3.2 — Admin uses service role for reads
+**As an** admin, **when** I view inquiries, **the reads should use the Supabase service role key** (not anon).
+- Current RLS on `inquiries` already blocks anon SELECT ✓
+- Admin page must use `supabaseAdmin` client initialized with `SUPABASE_SERVICE_ROLE_KEY`
+- This key must be server-side only (never exposed to browser)
+- **Implication:** Admin data fetches should move to API routes or Server Actions, not client-side Supabase calls
+
+---
+
+## E4: Clarify the Two Matching Flows
+
+> *Both flows solve "match planner with vendor" but they're different use cases. Users need to know which to pick.*
+
+### US-4.1 — Distinguish the two flows in copy
+The distinction is:
+- **"Get a Quote"** = I already know which vendor I want. One vendor, direct contact.
+- **"Post a Job"** = I want competing quotes from multiple vendors. I'll pick the best one.
+
+**Where to state this:**
+- `/jobs` page subtitle: "Post an event and get competing quotes from multiple vendors"
+- `/app` page: "Browse vendors" framing stays as-is (implies you've chosen)
+- FAQ or guide page that explains both options
+
+### US-4.2 — Job board shows competition signal
+**As a** vendor browsing jobs, **I want** to see how many quotes a job already has, **so that** I can judge whether it's worth quoting.
+- Quote count already shown on job cards ✓
+- Consider: dim or hide jobs that already have an accepted quote (needs E5 first)
+
+---
+
+## E5: Quote & Inquiry Acceptance
+
+> *Closing the loop. Without this, matched parties have to figure it out via email.*
+
+### US-5.1 — Event owner can accept a quote
+**As an** event owner, **I want** to accept a quote on my job, **so that** the vendor knows they got the gig.
+- Each quote on `/jobs/{id}` gets an "Accept" button
+- Accepting: updates quote status, sends vendor an email (E1), optionally closes the job
+- Only one quote can be accepted per job
+- **Schema change:** Add `status TEXT DEFAULT 'pending'` to `quotes` (pending | accepted | declined)
+
+### US-5.2 — Vendor is notified on acceptance
+**As a** vendor, **when** my quote is accepted, **I get an email** with full event details and the event owner's contact info.
+- Depends on: US-5.1 + US-1.x infrastructure
+
+### US-5.3 — Vendor can respond to an inquiry
+**As a** vendor, **when** I receive an inquiry, **I want** a way to respond or decline in-app (not just via raw email).
+- **Option A (simple):** Reply-to header on notification email routes back to planner. No in-app action needed.
+- **Option B (later):** Vendor dashboard with accept/decline per inquiry.
+- Recommendation: ship Option A with E1. Revisit Option B in E6.
+
+---
+
+## E6: Vendor Self-Service
+
+> *Removes admin as a permanent bottleneck. Vendors manage their own business.*
+
+### US-6.1 — Vendor login and dashboard
+**As a** vendor, **I want** to log in and see my inquiries and quotes.
+- Auth: same magic-link pattern as admin (E3), but for any registered vendor email
+- Dashboard shows: inquiries for my vendor_id, quotes I've submitted (matched by email), my listing status
+- Can see full details of each
+
+### US-6.2 — Vendor can edit their listing
+**As a** vendor, **I want** to update pricing, suburbs, or description.
+- Edit form pre-populated from `vendors` table
+- Save updates the row immediately
+- Changes reflected on browse page
+
+### US-6.3 — Vendor can upload a cart photo
+**As a** vendor, **I want** to add a photo of my cart.
+- Upload via Supabase Storage
+- Stored URL saved to `image_url` column
+- Displayed on browse cards and vendor detail page (replaces gradient placeholder)
+
+---
+
+## E7: Cleanup & Hardening
+
+### US-7.1 — Rate limiting on submissions
+Prevent spam on inquiries, quotes, applications, and jobs.
+- Option: Supabase rate limits on RLS policies
+- Option: middleware checking IP + table per minute
+- Threshold: 5 submissions per IP per hour is reasonable for MVP
+
+### US-7.2 — Server-side validation
+All form submissions currently validate client-side only. Add server-side validation (API route or Server Action) that mirrors client rules before the Supabase insert. Return errors to the form if invalid.
+
+### US-7.3 — Remove dead code
+- `src/lib/experiences.ts` — unused legacy data, delete it
+- Any unused imports or components left over from previous iterations
+
+### US-7.4 — Storybook build separation
+`npm run build` currently includes Storybook output in `public/storybook/`. This adds build time and bundle size for production. Separate storybook build from production build.
+
+---
+
+## What NOT to Build Next
+
+These are tempting but premature:
+
+- **Payment processing** — the product hasn't proven it can match parties reliably yet. Get to first conversion, then add payments.
+- **Vendor search/autocomplete** — there are 10 vendors (soon maybe 20-30). Filtering is sufficient.
+- **Mobile app** — the responsive web experience covers mobile. Native adds nothing at this stage.
+- **AI-powered matching** — premature. The filtering is simple and works. Add ML when you have enough data to learn from.
+- **Vendor reviews/ratings** — needs volume first. With <100 transactions, ratings are meaningless.
+- **Multi-city expansion** — nail Melbourne first. The suburb list and vendor base are Melbourne-specific.
+
+---
+
+## Build Order
+
+If you're working through this sequentially:
 
 ```
-git clone https://github.com/overnightmvp/cbw-coffee-club.git cbw-coffee
-cd cbw-coffee
+1. E3 (Protect Admin)    — do this first. 2 hours of work, fixes the biggest risk.
+2. E1 (Notifications)    — foundation that E2, E5 depend on.
+3. E2 (Real Data)        — makes the marketplace real.
+4. E5 (Acceptance)       — closes the conversion loop.
+5. E4 (Clarify Flows)    — copy/UX changes, can run in parallel with anything.
+6. E6 (Vendor Portal)    — scale play, not day-one.
+7. E7 (Cleanup)          — do incrementally as you go.
 ```
-
-### Branches (all created, all pushed)
-
-| Branch | Purpose | Status |
-|---|---|---|
-| `main` | Production — deploys to Vercel | Active |
-| `setup` | Supabase schema + env config | ⏳ Next up |
-| `vendor-data` | Replace placeholder vendors with real FB data | ⏳ Next up |
-| `sitemap` | sitemap.xml generation | ⏳ Backlog |
-| `seo-meta` | Per-page meta tags (title, description, OG) | ⏳ Backlog |
-| `vendor-photos` | Real vendor images replacing gradient placeholders | ⏳ Backlog |
-| `lead-notifications` | Email vendor when inquiry submitted | ⏳ Backlog |
-
-### Worktree Commands
-
-```bash
-# Activate a worktree when you need it
-git worktree add ../setup setup
-cd ../setup
-# ... make changes ...
-git add . && git commit -m "feat: add Supabase schema and env config"
-git push origin setup
-
-# Merge back to main (via PR or direct)
-git checkout main
-git merge setup --no-ff -m "merge: Supabase setup"
-git push origin main
-
-# Clean up
-git worktree remove ../setup
-```
-
-### Branch Strategy
-
-| Branch | Purpose | Merges Into | Deploy |
-|---|---|---|---|
-| `main` | Production | — | Vercel (auto) |
-| `setup` | Supabase schema + env config | `main` | No |
-| `vendor-data` | Real vendor records (from FB group) | `main` | Preview URL |
-| `sitemap` | sitemap.xml generation | `main` | Preview URL |
-| `seo-meta` | Per-page meta tags | `main` | Preview URL |
-| `vendor-photos` | Real vendor images | `main` | Preview URL |
-| `lead-notifications` | Vendor email on inquiry | `main` | No |
-
----
-
-## Deployment
-
-### Vercel Setup (one-time)
-
-1. Go to vercel.com → Import Git repository
-2. Framework: Next.js (auto-detected)
-3. Root directory: `/` (default)
-4. Build command: `npm run build` (default)
-5. Add environment variables:
-   - `NEXT_PUBLIC_SUPABASE_URL` → from your fresh Supabase project
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` → from your fresh Supabase project
-6. Deploy. Production URL is live.
-
-### Deploy Workflow
-
-- Every merge to `main` auto-deploys to production
-- Every branch push creates a Vercel Preview URL (shareable for review)
-- No manual deploy steps after initial setup
-
----
-
-## Agile Workflow
-
-### Sprint Structure
-
-Each sprint is **5 working days**. One person can run this solo. Sprints are small, focused, shippable.
-
----
-
-### Sprint 0 — Foundation
-**Goal:** Repo, Supabase, Vercel are live. Brand system is in place. Zero vendor data yet.
-
-| ID | Task | Branch | Done When |
-|---|---|---|---|
-| S0-1 | Create fresh Supabase project, run vendors + inquiries schema | `setup` | Tables exist, RLS enabled |
-| S0-2 | Update .env.local with new Supabase credentials | `setup` | App connects to new DB |
-| S0-3 | Deploy to Vercel, confirm build passes | `setup` | Production URL works |
-| S0-4 | Update Tailwind config with The Bean Route brand palette | `rebrand` | Colors render correctly |
-| S0-5 | Update design tokens (primary, neutrals, accents) | `rebrand` | All components use new palette |
-| S0-6 | Update Header with The Bean Route wordmark and nav links | `rebrand` | Header looks branded |
-| S0-7 | Delete CompanyQuiz and AIChatWidget | `rebrand` | Components removed, no broken imports |
-| S0-8 | Create docs/skills.md | `setup` | File exists at docs/skills.md |
-| S0-9 | Create docs/backlog.md | `setup` | File exists at docs/backlog.md |
-
-**Merge order:** `setup` → `main`, then `rebrand` → `main`
-
----
-
-### Sprint 1 — Core Marketplace (Revenue Path)
-**Goal:** Real vendors on the page. Contractors can submit inquiries. Leads land in admin.
-
-| ID | Task | Branch | Done When |
-|---|---|---|---|
-| S1-1 | Gather raw vendor data from Facebook group (manual copy-paste) | — | 20–30 raw posts in a doc |
-| S1-2 | Run Claude vendor structuring prompt → JSON vendor records | `vendors` | 10–20 valid vendor records |
-| S1-3 | Create src/lib/vendors.ts with hardcoded vendor data | `vendors` | File exports getAllVendors(), getVendorBySlug() |
-| S1-4 | Update Supabase types (replace Experience → Vendor, Booking → Inquiry) | `vendors` | Types compile, no errors |
-| S1-5 | Rewrite landing page (hero, vendor carousel, how it works, CTA) | `landing` | Page renders with The Bean Route content |
-| S1-6 | Update HorizontalExperiences → VendorCarousel with vendor data | `landing` | Carousel shows real vendors |
-| S1-7 | Rewrite SimpleBookingModal → InquiryModal (contractor fields) | `inquiry-flow` | Form submits to Supabase inquiries table |
-| S1-8 | Update admin dashboard labels and fields for The Bean Route | `admin` | Leads appear correctly in admin |
-| S1-9 | Smoke test full flow: browse → inquire → check admin | `main` | End-to-end works |
-
-**Merge order:** `vendors` → `main`, then `landing` + `inquiry-flow` → `main`, then `admin` → `main`
-
----
-
-### Sprint 2 — Vendor Pages
-**Goal:** Each vendor has a dedicated profile page. SEO foundation is in place.
-
-| ID | Task | Branch | Done When |
-|---|---|---|---|
-| S2-1 | Create src/app/vendors/[slug]/page.tsx | `vendor-pages` | Dynamic route renders per vendor |
-| S2-2 | Vendor page: full description, specialty, suburbs, price range, inquiry form | `vendor-pages` | All vendor info displayed |
-| S2-3 | SEO meta tags per vendor page (title, description, OG) | `vendor-pages` | Each page has unique meta |
-| S2-4 | Link vendor cards on landing page / carousel to their profile pages | `landing` | Click-through works |
-| S2-5 | Rewrite src/app/app/page.tsx → contractor browsing page (filter by suburb/type/price) | `vendor-pages` | Filtering works |
-
-**Merge order:** `vendor-pages` → `main`
-
----
-
-### Sprint 3 — Content Pillars
-**Goal:** Six content pages exist. SEO crawlability is solid.
-
-| ID | Task | Branch | Done When |
-|---|---|---|---|
-| S3-1 | Create /contractors hub page | `content-pillars` | Page renders with links to guides |
-| S3-2 | Create /contractors/how-to-hire guide | `content-pillars` | Full guide content, CTA to browse vendors |
-| S3-3 | Create /contractors/coffee-cart-costs pricing guide | `content-pillars` | Realistic Melbourne pricing info |
-| S3-4 | Create /vendors-guide hub page | `content-pillars` | Page renders with links to guides |
-| S3-5 | Create /vendors-guide/get-listed onboarding guide | `content-pillars` | How to get on The Bean Route |
-| S3-6 | Create /vendors-guide/grow-your-business guide | `content-pillars` | Value prop for vendor listing |
-| S3-7 | Add sitemap.xml generation | `content-pillars` | All pages indexed |
-
-**Merge order:** `content-pillars` → `main`
-
----
-
-### Post-Sprint: Revenue Activation
-
-This is not a code task. It's a sales task.
-
-1. Share the live site with 3–5 event planners / corporates in Melbourne
-2. Share vendor listings with the vendors themselves (so they know they're listed)
-3. Wait for first inquiry → manually connect vendor and contractor
-4. When first inquiry converts to a booking → charge the vendor the lead fee
-5. Iterate: add more vendors, improve listings based on what contractors actually search for
-
----
-
-## Definition of Done (every task)
-
-- [ ] Code compiles (`npm run build` passes)
-- [ ] No lint errors (`npm run lint` passes)
-- [ ] Feature works end-to-end (manual smoke test)
-- [ ] Merged to `main` via PR (or direct merge for solo work)
-- [ ] Vercel deploys successfully
-
----
-
-## What We Are NOT Building (and why)
-
-| Temptation | Why We're Skipping It |
-|---|---|
-| Search / filtering on landing page | Carousel + vendor pages handle discovery at this scale (10–20 vendors) |
-| User accounts for contractors | Unnecessary friction. Anonymous inquiry is faster to revenue. |
-| Payment processing | Lead fees invoiced manually. Stripe adds complexity we don't need yet. |
-| AI recommendation engine | Manual curation of 10–20 vendors IS the recommendation at this scale. |
-| Mobile app | Mobile-responsive web. No reason to build native for a marketplace MVP. |
-| Automated vendor notifications | Email the vendor manually when an inquiry comes in. Automate in month 2. |

@@ -17,8 +17,8 @@ export default function BrowseVendors() {
   const [filterMaxPrice, setFilterMaxPrice] = useState('')
 
   // Collect unique suburbs and tags for filters
-  const allSuburbs = [...new Set(allVendors.flatMap(v => v.suburbs))].sort()
-  const allTags = [...new Set(allVendors.flatMap(v => v.tags))].sort()
+  const allSuburbs = Array.from(new Set(allVendors.flatMap(v => v.suburbs))).sort()
+  const allTags = Array.from(new Set(allVendors.flatMap(v => v.tags))).sort()
 
   const filtered = allVendors.filter(vendor => {
     if (filterSuburb && !vendor.suburbs.includes(filterSuburb)) return false
