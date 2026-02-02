@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "npm run build-storybook && next build",
+    "build": "next build",
+    "build:storybook": "storybook build --output-dir public/storybook",
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
