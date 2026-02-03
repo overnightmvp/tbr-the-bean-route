@@ -36,6 +36,51 @@ export async function PATCH(
       return NextResponse.json({ error: 'Failed to update application' }, { status: 500 })
     }
 
+    // Create vendor record when application is approved
+    if (data && status === 'approved') {
+      try {
+        // Generate slug from business name
+        const slug = data.business_name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '')
+
+        // Map application fields to vendor fields
+        const vendorId = `vnd_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
+
+        const { error: vendorError } = await supabaseAdmin
+          .from('vendors')
+          .insert({
+            id: vendorId,
+            slug: slug,
+            business_name: data.business_name,
+            specialty: data.specialty,
+            description: data.description,
+            suburbs: data.suburbs,
+            price_min: data.price_min,
+            price_max: data.price_max,
+            capacity_min: data.capacity_min,
+            capacity_max: data.capacity_max,
+            contact_email: data.contact_email,
+            contact_phone: data.contact_phone,
+            website: data.website,
+            tags: data.event_types, // Map event_types to tags
+            verified: true, // Approved applications are verified
+          })
+
+        if (vendorError) {
+          console.error('Error creating vendor record:', vendorError)
+          // Don't fail the approval if vendor creation fails - log and continue
+          // Admin can manually create vendor or retry later
+        } else {
+          console.log(`[VENDOR CREATED] ${data.business_name} (${slug}) - ID: ${vendorId}`)
+        }
+      } catch (vendorCreationError) {
+        console.error('Unexpected error creating vendor:', vendorCreationError)
+        // Continue with approval flow even if vendor creation fails
+      }
+    }
+
     // Send decision email to applicant (only for approved/rejected, not pending)
     if (data && (status === 'approved' || status === 'rejected')) {
       try {
