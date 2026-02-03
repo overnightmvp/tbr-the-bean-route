@@ -4,6 +4,7 @@
 -- Vendors table
 CREATE TABLE vendors (
   id TEXT PRIMARY KEY,
+  slug TEXT NOT NULL UNIQUE,
   business_name TEXT NOT NULL,
   specialty TEXT NOT NULL,
   suburbs TEXT[] NOT NULL DEFAULT '{}',

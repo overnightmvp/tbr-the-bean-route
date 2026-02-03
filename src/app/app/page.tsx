@@ -1,20 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { getAllVendors, type Vendor, formatPriceRange } from '@/lib/vendors'
+import { type Vendor as LegacyVendor } from '@/lib/vendors'
+import { type Vendor, formatVendorPrice } from '@/lib/supabase'
 import { Header } from '@/components/navigation/Header'
 import { Footer } from '@/components/navigation/Footer'
 import { Badge, Button } from '@/components/ui'
 import { InquiryModal } from '@/components/booking/SimpleBookingModal'
 
 export default function BrowseVendors() {
-  const allVendors = getAllVendors()
-  const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null)
+  const [allVendors, setAllVendors] = useState<Vendor[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selectedVendor, setSelectedVendor] = useState<LegacyVendor | null>(null)
   const [showInquiryModal, setShowInquiryModal] = useState(false)
   const [filterSuburb, setFilterSuburb] = useState('')
   const [filterTag, setFilterTag] = useState('')
   const [filterMaxPrice, setFilterMaxPrice] = useState('')
+
+  // Fetch vendors from Supabase
+  useEffect(() => {
+    const fetchVendors = async () => {
+      try {
+        const { supabase } = await import('@/lib/supabase')
+        const { data, error } = await supabase
+          .from('vendors')
+          .select('*')
+          .eq('verified', true)
+          .order('created_at', { ascending: false })
+
+        if (error) {
+          console.error('Error fetching vendors:', error)
+        } else {
+          setAllVendors(data || [])
+        }
+      } catch (err) {
+        console.error('Unexpected error fetching vendors:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchVendors()
+  }, [])
 
   // Collect unique suburbs and tags for filters
   const allSuburbs = Array.from(new Set(allVendors.flatMap(v => v.suburbs))).sort()
@@ -23,7 +51,7 @@ export default function BrowseVendors() {
   const filtered = allVendors.filter(vendor => {
     if (filterSuburb && !vendor.suburbs.includes(filterSuburb)) return false
     if (filterTag && !vendor.tags.includes(filterTag)) return false
-    if (filterMaxPrice && vendor.priceMin > parseInt(filterMaxPrice)) return false
+    if (filterMaxPrice && vendor.price_min > parseInt(filterMaxPrice)) return false
     return true
   })
 
@@ -34,6 +62,38 @@ export default function BrowseVendors() {
   }
 
   const hasActiveFilters = filterSuburb || filterTag || filterMaxPrice
+
+  // Convert database vendor to legacy format for InquiryModal
+  const convertToLegacyVendor = (vendor: Vendor): LegacyVendor => ({
+    id: vendor.id,
+    slug: vendor.slug,
+    businessName: vendor.business_name,
+    specialty: vendor.specialty,
+    suburbs: vendor.suburbs,
+    priceMin: vendor.price_min,
+    priceMax: vendor.price_max,
+    capacityMin: vendor.capacity_min,
+    capacityMax: vendor.capacity_max,
+    description: vendor.description || '',
+    contactEmail: vendor.contact_email,
+    contactPhone: vendor.contact_phone,
+    website: vendor.website,
+    imageUrl: vendor.image_url,
+    tags: vendor.tags
+  })
+
+  if (loading) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: '#FAFAF8' }}>
+        <Header variant="app" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
+          <div className="w-8 h-8 border-2 border-neutral-300 border-t-[#F5C842] rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-neutral-500 text-sm">Loading vendors...</p>
+        </div>
+        <Footer />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FAFAF8' }}>
@@ -128,14 +188,14 @@ export default function BrowseVendors() {
                   </div>
                   <div className="absolute top-3 right-3">
                     <span className="bg-white/90 backdrop-blur-sm text-xs font-semibold px-2 py-1 rounded-full" style={{ color: '#3B2A1A' }}>
-                      {formatPriceRange(vendor)}
+                      {formatVendorPrice(vendor)}
                     </span>
                   </div>
                 </div>
 
                 {/* Card Content */}
                 <div className="p-5">
-                  <h3 className="text-lg font-bold mb-1" style={{ color: '#1A1A1A' }}>{vendor.businessName}</h3>
+                  <h3 className="text-lg font-bold mb-1" style={{ color: '#1A1A1A' }}>{vendor.business_name}</h3>
                   <p className="text-sm text-neutral-600 mb-3">{vendor.specialty}</p>
                   <p className="text-sm text-neutral-500 mb-3 line-clamp-2">{vendor.description}</p>
 
@@ -154,7 +214,7 @@ export default function BrowseVendors() {
                   </div>
 
                   <div className="text-xs text-neutral-500 mb-4">
-                    Serves {vendor.capacityMin}–{vendor.capacityMax} guests
+                    Serves {vendor.capacity_min}–{vendor.capacity_max} guests
                   </div>
 
                   {/* Actions */}
@@ -163,7 +223,7 @@ export default function BrowseVendors() {
                       size="sm"
                       className="flex-1 bg-[#F5C842] text-[#1A1A1A] hover:bg-[#E8B430] font-semibold"
                       onClick={() => {
-                        setSelectedVendor(vendor)
+                        setSelectedVendor(convertToLegacyVendor(vendor))
                         setShowInquiryModal(true)
                       }}
                     >

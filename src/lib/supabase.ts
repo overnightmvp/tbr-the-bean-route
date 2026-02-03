@@ -9,6 +9,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export type Vendor = {
   id: string
+  slug: string
   business_name: string
   specialty: string
   suburbs: string[]
@@ -24,6 +25,11 @@ export type Vendor = {
   tags: string[]
   verified: boolean
   created_at: string
+}
+
+// Helper function to format price range for Supabase vendors
+export function formatVendorPrice(vendor: Vendor): string {
+  return `$${vendor.price_min}–$${vendor.price_max}/hr`
 }
 
 export type Inquiry = {
