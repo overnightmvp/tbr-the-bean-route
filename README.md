@@ -1,209 +1,329 @@
-# 7DAY - Australian Corporate Experience Marketplace
+# The Bean Route - Melbourne Coffee Cart Marketplace
 
-> **Live Production System**: Curated team experiences for Australian businesses with 3-click booking and Supabase backend integration.
+> **Two-sided marketplace** connecting event organizers with mobile coffee cart vendors in Melbourne.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js 18+ installed
 - Supabase account (free tier)
+- Brevo account for email notifications (free tier)
 - Vercel account for deployment
 
 ### Local Development Setup
 
 1. **Clone and install**:
 ```bash
-git clone https://github.com/overnightmvp/7-day.git
-cd 7-day
+git clone <your-repo-url>
+cd coffee-cart-marketplace
 npm install
 ```
 
-2. **Configure Supabase**:
-   - Create new Supabase project at https://supabase.com
-   - Go to Settings → API, copy your project URL and anon key
-   - Copy `.env.local.example` to `.env.local`:
-   ```bash
-   cp .env.local.example .env.local
-   ```
-   - Add your Supabase credentials to `.env.local`
+2. **Configure Environment**:
+```bash
+cp .env.local.example .env.local
+```
 
-3. **Set up database**:
+Add your credentials to `.env.local`:
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key  # ⚠️ Never commit!
+BREVO_API_KEY=xkeysib-your_key                    # ⚠️ Never commit!
+```
+
+3. **Set up Supabase Database**:
    - Go to Supabase SQL Editor
    - Run the complete `supabase-schema.sql` file
-   - Verify tables created: `companies`, `users`, `bookings`, `booking_inquiries`
+   - Verify tables created: `vendors`, `inquiries`, `vendor_applications`, `jobs`, `quotes`
 
-4. **Start development**:
+4. **Populate Seed Data** (Required for forms to work):
+```sql
+-- Run this in Supabase SQL Editor to add the 10 seed vendors
+-- See supabase-schema.sql for the INSERT statements
+```
+
+5. **Start Development**:
 ```bash
 npm run dev
 ```
 
+Open [http://localhost:3000](http://localhost:3000)
+
 ## 🏗️ Production Deployment (Vercel)
 
 ### 1. Deploy to Vercel
-```bash
-# Connect your GitHub repository to Vercel
-# Automatic deployment on every push to main
+- Connect your GitHub repository to Vercel
+- Automatic deployment on every push to main
+
+### 2. Configure Environment Variables in Vercel
+
+**Critical:** Add these to Vercel → Settings → Environment Variables for **ALL** environments (Production + Preview + Development):
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
+BREVO_API_KEY=xkeysib-your_key_here
 ```
 
-### 2. Configure Environment Variables
-Add these to Vercel Settings → Environment Variables:
-- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon key
+**Important:**
+- `NEXT_PUBLIC_*` variables are embedded in the browser bundle
+- Never use `NEXT_PUBLIC_` prefix for secrets (service role, Brevo key)
+- Must check ALL THREE environment checkboxes (Production, Preview, Development)
 
 ### 3. Verify Deployment
-- Build should complete without TypeScript errors
-- Test booking flow on live URL
-- Confirm data saves to Supabase `booking_inquiries` table
+- Build should complete without errors
+- Test "Get a Quote" form on live URL
+- Verify data saves to Supabase
+- Check admin access works
 
-## 🎯 Current Features (Live System)
+**Troubleshooting:** See `docs/VERCEL-TROUBLESHOOTING.md` if forms fail with "supabaseUrl is required"
 
-### Australian Corporate Experience Marketplace
-- **6 Premium Venues**: Blue Mountains, Sydney Harbour, Melbourne, Gold Coast, Adelaide, Perth
-- **Interactive Quiz**: 5-question company assessment with AI venue matching
-- **Real-time Booking**: Live form submission to Supabase database
-- **AUD Pricing**: Transparent Australian dollar pricing with cost estimation
-- **Mobile Optimized**: Touch-friendly horizontal scrolling and responsive design
+## 🎯 Current Features
 
-### Technical Architecture
-- **Frontend**: Next.js 14 + TypeScript + Tailwind CSS
-- **Backend**: Supabase PostgreSQL with Row Level Security
-- **Components**: Custom UI library (Button, Card, Input, Badge)
-- **State**: Client-side React hooks with Supabase persistence
-- **Deployment**: Vercel with automatic GitHub integration
+### For Event Organizers
+- **Browse Vendors**: 10 curated Melbourne coffee cart vendors
+- **Direct Inquiries**: Request quotes from specific vendors
+- **Job Board**: Post events and receive competing quotes from multiple vendors
+- **AUD Pricing**: Transparent Australian dollar pricing
+
+### For Coffee Cart Vendors
+- **Self-Registration**: Apply to join the marketplace
+- **Quote Submission**: Respond to job postings
+- **Email Notifications**: Receive inquiry alerts via Brevo
+
+### Admin Portal
+- **Authentication**: Email + 6-digit code verification
+- **Inquiry Management**: View and manage booking requests
+- **Application Review**: Approve/reject vendor applications
+- **Job Oversight**: Monitor job postings and quotes
+
+**Access Admin:**
+- Go to `/admin`
+- Enter email → check Vercel logs for code
+- See `docs/ADMIN-ACCESS.md` for details
 
 ## 📊 Database Schema
 
 ### Main Tables
 ```sql
-booking_inquiries (
-  id UUID PRIMARY KEY,
-  work_email TEXT NOT NULL,
-  company_name TEXT NOT NULL,
-  contact_name TEXT NOT NULL, 
-  phone TEXT,
-  team_size INTEGER NOT NULL,
-  preferred_date DATE NOT NULL,
-  alternate_date DATE,
-  experience_id TEXT NOT NULL,
-  estimated_cost DECIMAL(10,2),
-  status TEXT DEFAULT 'pending',
-  created_at TIMESTAMP DEFAULT NOW()
+vendors (
+  id, business_name, specialty, suburbs[],
+  price_min/max, capacity_min/max, tags[], verified
+)
+
+inquiries (
+  id, vendor_id, event_type, event_date,
+  duration_hours, guest_count, location,
+  contact_*, estimated_cost, status
+)
+
+vendor_applications (
+  id, business_name, specialty, description,
+  suburbs[], price_min/max, event_types[],
+  contact_*, status
+)
+
+jobs (
+  id, event_title, event_type, event_date,
+  guest_count, budget_min/max, location, status
+)
+
+quotes (
+  id, job_id, vendor_name, price_per_hour,
+  message, contact_email
 )
 ```
 
-### Admin Access
-- **Supabase Dashboard**: View all booking inquiries in Table Editor
-- **Real-time Updates**: New bookings appear instantly
-- **Export Data**: CSV export available for analysis
+## 🧪 Testing the System
 
-## 🧪 Testing the Live System
+### 1. Test Inquiry Flow
+1. Visit homepage
+2. Click "Get a Quote" on any vendor
+3. Fill and submit inquiry form
+4. Verify success confirmation
+5. Check Supabase → `inquiries` table for new row
+6. Check email inbox for confirmation (if Brevo configured)
 
-### 1. Complete User Flow Test
-1. Visit your live Vercel URL
-2. Complete company quiz (5 questions)
-3. Review personalized venue recommendations  
-4. Click "Reserve This Experience" on any venue
-5. Fill and submit booking inquiry form
-6. Verify success confirmation with calendar export
+### 2. Test Job Board
+1. Go to `/jobs`
+2. Click a job → "Submit a Quote"
+3. Fill vendor quote form
+4. Submit
+5. Verify quote appears in job details
 
-### 2. Admin Verification
-1. Go to Supabase dashboard → Table Editor
-2. Click `booking_inquiries` table
-3. Verify your test booking appears with all details
-4. Check `status` is 'pending' for new inquiry follow-up
+### 3. Test Admin Portal
+1. Go to `/admin`
+2. Enter email → get code from server logs
+3. View inquiries, applications, jobs
+4. Test status updates
+
+**See `docs/SETUP-GUIDE.md` for comprehensive testing instructions.**
 
 ## 🔧 Development Commands
 
 ```bash
-npm run dev          # Start development server
-npm run build        # Production build (tests TypeScript)
+npm run dev          # Start development server (with turbo)
+npm run build        # Production build
 npm run start        # Start production server locally
 npm run lint         # ESLint checking
+npm run storybook    # Component documentation (port 6006)
+npm run dev:docs     # Build Storybook + start dev server
 ```
 
 ## 📁 Project Structure
 
 ```
 src/
-├── app/                    # Next.js App Router
-│   ├── page.tsx           # Landing page with quiz + booking
-│   ├── admin/page.tsx     # Admin portal (future)
-│   ├── app/page.tsx       # Employee app (future)  
-│   └── design-system/     # Component documentation
+├── app/                          # Next.js App Router
+│   ├── page.tsx                  # Landing page
+│   ├── admin/                    # Admin portal
+│   │   ├── page.tsx             # Main admin UI with tabs
+│   │   ├── InquiriesTab.tsx    # Booking inquiries
+│   │   ├── ApplicationsTab.tsx  # Vendor applications
+│   │   └── JobsTab.tsx          # Job board management
+│   ├── vendors/
+│   │   ├── [slug]/page.tsx     # Vendor detail pages
+│   │   └── register/page.tsx   # Vendor application form
+│   ├── jobs/
+│   │   ├── page.tsx            # Job board listing
+│   │   ├── create/page.tsx     # Post a job
+│   │   └── [id]/page.tsx       # Job detail + quotes
+│   ├── contractors/             # Content marketing pages
+│   ├── vendors-guide/           # Vendor resources
+│   └── api/
+│       ├── admin/              # Admin API routes (service role)
+│       │   ├── session/
+│       │   ├── send-code/
+│       │   ├── verify-code/
+│       │   ├── inquiries/
+│       │   ├── applications/
+│       │   └── jobs/
+│       └── notify/             # Email notification routes
+│           └── inquiry/
 ├── components/
-│   ├── ui/                # Core UI components
-│   ├── booking/           # Booking flow components
-│   ├── quiz/              # Company assessment quiz
-│   ├── experiences/       # Venue browser components
-│   └── navigation/        # Header and navigation
+│   ├── ui/                     # Core UI components
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── Input.tsx
+│   │   └── Badge.tsx
+│   ├── booking/                # Inquiry forms
+│   ├── jobs/                   # Quote submission
+│   ├── admin/                  # Admin components (AuthGate)
+│   ├── experiences/            # Vendor carousel
+│   ├── navigation/             # Header/Footer
+│   └── seo/                    # JsonLd structured data
 └── lib/
-    ├── supabase.ts        # Database client + TypeScript types
-    ├── experiences.ts     # Australian venue data
-    ├── auth.ts           # Authentication utilities
-    └── utils.ts          # Helper functions
+    ├── supabase.ts            # Database client + types
+    ├── supabase-admin.ts      # Service role client (server-only)
+    ├── email.ts               # Brevo email utility
+    ├── admin.ts               # Admin session management
+    ├── vendors.ts             # Hardcoded vendor data (seed)
+    ├── utils.ts               # Helper functions
+    └── design-tokens.ts       # Design system
 ```
 
-## 🎭 User Personas & Validation
+## 🇦🇺 Australian Market Focus
 
-### Primary: Sarah Chen (HR Manager)
-- **Company**: 80-person tech startup, Sydney
-- **Budget**: $25k annual team events
-- **Pain Point**: 8-12 hours research per event
-- **Solution**: 5-minute venue booking via 7DAY quiz + booking system
+### Target Users
+- **Event Organizers**: Corporate events, weddings, festivals in Melbourne
+- **Coffee Cart Vendors**: Mobile coffee businesses serving Melbourne suburbs
+- **Geographic Focus**: Melbourne metropolitan area
+- **Pricing**: Australian dollars (AUD)
 
-### Success Metrics (Live Tracking)
-- **Quiz completion rate**: >60% (5 questions → venue recommendations)
-- **Booking inquiry conversion**: >8% (landing page → submitted inquiry)  
-- **Demo conversion**: >25% (inquiry → scheduled call)
-- **Customer conversion**: >50% (demo → venue booking)
+### Key Differentiators
+- **Local Focus**: Melbourne suburbs, local vendors, AUD pricing
+- **Two Matching Flows**:
+  - Direct inquiry (know which vendor you want)
+  - Job board (get competing quotes)
+- **No Middleman**: Direct connection between organizers and vendors
 
-## 🇦🇺 Australian Market Context
+## 📖 Documentation
 
-### Competitive Advantages
-- **First-mover**: Only self-service corporate experience marketplace in Australia
-- **Local Focus**: Australian venues, AUD pricing, business hours support  
-- **Corporate-Optimized**: Group sizes, invoice processing, business requirements
-- **Time-Saving**: Eliminates 8-12 hours vendor research per event
+- **`docs/SETUP-GUIDE.md`** - Complete infrastructure setup (20 min)
+- **`docs/ADMIN-ACCESS.md`** - Admin portal access on production
+- **`docs/VERCEL-TROUBLESHOOTING.md`** - Fix deployment errors
+- **`docs/backlog.md`** - Product roadmap and priorities
+- **`docs/skills.md`** - Development task breakdown
+- **`CLAUDE.md`** - AI assistant guidance for this codebase
 
-### Target Market
-- **Growth companies**: 50-200 employees with annual team event budgets
-- **Geographic Focus**: Sydney and Melbourne (80% of target market)
-- **Budget Range**: $5k-30k per event, quarterly frequency
-- **Decision Makers**: HR managers with budget authority
+## 🔮 Roadmap
 
-## 🔮 Immediate Next Steps (Post-MVP)
+### Phase 1: MVP ✅ (Current)
+- ✅ Vendor directory (10 seed vendors)
+- ✅ Inquiry submission
+- ✅ Job board with quote submission
+- ✅ Vendor registration
+- ✅ Admin portal with authentication
+- ✅ Email notifications (Brevo)
 
-### Phase 2: Enhanced Functionality
-- [ ] Email automation for booking inquiry follow-up
-- [ ] Payment integration (Stripe Australia)
-- [ ] User authentication and company portals
-- [ ] Advanced admin dashboard with booking management
+### Phase 2: E1 - Email Notifications (In Progress)
+- ✅ E1-0: Brevo infrastructure
+- ✅ E1-1: Vendor inquiry notification
+- ✅ E1-2: Planner inquiry confirmation
+- ⏳ E1-3: Owner quote notification
+- ⏳ E1-4: Vendor quote confirmation
+- ⏳ E1-5: Applicant decision emails
 
-### Phase 3: Scale Features  
-- [ ] Team voting on venue options
-- [ ] Calendar integration (Google Workspace)
-- [ ] Post-event analytics and feedback collection
-- [ ] Multi-city expansion (Brisbane, Perth, Adelaide)
+### Phase 3: E2 - Real Vendor Data
+- Connect browse page to database vendors
+- Approved applications → create vendor listings
+- Remove hardcoded vendor data
+- Dynamic vendor detail pages
 
-## 🐛 Known Issues & Troubleshooting
+### Phase 4: E5 - Quote Acceptance
+- Event owners accept quotes
+- Vendors notified on acceptance
+- Job status management
 
-### Common Setup Issues
-1. **"supabaseUrl is required"**: Environment variables not configured in Vercel
-2. **"404 on booking_inquiries"**: Need to run updated SQL schema in Supabase
-3. **TypeScript build errors**: Ensure all `*Variants` exports removed from components
+## 🐛 Known Issues & Solutions
 
-### Browser Extension Conflicts
-- **LastPass errors**: Harmless, affects only users with password manager extensions
-- **React minified errors**: Production optimization, doesn't affect functionality
+### Issue: "supabaseUrl is required" on production
+**Cause:** Environment variables not configured in Vercel
+**Solution:** See `docs/VERCEL-TROUBLESHOOTING.md`
 
-### Performance Optimizations Applied
-- **Image optimization**: Replaced `<img>` with CSS background-image for better Core Web Vitals
-- **Component exports**: Simplified exports to reduce bundle size
-- **TypeScript strict mode**: Enforced type safety throughout codebase
+### Issue: Forms work locally but not on production
+**Cause:** Missing vendor data in production database
+**Solution:** Run seed SQL to populate `vendors` table
+
+### Issue: Admin shows no data
+**Cause:** Missing `SUPABASE_SERVICE_ROLE_KEY`
+**Solution:** Add service role key to `.env.local` and Vercel
+
+### Issue: Emails not sending
+**Cause:** `BREVO_API_KEY` not configured
+**Solution:** Get API key from Brevo dashboard, add to environment
+
+## 🔒 Security Notes
+
+### Environment Variables
+- ✅ Never commit `.env.local` (already in `.gitignore`)
+- ✅ Use `NEXT_PUBLIC_` only for client-safe values
+- ❌ Never expose `SUPABASE_SERVICE_ROLE_KEY` to client
+- ❌ Never expose `BREVO_API_KEY` to client
+
+### Admin Security (MVP)
+- ⚠️ Any email can request admin access (no whitelist yet)
+- ⚠️ Codes logged to console (not emailed yet)
+- ⚠️ Sessions stored in HTTP-only cookies (24hr expiration)
+
+**For Production:**
+- Add email whitelist in `send-code/route.ts`
+- Enable Brevo emails (remove console logging)
+- Add rate limiting to prevent code spam
+- Implement audit logging for admin actions
+
+## 📞 Support
+
+For questions or issues:
+1. Check `docs/` folder for guides
+2. Review `CLAUDE.md` for development patterns
+3. Check GitHub issues
+4. Contact: [your contact method]
 
 ---
 
-**🎉 7DAY Australian Corporate Experience Marketplace**  
-**Live at**: Your Vercel URL  
-**Admin Dashboard**: Your Supabase dashboard  
-**Ready for**: Customer validation and growth
+**The Bean Route - Melbourne Coffee Cart Marketplace**
+Built with Next.js 14, TypeScript, Supabase, and Brevo
+Deployed on Vercel
