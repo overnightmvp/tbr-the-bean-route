@@ -103,6 +103,7 @@ CREATE TABLE quotes (
   price_per_hour  INTEGER     NOT NULL,
   message         TEXT,
   contact_email   TEXT        NOT NULL,
+  status          TEXT        NOT NULL DEFAULT 'pending',  -- pending | accepted | rejected
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

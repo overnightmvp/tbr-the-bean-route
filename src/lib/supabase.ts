@@ -118,6 +118,7 @@ export type Quote = {
   price_per_hour: number
   message: string | null
   contact_email: string
+  status: 'pending' | 'accepted' | 'rejected'
   created_at: string
 }
 

@@ -1,13 +1,13 @@
 # Coffee Cart Marketplace — System Audit & Backlog
 
-**Date:** 2026-02-03 (Updated: E1 Complete)
-**Status:** Phase 2 (Email Notifications) ✅ COMPLETE
+**Date:** 2026-02-04 (Updated: E2 Complete)
+**Status:** Phase 3 (Real Vendor Data) ✅ COMPLETE
 
 ---
 
 ## Executive Summary
 
-System has completed Phase 0 (Cleanup), Phase 1 (E3 - Protect Admin), and Phase 2 (E1 - Email Notifications). All 6 email notification stories implemented and merged to main. Next: Phase 3 (E2 - Real Data) to replace hardcoded vendors with Supabase-backed marketplace. This audit tracks infrastructure readiness and remaining work using agile user stories.
+System has completed Phase 0 (Cleanup), Phase 1 (E3 - Protect Admin), Phase 2 (E1 - Email Notifications), and Phase 3 (E2 - Real Vendor Data). The marketplace is now fully functional with database-driven vendors, complete email notifications, and admin authentication. Admin verification codes now send via email with whitelist support. Next: Phase 4 (E5 - Quote Acceptance) to enable job owners to accept quotes and complete the booking funnel.
 
 ---
 
@@ -72,11 +72,11 @@ localStorage  # Should see no Supabase errors in console
 - [x] E1-4: Vendor quote confirmation (merged: d56c684 - dual email handler)
 - [x] E1-5: Applicant decision notification (merged: 5d82ccc)
 
-### Phase 3: E2 — Real Data ⏳ PENDING
-- [ ] E2-1: Browse from Supabase (replace hardcoded vendors)
-- [ ] E2-2: Approve creates vendor (admin → vendors table)
-- [ ] E2-3: Vendor detail from DB
-- [ ] E2-4: Remove vendors.ts
+### Phase 3: E2 — Real Data ✅ COMPLETE (4/4 complete)
+- [x] E2-1: Browse from Supabase (merged: cc5ce72)
+- [x] E2-2: Approve creates vendor (merged: 8dffa4c)
+- [x] E2-3: Vendor detail from DB (merged: 16ce6b7)
+- [x] E2-4: Remove vendors.ts (merged: 9839d09)
 
 ### Phase 4: E5 — Quote Acceptance ⏳ PENDING
 - [ ] E5-1: Add status column to quotes
@@ -215,88 +215,84 @@ Technical Notes:
 
 #### User Stories
 
-**Story E2.1 — Browse from Database**
+**Story E2.1 — Browse from Database** ✅ DONE (Commit: cc5ce72)
 ```
 As an event planner
 I want to see real vendors who have been approved by the admin
 So I can book actual available coffee carts
 
 Acceptance Criteria:
-- /app page fetches vendors from Supabase instead of hardcoded array
-- Only shows vendors with status = 'active' (not pending/rejected applications)
-- Same filter UI (suburbs, capacity, price) works with DB data
-- Same card rendering (business name, specialty, price range)
-- Loading state while fetching
+- [x] /app page fetches vendors from Supabase instead of hardcoded array
+- [x] Only shows vendors with status = 'active' (not pending/rejected applications)
+- [x] Same filter UI (suburbs, capacity, price) works with DB data
+- [x] Same card rendering (business name, specialty, price range)
+- [x] Loading state while fetching
 
 Technical Notes:
-- Replace getAllVendors() in /app/page.tsx with useEffect + Supabase fetch
+- Homepage now fetches from Supabase vendors table
 - Filter logic stays client-side (small dataset)
-- Use existing Vendor type from vendors.ts (matches DB schema)
-- Consider: do we need pagination? (probably not for MVP)
+- Uses Vendor type from supabase.ts (matches DB schema)
 ```
 
-**Story E2.2 — Approve Creates Vendor**
+**Story E2.2 — Approve Creates Vendor** ✅ DONE (Commit: 8dffa4c)
 ```
 As an admin
 I want vendor applications to automatically create vendor listings when approved
 So I don't have to manually duplicate data
 
 Acceptance Criteria:
-- When admin clicks "Approve" on an application
-- System creates a new row in vendors table
-- Maps application fields → vendor fields
-- Generates vendor.id and vendor.slug
-- Sets vendor.status = 'active'
-- Application status updates to 'approved'
+- [x] When admin clicks "Approve" on an application
+- [x] System creates a new row in vendors table
+- [x] Maps application fields → vendor fields
+- [x] Generates vendor.id and vendor.slug
+- [x] Sets vendor.status = 'active'
+- [x] Application status updates to 'approved'
 
 Technical Notes:
-- Update /api/admin/applications/[id] PATCH route
-- After updating application status to 'approved'
-- Insert into vendors table with mapped fields:
-  - id: generated (same format as application id)
-  - slug: businessName.toLowerCase().replace(/\s+/g, '-')
-  - All other fields map 1:1
-- Atomic operation: both updates must succeed or rollback
+- /api/admin/applications/[id] PATCH route updated
+- On approval, inserts into vendors table with mapped fields
+- Slug generation: businessName.toLowerCase().replace(/\s+/g, '-')
+- Atomic operation ensures both updates succeed or rollback
 ```
 
-**Story E2.3 — Vendor Detail from Database**
+**Story E2.3 — Vendor Detail from Database** ✅ DONE (Commit: 16ce6b7)
 ```
 As an event planner
 I want to view vendor detail pages for real vendors
 So I can learn about them before inquiring
 
 Acceptance Criteria:
-- /vendors/[slug] page fetches from Supabase instead of hardcoded data
-- Shows all vendor details (description, suburbs, pricing, capacity)
-- Inquiry modal works with DB vendor
-- 404 page if slug not found
-- Works for both old hardcoded slugs (backward compat) and new DB vendors
+- [x] /vendors/[slug] page fetches from Supabase instead of hardcoded data
+- [x] Shows all vendor details (description, suburbs, pricing, capacity)
+- [x] Inquiry modal works with DB vendor
+- [x] 404 page if slug not found
+- [x] Works for both old hardcoded slugs (backward compat) and new DB vendors
 
 Technical Notes:
-- Update VendorPageClient.tsx to fetch by slug
+- VendorPageClient.tsx now fetches by slug from Supabase
 - SELECT * FROM vendors WHERE slug = $1 AND status = 'active'
-- Keep existing UI and InquiryModal integration
-- Handle loading and not-found states
+- InquiryModal integration preserved
+- Loading and not-found states implemented
 ```
 
-**Story E2.4 — Remove Hardcoded Vendors**
+**Story E2.4 — Remove Hardcoded Vendors** ✅ DONE (Commit: 9839d09)
 ```
 As a developer
 I want to remove vendors.ts and migrate to DB-only
 So we have a single source of truth
 
 Acceptance Criteria:
-- vendors.ts file deleted
-- All imports updated (HorizontalExperiences, browse, vendor detail)
-- Build passes with zero references to vendors.ts
-- Type definitions moved to supabase.ts (Vendor type)
-- Hardcoded vendors optionally seeded into DB for testing
+- [x] vendors.ts file deleted
+- [x] All imports updated (HorizontalExperiences, browse, vendor detail)
+- [x] Build passes with zero references to vendors.ts
+- [x] Type definitions moved to supabase.ts (Vendor type)
+- [x] Hardcoded vendors seeded into DB for testing
 
 Technical Notes:
-- Grep for all vendors.ts imports
-- Update import paths to use Supabase types
-- Optional: create seed script to insert 6 hardcoded vendors into DB
-- Verify build before deleting file
+- src/lib/vendors.ts completely removed
+- All imports updated to use Supabase types
+- Vendor type now in supabase.ts as single source of truth
+- Build verified with no references to old vendors.ts
 ```
 
 ---
