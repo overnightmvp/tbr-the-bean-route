@@ -19,14 +19,14 @@ async function testDirect(recipient: string) {
   console.log(`\n🧪 Testing Brevo API (Direct HTTP)`)
   console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
   console.log(`📧 Recipient: ${recipient}`)
-  console.log(`🔑 API Key: ${apiKey.substring(0, 30)}...`)
+  console.log(`🔑 API Key: ${apiKey ? apiKey.substring(0, 30) + '...' : 'Not configured'}`)
 
   try {
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
         'accept': 'application/json',
-        'api-key': apiKey,
+        'api-key': apiKey!, // Already checked above
         'content-type': 'application/json'
       },
       body: JSON.stringify({

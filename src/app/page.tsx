@@ -4,6 +4,7 @@ import { Button, Card, CardContent } from '@/components/ui'
 import { Header } from '@/components/navigation/Header'
 import { Footer } from '@/components/navigation/Footer'
 import { VendorCarousel } from '@/components/experiences/HorizontalExperiences'
+import JsonLd from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
@@ -11,9 +12,49 @@ export const metadata: Metadata = {
   description: 'Book verified mobile coffee carts in Melbourne. Serving CBD, Carlton, Fitzroy & 20+ suburbs. Corporate events, weddings, festivals. Free quotes in 60 seconds.',
 }
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How much does a mobile coffee cart cost in Melbourne?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Melbourne mobile coffee carts typically cost $150-$350 per hour, depending on the vendor, event type, guest count, and duration. Most vendors offer transparent hourly rates with no hidden fees. You can filter vendors by price range on our browse page and get free quotes in 60 seconds.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Which Melbourne suburbs do you cover?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The Bean Route connects you with verified coffee cart vendors across Melbourne, including CBD, Carlton, Fitzroy, Collingwood, Richmond, South Yarra, Prahran, St Kilda, Brunswick, Hawthorn, Kew, Camberwell, and 20+ other suburbs. You can filter vendors by your event suburb to find carts that serve your area.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How far in advance should I book a coffee cart?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'For weekday events, booking 1-2 weeks in advance is usually sufficient. For weekend events or peak season (October-March), we recommend booking 2-3 weeks ahead to ensure vendor availability. Some vendors may accommodate last-minute bookings depending on their schedule.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Do coffee carts need power at my event?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Most espresso-based coffee carts require a standard 240V power outlet or generator to run their espresso machines. Some carts are fully self-contained with generators, while others need a power source from your venue. Check with your chosen vendor during the inquiry process to confirm power requirements for your event.',
+      },
+    },
+  ],
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FAFAF8' }}>
+      <JsonLd data={faqSchema} />
       <Header variant="landing" />
 
       {/* Hero */}
@@ -147,6 +188,58 @@ export default function Home() {
                 <div className="text-5xl font-bold" style={{ color: '#F5C842' }}>Free</div>
                 <div className="text-sm mt-1" style={{ color: '#A0785A' }}>To inquire, always</div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20" style={{ backgroundColor: '#FAFAF8' }}>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3" style={{ color: '#1A1A1A' }}>
+              Common questions
+            </h2>
+            <p className="text-neutral-600">
+              Everything you need to know about booking a mobile coffee cart in Melbourne.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl border border-neutral-200 p-6">
+              <h3 className="text-lg font-semibold mb-2" style={{ color: '#1A1A1A' }}>
+                How much does a mobile coffee cart cost in Melbourne?
+              </h3>
+              <p className="text-neutral-600 leading-relaxed">
+                Melbourne mobile coffee carts typically cost <strong>$150-$350 per hour</strong>, depending on the vendor, event type, guest count, and duration. Most vendors offer transparent hourly rates with no hidden fees. You can filter vendors by price range on our browse page and get free quotes in 60 seconds.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl border border-neutral-200 p-6">
+              <h3 className="text-lg font-semibold mb-2" style={{ color: '#1A1A1A' }}>
+                Which Melbourne suburbs do you cover?
+              </h3>
+              <p className="text-neutral-600 leading-relaxed">
+                The Bean Route connects you with verified coffee cart vendors across Melbourne, including <strong>CBD, Carlton, Fitzroy, Collingwood, Richmond, South Yarra, Prahran, St Kilda, Brunswick, Hawthorn, Kew, Camberwell</strong>, and 20+ other suburbs. You can filter vendors by your event suburb to find carts that serve your area.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl border border-neutral-200 p-6">
+              <h3 className="text-lg font-semibold mb-2" style={{ color: '#1A1A1A' }}>
+                How far in advance should I book a coffee cart?
+              </h3>
+              <p className="text-neutral-600 leading-relaxed">
+                For weekday events, booking <strong>1-2 weeks in advance</strong> is usually sufficient. For weekend events or peak season (October-March), we recommend booking <strong>2-3 weeks ahead</strong> to ensure vendor availability. Some vendors may accommodate last-minute bookings depending on their schedule.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl border border-neutral-200 p-6">
+              <h3 className="text-lg font-semibold mb-2" style={{ color: '#1A1A1A' }}>
+                Do coffee carts need power at my event?
+              </h3>
+              <p className="text-neutral-600 leading-relaxed">
+                Most espresso-based coffee carts require a <strong>standard 240V power outlet or generator</strong> to run their espresso machines. Some carts are fully self-contained with generators, while others need a power source from your venue. Check with your chosen vendor during the inquiry process to confirm power requirements for your event.
+              </p>
             </div>
           </div>
         </div>

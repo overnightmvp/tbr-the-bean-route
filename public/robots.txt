@@ -1,0 +1,12 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /design-system
+
+# Host
+Host: https://thebeanroute.com.au
+
+# Sitemaps
+Sitemap: https://thebeanroute.com.au/sitemap.xml

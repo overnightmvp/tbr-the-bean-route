@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Browse Mobile Coffee Carts in Melbourne | The Bean Route',
-  description: 'Filter and compare Melbourne\'s best mobile coffee carts by suburb, event type, and price. Free to inquire, no commitment.',
+  title: 'Browse Melbourne Coffee Cart Vendors | The Bean Route',
+  description: 'Compare 10+ verified coffee cart vendors across Melbourne. Filter by suburb, event type, and price. Free quotes from trusted mobile baristas.',
   openGraph: {
-    title: 'Browse Mobile Coffee Carts in Melbourne | The Bean Route',
-    description: 'Filter and compare Melbourne\'s best mobile coffee carts by suburb, event type, and price.',
+    title: 'Browse Melbourne Coffee Cart Vendors | The Bean Route',
+    description: 'Compare 10+ verified coffee cart vendors across Melbourne. Filter by suburb, event type, and price. Free quotes from trusted mobile baristas.',
     type: 'website',
     url: 'https://thebeanroute.com.au/app',
   },
