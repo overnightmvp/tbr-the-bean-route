@@ -250,32 +250,43 @@ src/
 
 ## 🔮 Roadmap
 
-### Phase 1: MVP ✅ (Current)
-- ✅ Vendor directory (10 seed vendors)
-- ✅ Inquiry submission
-- ✅ Job board with quote submission
-- ✅ Vendor registration
-- ✅ Admin portal with authentication
-- ✅ Email notifications (Brevo)
+### ✅ Phase 1: MVP (Complete)
+- ✅ Vendor directory with database-driven listings
+- ✅ Inquiry submission with email notifications
+- ✅ Job board with quote submission and acceptance
+- ✅ Vendor registration and admin approval workflow
+- ✅ Admin portal with authentication (email + 6-digit codes)
+- ✅ Transactional email notifications (Brevo)
 
-### Phase 2: E1 - Email Notifications (In Progress)
-- ✅ E1-0: Brevo infrastructure
-- ✅ E1-1: Vendor inquiry notification
-- ✅ E1-2: Planner inquiry confirmation
-- ⏳ E1-3: Owner quote notification
-- ⏳ E1-4: Vendor quote confirmation
-- ⏳ E1-5: Applicant decision emails
+### ✅ Phase 2: Coffee Shop Expansion (Complete - Feb 2026)
+- ✅ Dual marketplace: Mobile carts + Coffee shops
+- ✅ Vendor type discrimination in database and UI
+- ✅ Conditional profile templates (CoffeeShopProfile, MobileCartProfile)
+- ✅ Coffee shops landing page with advanced filters
+- ✅ Suburb dynamic pages for local SEO (e.g., /suburbs/carlton)
+- ✅ Opening hours display with "Open Now" indicator
+- ✅ Amenities display (WiFi, parking, outdoor seating, accessibility)
+- ✅ Structured data for SEO (breadcrumbs, FAQ, CollectionPage schemas)
 
-### Phase 3: E2 - Real Vendor Data
-- Connect browse page to database vendors
-- Approved applications → create vendor listings
-- Remove hardcoded vendor data
-- Dynamic vendor detail pages
+See `docs/backlog.md` for full feature list and completion details.
 
-### Phase 4: E5 - Quote Acceptance
-- Event owners accept quotes
-- Vendors notified on acceptance
-- Job status management
+### ⏳ Phase 3: Production Hardening (Current)
+**Epic E6** - Make the system bulletproof for real users:
+- Rate limiting on forms and API routes
+- Error logging and monitoring (Sentry integration)
+- Admin audit trail for all actions
+- Email delivery tracking and retry logic
+- Enhanced server-side validation (Zod schemas)
+
+See `docs/backlog.md` for detailed stories and acceptance criteria.
+
+### 📋 Phase 4: Vendor Features (Planned)
+**Epic E7** - Let vendors manage their own listings:
+- Vendor authentication and login
+- Vendor dashboard (view inquiries, update profile, manage availability)
+- Calendar integration for unavailable dates
+
+See `docs/backlog.md` for future enhancements.
 
 ## 🐛 Known Issues & Solutions
 

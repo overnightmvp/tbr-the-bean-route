@@ -1,6 +1,6 @@
 # Architecture
 
-**Analysis Date:** 2026-02-04
+**Analysis Date:** 2026-02-07
 
 ## Pattern Overview
 
@@ -13,6 +13,44 @@
 - Admin authentication via cookie-based sessions (no external auth provider)
 - Email notifications via Brevo transactional email service
 - Role-based access control for admin operations
+- **Vendor type discrimination**: Single `vendors` table with `vendor_type` field ('mobile_cart' | 'coffee_shop')
+- **Conditional rendering**: Type guards (`isCoffeeShop()`, `isMobileCart()`) enable different UI templates
+
+## Vendor Type Discrimination Pattern
+
+**Strategy:** Single-table inheritance with conditional rendering throughout the UI stack.
+
+**Database Layer:**
+- `vendors` table with `vendor_type` field ('mobile_cart' | 'coffee_shop')
+- Coffee shop-specific fields nullable for mobile carts (physical_address, opening_hours, amenities)
+- Mobile cart-specific fields nullable for coffee shops (price_min/max, capacity)
+- Type-specific constraints enforce required fields per type
+
+**Type Safety:**
+- TypeScript `Vendor` type with optional fields based on vendor_type
+- Helper functions: `isCoffeeShop(vendor)`, `isMobileCart(vendor)` for type narrowing
+- Conditional rendering: Different profile components per type
+
+**UI Pattern:**
+```typescript
+// Type guard for narrowing
+function isCoffeeShop(vendor: Vendor): boolean {
+  return vendor.vendor_type === 'coffee_shop'
+}
+
+// Conditional component rendering
+{isCoffeeShop(vendor) ? (
+  <CoffeeShopProfile vendor={vendor} />
+) : (
+  <MobileCartProfile vendor={vendor} />
+)}
+```
+
+**Benefits:**
+- Simpler queries (single table join)
+- Shared fields (name, description, tags) avoid duplication
+- Type-safe conditional rendering
+- Easy to add new vendor types in future
 
 ## Layers
 
@@ -130,7 +168,17 @@
 **Vendor Browser (`src/app/app/page.tsx`):**
 - Location: `src/app/app/page.tsx`
 - Triggers: GET `/app` - browse vendors directory
-- Responsibilities: Display list/carousel of vendors with booking button. Links to individual vendor pages.
+- Responsibilities: Display list/carousel of vendors with booking button, vendor type filter dropdown, conditional card rendering per type. Links to individual vendor pages.
+
+**Coffee Shops Landing (`src/app/coffee-shops/page.tsx`):**
+- Location: `src/app/coffee-shops/page.tsx`
+- Triggers: GET `/coffee-shops` - coffee shop directory
+- Responsibilities: Server-side SSR with SEO metadata. Fetches coffee shops from Supabase. Client component `CoffeeShopsClient` handles filters (suburb, price range, rating, amenities).
+
+**Suburb Pages (`src/app/suburbs/[slug]/page.tsx`):**
+- Location: `src/app/suburbs/[slug]/page.tsx`
+- Triggers: GET `/suburbs/{slug}` - dynamic suburb pages (e.g., /suburbs/carlton)
+- Responsibilities: Server page with static generation for top Melbourne suburbs. Shows both coffee shops and mobile carts serving that suburb. Includes breadcrumb and FAQ schemas for local SEO.
 
 **Vendor Detail (`src/app/vendors/[slug]/page.tsx`):**
 - Location: `src/app/vendors/[slug]/page.tsx`

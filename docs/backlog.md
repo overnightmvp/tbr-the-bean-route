@@ -1,7 +1,36 @@
 # The Bean Route — Product Backlog
 
-**Last Updated:** 2026-02-04
+**Last Updated:** 2026-02-07
 **Status:** 🟢 Production-Ready Core Features Complete
+
+---
+
+## ✅ Recently Completed (2026-02)
+
+### Coffee Shop Expansion (Complete)
+**Completed:** 2026-02-06
+
+Dual marketplace now live:
+- **Coffee shops**: Physical locations with profiles, hours, amenities
+- **Mobile carts**: Event-based bookings (original platform)
+
+**Features shipped:**
+- Vendor type discrimination (`vendor_type` field in database)
+- Conditional UI rendering (`CoffeeShopProfile` vs `MobileCartProfile`)
+- Browse page vendor type filter
+- `/coffee-shops` landing page with suburb/price/rating/amenity filters
+- `/suburbs/[slug]` dynamic pages for local SEO coverage
+- Structured data (Schema.org breadcrumbs, FAQ, CollectionPage)
+- Opening hours display with "Open Now" badge
+- Amenities display (WiFi, parking, outdoor seating, wheelchair access)
+
+**Files:**
+- Database: All schema changes live (`vendor_type`, `physical_address`, `opening_hours`, etc.)
+- Components: `CoffeeShopProfile.tsx`, `MobileCartProfile.tsx`, `OpeningHoursDisplay.tsx`, `AmenitiesDisplay.tsx`
+- Pages: `/app/coffee-shops/page.tsx`, `/app/suburbs/[slug]/page.tsx`
+- Client components: `CoffeeShopsClient.tsx`, `SuburbPageClient.tsx`
+
+**Next:** Monitor performance, gather coffee shop signups, optimize SEO for suburb pages.
 
 ---
 

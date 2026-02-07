@@ -1,6 +1,6 @@
 # Codebase Structure
 
-**Analysis Date:** 2026-02-04
+**Analysis Date:** 2026-02-07
 
 ## Directory Layout
 
@@ -14,8 +14,15 @@
 │   │   ├── vendors/              # Vendor directory & detail pages
 │   │   │   ├── [slug]/           # Individual vendor detail (SSR with metadata)
 │   │   │   │   ├── page.tsx      # Server page wrapper
-│   │   │   │   └── VendorPageClient.tsx  # Client interactivity
+│   │   │   │   └── VendorPageClient.tsx  # Client interactivity (conditional rendering)
 │   │   │   └── register/         # Vendor self-registration form
+│   │   ├── coffee-shops/         # Coffee shop landing page
+│   │   │   ├── page.tsx          # Server component with SEO metadata
+│   │   │   └── CoffeeShopsClient.tsx # Client filters (suburb, price, rating, amenities)
+│   │   ├── suburbs/              # Local SEO pages
+│   │   │   └── [slug]/           # Dynamic suburb pages (e.g., /suburbs/carlton)
+│   │   │       ├── page.tsx      # Server SSR with static generation (generateStaticParams)
+│   │   │       └── SuburbPageClient.tsx # Tab navigation (All/Coffee Shops/Mobile Carts)
 │   │   ├── vendors-guide/        # Content marketing pages (how to list, grow business)
 │   │   ├── jobs/                 # Job board for event postings
 │   │   │   ├── page.tsx          # List all jobs
@@ -67,6 +74,11 @@
 │   │   │   └── HorizontalExperiences.stories.tsx
 │   │   ├── shared/               # Utility UI components
 │   │   │   └── StepIndicator.tsx # Multi-step form progress indicator
+│   │   ├── vendors/              # Vendor-specific components
+│   │   │   ├── CoffeeShopProfile.tsx # Coffee shop profile template
+│   │   │   ├── MobileCartProfile.tsx # Mobile cart profile template
+│   │   │   ├── OpeningHoursDisplay.tsx # Hours display with "Open Now" badge
+│   │   │   └── AmenitiesDisplay.tsx # Amenities badges (WiFi, parking, etc.)
 │   │   ├── seo/                  # SEO-related components
 │   │   │   └── JsonLd.tsx        # Structured data / schema.org
 │   │   ├── admin/                # Admin-specific components
@@ -140,7 +152,9 @@
 **Entry Points:**
 - `src/app/layout.tsx`: Root HTML wrapper, metadata, JSON-LD schema
 - `src/app/page.tsx`: Landing page (/)
-- `src/app/vendors/[slug]/page.tsx`: Vendor detail pages (/vendors/{slug})
+- `src/app/vendors/[slug]/page.tsx`: Vendor detail pages with conditional profiles (/vendors/{slug})
+- `src/app/coffee-shops/page.tsx`: Coffee shop directory (/coffee-shops)
+- `src/app/suburbs/[slug]/page.tsx`: Suburb pages with local SEO (/suburbs/{slug})
 - `src/app/jobs/[id]/page.tsx`: Job detail pages (/jobs/{id})
 - `src/app/admin/page.tsx`: Admin portal (/admin)
 
