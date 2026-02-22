@@ -39,6 +39,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
                 <Link href="/jobs" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                   Jobs
                 </Link>
+                <Link href="/blog" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
+                  Blog
+                </Link>
                 <Link href="/contractors" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                   For Events
                 </Link>
@@ -56,6 +59,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
                 </Link>
                 <Link href="/jobs" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                   Jobs
+                </Link>
+                <Link href="/blog" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
+                  Blog
                 </Link>
                 <Link href="/contractors" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                   For Events
@@ -102,6 +108,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
                   <Link href="/jobs" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
                     Jobs
                   </Link>
+                  <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
+                    Blog
+                  </Link>
                   <Link href="/contractors" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
                     For Events
                   </Link>
@@ -119,6 +128,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
                   </Link>
                   <Link href="/jobs" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
                     Jobs
+                  </Link>
+                  <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
+                    Blog
                   </Link>
                   <Link href="/contractors" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
                     For Events
