@@ -13,85 +13,124 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const payload = await getPayload({ config: await configPromise })
+  try {
+    const { slug } = await params
+    const payload = await getPayload({ config: await configPromise })
 
-  const { docs } = await payload.find({
-    collection: 'posts',
-    where: { slug: { equals: slug } },
-    limit: 1,
-  })
+    const { docs } = await payload.find({
+      collection: 'posts',
+      where: { slug: { equals: slug } },
+      limit: 1,
+    })
 
-  const post = docs[0]
-  if (!post) return {}
+    const post = docs[0]
+    if (!post) return {}
 
-  const metaDescription = post.seo?.metaDescription || post.excerpt
-  const ogImage = post.seo?.ogImage || post.featuredImage
-  const ogImageUrl = typeof ogImage === 'object' ? ogImage?.url : undefined
+    const metaDescription = post.seo?.metaDescription || post.excerpt
+    const ogImage = post.seo?.ogImage || post.featuredImage
+    const ogImageUrl = typeof ogImage === 'object' ? ogImage?.url : undefined
 
-  return {
-    title: `${post.title} | The Bean Route`,
-    description: metaDescription,
-    keywords: post.seo?.targetKeywords?.map((k: any) => k.keyword).join(', '),
-    openGraph: {
-      title: post.title,
+    return {
+      title: `${post.title} | The Bean Route`,
       description: metaDescription,
-      type: 'article',
-      publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
-      images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: metaDescription,
-      images: ogImageUrl ? [ogImageUrl] : undefined,
-    },
+      keywords: post.seo?.targetKeywords?.map((k: any) => k.keyword).join(', '),
+      openGraph: {
+        title: post.title,
+        description: metaDescription,
+        type: 'article',
+        publishedTime: post.publishedAt,
+        modifiedTime: post.updatedAt,
+        images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: post.title,
+        description: metaDescription,
+        images: ogImageUrl ? [ogImageUrl] : undefined,
+      },
+    }
+  } catch (err) {
+    console.error('Blog metadata error:', err)
+    return {
+      title: 'Blog Post | The Bean Route',
+      description: 'Coffee cart hire guides for Melbourne event organizers and vendors',
+    }
   }
 }
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: await configPromise })
+  try {
+    const payload = await getPayload({ config: await configPromise })
 
-  const { docs: posts } = await payload.find({
-    collection: 'posts',
-    where: {
-      status: { equals: 'published' },
-    },
-    limit: 100,
-  })
+    const { docs: posts } = await payload.find({
+      collection: 'posts',
+      where: {
+        status: { equals: 'published' },
+      },
+      limit: 100,
+    })
 
-  return posts.map((post) => ({
-    slug: post.slug,
-  }))
+    return posts.map((post) => ({
+      slug: post.slug,
+    }))
+  } catch (err) {
+    console.error('Blog static params error:', err)
+    return [] // Return empty array, no static pages generated
+  }
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params
-  const payload = await getPayload({ config: await configPromise })
+  let post: any = null
+  let relatedPosts: any[] = []
+  let error: string | null = null
 
-  const { docs } = await payload.find({
-    collection: 'posts',
-    where: { slug: { equals: slug } },
-    limit: 1,
-  })
+  try {
+    const { slug } = await params
+    const payload = await getPayload({ config: await configPromise })
 
-  const post = docs[0]
-  if (!post || post.status !== 'published') {
-    notFound()
+    const { docs } = await payload.find({
+      collection: 'posts',
+      where: { slug: { equals: slug } },
+      limit: 1,
+    })
+
+    post = docs[0]
+
+    // Only fetch related posts if we have a valid post
+    if (post && post.status === 'published') {
+      const { docs: related } = await payload.find({
+        collection: 'posts',
+        where: {
+          status: { equals: 'published' },
+          category: { equals: post.category },
+          id: { not_equals: post.id },
+        },
+        limit: 3,
+        sort: '-publishedAt',
+      })
+      relatedPosts = related
+    }
+  } catch (err) {
+    console.error('Blog post error:', err)
+    error = 'Unable to load blog post'
   }
 
-  // Fetch related posts
-  const { docs: relatedPosts } = await payload.find({
-    collection: 'posts',
-    where: {
-      status: { equals: 'published' },
-      category: { equals: post.category },
-      id: { not_equals: post.id },
-    },
-    limit: 3,
-    sort: '-publishedAt',
-  })
+  // Show error state if database fails or post not found
+  if (error || !post || post.status !== 'published') {
+    return (
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <h1 className="text-3xl font-bold mb-4">Blog Post Unavailable</h1>
+          <p className="text-gray-600 mb-8">
+            {error || 'This blog post could not be found or is no longer available.'}
+          </p>
+          <Link href="/blog" className="text-primary underline text-lg">
+            ← Back to Blog
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   // Conversion CTA based on goal
   const conversionCTA = {

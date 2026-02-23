@@ -10,18 +10,51 @@ export const metadata: Metadata = {
 }
 
 export default async function BlogPage() {
-  const payload = await getPayload({ config: await configPromise })
+  let posts: any[] = []
+  let error: string | null = null
 
-  const { docs: posts } = await payload.find({
-    collection: 'posts',
-    where: {
-      status: {
-        equals: 'published',
+  try {
+    const payload = await getPayload({ config: await configPromise })
+
+    const { docs } = await payload.find({
+      collection: 'posts',
+      where: {
+        status: {
+          equals: 'published',
+        },
       },
-    },
-    sort: '-publishedAt',
-    limit: 50,
-  })
+      sort: '-publishedAt',
+      limit: 50,
+    })
+
+    posts = docs
+  } catch (err) {
+    console.error('Blog database error:', err)
+    error = 'Blog is currently unavailable. Please check back soon.'
+  }
+
+  // Show error state if database fails
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            Coffee Cart Hire Blog
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Expert guides for event organizers and coffee cart vendors in Melbourne
+          </p>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+            <p className="text-gray-700 mb-2">{error}</p>
+            <p className="text-sm text-gray-500">
+              We're working to restore blog access. In the meantime, browse our{' '}
+              <Link href="/" className="text-primary underline">vendor directory</Link>.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   // Group posts by category
   const eventPosts = posts.filter(p => p.category === 'event-focused')
