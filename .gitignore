@@ -27,3 +27,8 @@ dist/
 *storybook.log
 storybook-static
 public/storybook/
+
+# Playwright
+playwright-report/
+test-results/
+test-results-*

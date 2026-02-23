@@ -81,12 +81,13 @@ export function InquiryModal({ vendor, isOpen, onClose, onSuccess }: InquiryModa
     setIsSubmitting(true)
 
     try {
-      const { supabase } = await import('@/lib/supabase')
+      const id = `inq_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
 
-      const { error } = await supabase
-        .from('inquiries')
-        .insert({
-          id: `inq_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
+      const response = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id,
           vendor_id: vendor.id,
           event_type: formData.eventType,
           event_date: formData.eventDate,
@@ -98,44 +99,16 @@ export function InquiryModal({ vendor, isOpen, onClose, onSuccess }: InquiryModa
           contact_phone: formData.contactPhone || null,
           special_requests: formData.specialRequests || null,
           estimated_cost: estimatedCost,
-          status: 'pending',
+          vendorEmail: vendor.contactEmail,
+          vendorName: vendor.businessName
         })
+      })
 
-      if (error) {
-        console.error('Inquiry submission error:', error)
+      if (!response.ok) {
+        const errData = await response.json()
+        console.error('Inquiry submission error:', errData)
         alert('Something went wrong. Please try again or contact us directly.')
         return
-      }
-
-      // Send email notification to vendor
-      if (vendor.contactEmail) {
-        try {
-          await fetch('/api/notify/inquiry', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              vendorEmail: vendor.contactEmail,
-              vendorName: vendor.businessName,
-              planner: {
-                name: formData.contactName,
-                email: formData.contactEmail,
-                phone: formData.contactPhone || 'Not provided'
-              },
-              event: {
-                type: formData.eventType,
-                date: formData.eventDate,
-                duration: formData.durationHours,
-                guests: formData.guestCount,
-                location: formData.location,
-                specialRequests: formData.specialRequests || 'None'
-              },
-              estimatedCost
-            })
-          })
-        } catch (emailError) {
-          // Don't block submission if email fails
-          console.error('Failed to send email notification:', emailError)
-        }
       }
 
       setSubmitted(true)
@@ -209,12 +182,17 @@ export function InquiryModal({ vendor, isOpen, onClose, onSuccess }: InquiryModa
         if (e.target === e.currentTarget) handleClose()
       }}
     >
-      <Card className="w-full max-w-xl max-h-[90vh] overflow-y-auto relative z-[10000]">
+      <Card
+        className="w-full max-w-xl max-h-[90vh] overflow-y-auto relative z-[10000]"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
         {/* Sticky Header */}
         <div className="sticky top-0 bg-white border-b border-neutral-200 p-4 sm:p-6 rounded-t-lg z-10">
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-lg sm:text-xl font-bold" style={{ color: '#1A1A1A' }}>
+              <h2 id="modal-title" className="text-lg sm:text-xl font-bold" style={{ color: '#1A1A1A' }}>
                 Get a quote from {vendor.businessName}
               </h2>
               <p className="text-sm text-neutral-600 mt-0.5">

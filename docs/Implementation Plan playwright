@@ -1,0 +1,40 @@
+# Restoration & Launch Hardening Plan
+
+Following the recent refactor into the `(main)` route group, several regressions were identified via Playwright. This plan addresses those regressions while also executing the Tier 1 items from the Launch Audit.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Data Layer Decision**: We are proceeding with Payload CMS for the blog while maintaining Supabase for the marketplace core.
+> **Security**: RLS policies and Admin Auth hardening are prioritized as they are critical blockers.
+
+## Proposed Changes
+
+### 1. Fix Playwright Regressions (E2E Stability)
+
+#### [MODIFY] [checklist.spec.ts](file:///Users/toshioj/Projects/TBR-the-bean-route/e2e/checklist.spec.ts)
+- Update selectors to match the new UI (e.g., H1 text "Great coffee, wherever you are", new vendor card selectors).
+
+#### [MODIFY] [browse page](file:///Users/toshioj/Projects/TBR-the-bean-route/src/app/(main)/app/page.tsx)
+- Add semantic `article` tags or `vendor-card` classes to improve testability and SEO.
+
+### 2. Tier 1 Launch Audit Items
+
+#### [MODIFY] [Supabase RLS](file:///Users/toshioj/Projects/TBR-the-bean-route/supabase/migrations/...)
+- Lock down `vendor_applications`, `jobs`, and `quotes` tables. (Insert-only for public, restricted read).
+
+#### [MODIFY] [Admin Auth](file:///Users/toshioj/Projects/TBR-the-bean-route/src/app/api/auth/...)
+- Implement TTL for verification codes and move them out of memory.
+
+#### [NEW] [Validation Schemas](file:///Users/toshioj/Projects/TBR-the-bean-route/src/lib/validations.ts)
+- Add Zod schemas for all public form submissions.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npx playwright test` after each fix to see the "✘" turn into "✓".
+- Run `npm run build` to ensure no new type regressions.
+
+### Manual Verification
+- Verify Admin login flow end-to-end.
+- Verify Inquiry submission works and sends email via Brevo.

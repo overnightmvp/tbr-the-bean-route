@@ -22,12 +22,8 @@ const serverFunction: ServerFunctionClient = async function (args) {
 // This prevents duplicate html/body tags
 export default function PayloadLayout({ children }: Args) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-          {children}
-        </RootLayout>
-      </body>
-    </html>
+    <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
+      {children}
+    </RootLayout>
   )
 }

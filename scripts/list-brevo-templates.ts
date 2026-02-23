@@ -16,7 +16,7 @@ async function listTemplates(apiKey: string | undefined, label: string) {
 
     try {
         console.log(`\nFetching transactional email templates for ${label}...`)
-        const response = await client.transactionalEmails.getTransacEmailTemplates({
+        const response = await client.transactionalEmails.getSmtpTemplates({
             templateStatus: true,
             limit: 100,
             offset: 0

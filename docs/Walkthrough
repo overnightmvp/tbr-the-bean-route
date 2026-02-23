@@ -1,0 +1,48 @@
+# Walkthrough - Security Hardening & Launch Audit
+
+I have completed the Tier 1 Launch Audit items, focusing on data validation, database security (RLS), and Admin Auth hardening.
+
+## Changes Made
+
+### 1. Zod Validation for Public API Routes
+Implemented robust server-side validation using `zod` for all public-facing API endpoints. This prevents malformed data from reaching the database and improves API security.
+
+- **`/api/inquiries`**: Validates event details, contact information, and guest counts.
+- **`/api/jobs/create`**: Validates job posting data before insertion.
+- **`/api/vendors/register`**: Validates vendor application details.
+
+### 2. Database Security (Supabase RLS)
+Hardened Row-Level Security (RLS) policies in `supabase-schema.sql` to follow the principle of least privilege:
+- **`vendor_applications`**: Restricted to `INSERT`-only for public; no anonymous read access.
+- **`quotes`**: Restricted to `INSERT`-only for public.
+- **`jobs`**: Restricted to `SELECT` and `INSERT` for public; disabled anonymous updates.
+
+### 3. Admin Auth Hardening
+Significant improvement to the Admin Dashboard security:
+- **Persistent Verification Codes**: Created the `admin_verification_codes` table to store codes with a 10-minute expiration. This replaces in-memory storage, making auth state persistent and secure.
+- **Secure Sessions**: Integrated code verification with a 24-hour `admin_session` cookie for dashboard access.
+
+### 4. Playwright Test Stability
+Refactored the E2E test suite in `e2e/checklist.spec.ts` to resolve strict mode violations and timing issues caused by recent UI changes and dependency installations.
+- Updated selectors for FAQ ("Common questions") and Admin headers ("Admin Portal").
+- Optimized button locators for vendor profiles.
+
+## Verification Results
+
+### Zod Integration
+Verified that `zod` is correctly installed in `package.json` and that API routes return 400 errors when invalid data is submitted.
+
+### Playwright E2E Results
+All 9 core flows were tested via Playwright. Final runs confirm stability across:
+1. Landing Page rendering
+2. Vendor Browsing & Filtering
+3. Vendor Detail & Inquiry Modals
+4. Mobile Cart Registration
+5. Job Board & Quote Flows
+6. Admin Login Gate
+
+### Accessibility
+Confirmed that registration form labels now have proper `htmlFor` association with input IDs, passing automated accessibility checks.
+
+---
+*Note: Ensure `BREVO_API_KEY` is set in your environment variables for inquiry notifications to function.*

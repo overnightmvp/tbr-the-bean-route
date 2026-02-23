@@ -19,6 +19,7 @@ CREATE TABLE vendors (
   image_url TEXT,
   tags TEXT[] NOT NULL DEFAULT '{}',
   verified BOOLEAN NOT NULL DEFAULT FALSE,
+  social_links JSONB DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -109,13 +110,28 @@ CREATE TABLE quotes (
 
 -- RLS — world-readable, world-writable (MVP)
 ALTER TABLE vendor_applications ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "vendor_applications_all" ON vendor_applications FOR ALL USING (TRUE) WITH CHECK (TRUE);
+CREATE POLICY "vendor_applications_insert" ON vendor_applications FOR INSERT WITH CHECK (TRUE);
+CREATE POLICY "vendor_applications_no_anon_read" ON vendor_applications FOR SELECT USING (FALSE);
 
 ALTER TABLE jobs ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "jobs_all" ON jobs FOR ALL USING (TRUE) WITH CHECK (TRUE);
+CREATE POLICY "jobs_read" ON jobs FOR SELECT USING (TRUE);
+CREATE POLICY "jobs_insert" ON jobs FOR INSERT WITH CHECK (TRUE);
+CREATE POLICY "jobs_no_anon_update" ON jobs FOR UPDATE USING (FALSE);
 
 ALTER TABLE quotes ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "quotes_all" ON quotes FOR ALL USING (TRUE) WITH CHECK (TRUE);
+CREATE POLICY "quotes_insert" ON quotes FOR INSERT WITH CHECK (TRUE);
+CREATE POLICY "quotes_no_anon_read" ON quotes FOR SELECT USING (FALSE);
+
+-- Admin verification codes
+CREATE TABLE admin_verification_codes (
+  email      TEXT        PRIMARY KEY,
+  code       TEXT        NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE admin_verification_codes ENABLE ROW LEVEL SECURITY;
+-- No public policies - only service role can access
 
 -- Admin users whitelist
 CREATE TABLE admin_users (
@@ -134,3 +150,31 @@ ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
 -- Seed primary admin
 INSERT INTO admin_users (id, email, name) VALUES
   ('adm_' || extract(epoch from now())::bigint || '_' || substr(md5(random()::text), 1, 7), 'johnnytoshio@icloud.com', 'Johnny Toshio');
+
+-- Messages for direct Vendor <-> Client chat
+CREATE TABLE messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  inquiry_id TEXT NOT NULL REFERENCES inquiries(id),
+  sender_id TEXT NOT NULL, -- Vendor ID, Client Email, or Admin UUID
+  sender_type TEXT NOT NULL CHECK (sender_type IN ('vendor', 'client', 'admin')),
+  content TEXT NOT NULL,
+  read BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "messages_all_access" ON messages FOR ALL USING (TRUE); -- Simplified for MVP
+
+-- Web Push Subscriptions for notifications
+CREATE TABLE push_subscriptions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id TEXT NOT NULL, -- Vendor ID, Admin ID, or Client Email
+  endpoint TEXT NOT NULL UNIQUE,
+  auth_key TEXT NOT NULL,
+  p256dh_key TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE push_subscriptions ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "push_all_access" ON push_subscriptions FOR ALL USING (TRUE); -- Simplified for MVP
+

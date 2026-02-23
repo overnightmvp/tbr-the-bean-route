@@ -1,0 +1,48 @@
+# Agile Customer Journey & Notification Map
+
+This document maps all user touchpoints and the corresponding notifications (emails) within "The Bean Route". This serves as the backlog for implementing and testing all production email communications.
+
+## 1. Admin Verification
+| Stage | Trigger | Recipient | Current Status | Notification Content |
+|-------|---------|-----------|----------------|----------------------|
+| **Login** | Admin enters email | Admin | [x] Implemented | 6-digit verification code |
+
+## 2. Vendor Acquisition (The Funnel)
+| Stage | Trigger | Recipient | Current Status | Notification Content |
+|-------|---------|-----------|----------------|----------------------|
+| **Apply** | Vendor submits `/vendors/register` | Admin | [ ] Missing | Alert: New application pending review |
+| **Apply** | Vendor submits `/vendors/register` | Vendor | [ ] Missing | Confirmation: We've received your application |
+| **Status Change** | Admin Approves Application | Vendor | [x] Implemented | Welcome! Listing is now active |
+| **Status Change** | Admin Rejects Application | Vendor | [x] Implemented | Feedback: Application not accepted |
+
+## 3. Direct Marketplace Inquiry (Lead Gen)
+| Stage | Trigger | Recipient | Current Status | Notification Content |
+|-------|---------|-----------|----------------|----------------------|
+| **Inquire** | Customer submits modal on Vendor page | Vendor | [x] Implemented | Lead: Details of event & quote request |
+| **Inquire** | Customer submits modal on Vendor page | Customer | [x] Implemented | Confirmation: Vendor has been notified |
+
+## 4. Job Board & Quoting Flow
+| Stage | Trigger | Recipient | Current Status | Notification Content |
+|-------|---------|-----------|----------------|----------------------|
+| **Post Job** | Customer submits `/jobs/create` | Admin | [ ] Missing | Alert: New job posted on board |
+| **Post Job** | Customer submits `/jobs/create` | Customer | [ ] Missing | Success: Your job is live for vendors |
+| **Quote** | Vendor submits quote on job | Customer | [x] Implemented | New Quote: Price & Vendor details |
+| **Quote** | Vendor submits quote on job | Vendor | [x] Implemented | Confirmation: Your quote was sent |
+| **Accept** | Customer clicks "Accept Quote" | Vendor | [x] Implemented | **WIN!** Your quote was accepted |
+
+---
+
+## Technical Backlog (Implementation Plan)
+
+### Step 1: Fix Missing Triggers
+- [ ] Update `src/app/api/vendors/register/route.ts` to trigger Admin & Vendor emails.
+- [ ] Update `src/app/api/jobs/create/route.ts` to trigger Admin & Customer emails.
+
+### Step 2: Extract to Brevo Templates (Optional but Recommended)
+- Move inline HTML from routes into Brevo Transactional Templates for easier editing.
+- Reference template IDs in the code.
+
+### Step 3: Production Testing
+- [ ] Test Application flow end-to-end.
+- [ ] Test Job/Quote flow end-to-end.
+- [ ] Test Manual Inquiry flow end-to-end.

@@ -76,6 +76,7 @@ export type Vendor = {
   review_count: number
   instagram_handle: string | null
   facebook_url: string | null
+  social_links: Record<string, string> | null
 }
 
 // Helper function to format price range for vendors
@@ -217,5 +218,24 @@ export type AdminUser = {
   id: string
   email: string
   name: string | null
+  created_at: string
+}
+
+export type Message = {
+  id: string
+  inquiry_id: string
+  sender_id: string
+  sender_type: 'vendor' | 'client' | 'admin'
+  content: string
+  read: boolean
+  created_at: string
+}
+
+export type PushSubscription = {
+  id: string
+  user_id: string
+  endpoint: string
+  auth_key: string
+  p256dh_key: string
   created_at: string
 }

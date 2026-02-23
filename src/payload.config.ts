@@ -3,6 +3,7 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import sharp from 'sharp'
 
 // Import collections
 import Users from './collections/Users'
@@ -65,4 +66,5 @@ export default buildConfig({
   csrf: [
     process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
   ],
+  sharp,
 })

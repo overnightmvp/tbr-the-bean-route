@@ -139,7 +139,7 @@ export async function PATCH(
 
               <div style="border-top: 1px solid #E5E5E5; padding-top: 20px; margin-top: 32px;">
                 <p style="font-size: 12px; color: #6B7280; margin: 0;">
-                  Questions? Contact us at support@coffeecartsmelbourne.com<br/>
+                  Questions? Contact us at thebeanrouteau@gmail.com<br/>
                   Coffee Cart Marketplace — Connecting Melbourne's best mobile coffee carts with event planners
                 </p>
               </div>
@@ -183,7 +183,7 @@ export async function PATCH(
 
               <div style="border-top: 1px solid #E5E5E5; padding-top: 20px; margin-top: 32px;">
                 <p style="font-size: 12px; color: #6B7280; margin: 0;">
-                  Questions? Contact us at support@coffeecartsmelbourne.com<br/>
+                  Questions? Contact us at thebeanrouteau@gmail.com<br/>
                   Coffee Cart Marketplace — Connecting Melbourne's best mobile coffee carts with event planners
                 </p>
               </div>
