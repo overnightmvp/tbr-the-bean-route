@@ -41,7 +41,7 @@ export default buildConfig({
   editor: lexicalEditor({}),
 
   // Secret for JWT encryption
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || 'development-secret-key-32-chars-at-least',
 
   // TypeScript configuration
   typescript: {

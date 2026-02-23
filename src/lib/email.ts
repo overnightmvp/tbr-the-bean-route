@@ -28,7 +28,7 @@ export async function sendEmail(to: string, subject: string, html: string): Prom
 
   try {
     await client.transactionalEmails.sendTransacEmail({
-      sender: { email: 'noreply@coffeecartsmelbourne.com', name: 'Coffee Cart Marketplace' },
+      sender: { email: 'thebeanrouteau@gmail.com', name: 'The Bean Route — Coffee Club' },
       to: [{ email: to }],
       subject,
       htmlContent: html,

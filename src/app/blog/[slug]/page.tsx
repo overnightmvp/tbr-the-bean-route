@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getPayload } from 'payload'
 import configPromise from '@/payload-config-promise'
 import { Badge } from '@/components/ui/Badge'
@@ -197,9 +198,9 @@ export default async function BlogPostPage({ params }: Props) {
             {post.editorial?.priority && (
               <Badge variant="outline">
                 {post.editorial.priority === 'quick-win' ? '🔥 Quick Win' :
-                 post.editorial.priority === 'authority' ? '💡 Authority' :
-                 post.editorial.priority === 'conversion' ? '🎯 Conversion' :
-                 '📚 Specialized'}
+                  post.editorial.priority === 'authority' ? '💡 Authority' :
+                    post.editorial.priority === 'conversion' ? '🎯 Conversion' :
+                      '📚 Specialized'}
               </Badge>
             )}
           </div>
@@ -234,11 +235,13 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Featured Image */}
         {post.featuredImage && typeof post.featuredImage === 'object' && (
-          <div className="max-w-5xl mx-auto mb-12">
-            <img
+          <div className="max-w-5xl mx-auto mb-12 relative aspect-[16/9]">
+            <Image
               src={post.featuredImage.url}
               alt={post.featuredImage.alt || post.title}
-              className="w-full h-auto rounded-lg shadow-lg"
+              fill
+              className="rounded-lg shadow-lg object-cover"
+              priority
             />
           </div>
         )}

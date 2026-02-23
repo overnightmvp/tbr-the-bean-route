@@ -25,12 +25,12 @@ async function sendTestEmail(recipientEmail: string): Promise<void> {
     console.log(`\n🧪 Testing Brevo Email Configuration`)
     console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
     console.log(`📧 Recipient: ${recipientEmail}`)
-    console.log(`📤 Sender: noreply@coffeecartsmelbourne.com`)
+    console.log(`📤 Sender: thebeanrouteau@gmail.com`)
 
     const result = await client.transactionalEmails.sendTransacEmail({
       sender: {
-        email: 'noreply@coffeecartsmelbourne.com',
-        name: 'Coffee Cart Marketplace'
+        email: 'thebeanrouteau@gmail.com',
+        name: 'The Bean Route — Coffee Club'
       },
       to: [{ email: recipientEmail }],
       subject: '☕ Test Email - Brevo Configuration Verification',
@@ -68,8 +68,8 @@ async function sendTestEmail(recipientEmail: string): Promise<void> {
                       <div style="background-color: #FAF5F0; border-left: 4px solid #F5C842; padding: 20px; margin: 24px 0; border-radius: 4px;">
                         <h3 style="margin: 0 0 12px 0; color: #6B4226; font-size: 16px;">Configuration Details:</h3>
                         <ul style="margin: 0; padding-left: 20px; color: #4A4A4A; font-size: 14px; line-height: 1.8;">
-                          <li><strong>Sender Email:</strong> noreply@coffeecartsmelbourne.com</li>
-                          <li><strong>Sender Name:</strong> Coffee Cart Marketplace</li>
+                          <li><strong>Sender Email:</strong> thebeanrouteau@gmail.com</li>
+                          <li><strong>Sender Name:</strong> The Bean Route — Coffee Club</li>
                           <li><strong>API Provider:</strong> Brevo (SendinBlue)</li>
                           <li><strong>Test Date:</strong> ${new Date().toLocaleString()}</li>
                         </ul>
@@ -85,7 +85,7 @@ async function sendTestEmail(recipientEmail: string): Promise<void> {
                   <tr>
                     <td style="background-color: #FAF5F0; padding: 30px; text-align: center; border-radius: 0 0 8px 8px;">
                       <p style="margin: 0; color: #6B4226; font-size: 16px; font-weight: 600;">
-                        The Bean Route — Coffee Cart Marketplace
+                        The Bean Route — Coffee Club
                       </p>
                       <p style="margin: 8px 0 0 0; color: #8B8B8B; font-size: 14px;">
                         Melbourne, Australia

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { getPayload } from 'payload'
@@ -127,11 +128,12 @@ function BlogCard({ post }: { post: any }) {
     >
       {/* Featured Image */}
       {post.featuredImage && typeof post.featuredImage === 'object' && (
-        <div className="aspect-video bg-gray-200 overflow-hidden">
-          <img
+        <div className="aspect-video bg-gray-200 overflow-hidden relative">
+          <Image
             src={post.featuredImage.url}
             alt={post.featuredImage.alt || post.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
       )}
@@ -142,9 +144,9 @@ function BlogCard({ post }: { post: any }) {
           <div className="mb-3">
             <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${priorityColors[post.editorial.priority as keyof typeof priorityColors] || 'bg-gray-100 text-gray-800'}`}>
               {post.editorial.priority === 'quick-win' ? '🔥 Quick Win' :
-               post.editorial.priority === 'authority' ? '💡 Authority' :
-               post.editorial.priority === 'conversion' ? '🎯 Conversion' :
-               '📚 Specialized'}
+                post.editorial.priority === 'authority' ? '💡 Authority' :
+                  post.editorial.priority === 'conversion' ? '🎯 Conversion' :
+                    '📚 Specialized'}
             </span>
           </div>
         )}
