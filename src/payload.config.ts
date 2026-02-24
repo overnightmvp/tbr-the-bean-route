@@ -32,10 +32,12 @@ export default buildConfig({
   // Database adapter - PostgreSQL via Supabase
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI,
+      connectionString: process.env.DATABASE_URI || 'postgresql://placeholder:placeholder@localhost:5432/placeholder',
     },
     // Use separate 'payload' schema to avoid conflicts with existing Supabase tables
     schemaName: 'payload',
+    // Skip migrations during build to avoid connection errors
+    migrationDir: process.env.VERCEL ? undefined : path.resolve(dirname, 'migrations'),
   }),
 
   // Rich text editor
