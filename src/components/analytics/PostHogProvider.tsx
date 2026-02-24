@@ -2,7 +2,7 @@
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 
 // Only initialize PostHog if a valid API key is provided
 if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
@@ -40,7 +40,9 @@ export function CSPostHogProvider({ children }: { children: React.ReactNode }) {
 
     return (
         <PostHogProvider client={posthog}>
-            <PostHogPageview />
+            <Suspense fallback={null}>
+                <PostHogPageview />
+            </Suspense>
             {children}
         </PostHogProvider>
     )
