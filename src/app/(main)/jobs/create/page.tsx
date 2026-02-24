@@ -129,21 +129,21 @@ export default function CreateJob() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#FAFAF8' }}>
+      <div className="min-h-screen bg-[#FAFAF8]">
         <Header variant="app" />
         <div className="max-w-md mx-auto px-4 py-32 text-center">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#F5C842' }}>
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 bg-primary-400">
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold mb-3" style={{ color: '#1A1A1A' }}>Your job is posted</h2>
+          <h2 className="text-2xl font-bold mb-3 text-neutral-900">Your job is posted</h2>
           <p className="text-neutral-600 mb-6">
             Vendors can now submit quotes. We&apos;ll notify you at {formData.contactEmail} when quotes come in.
           </p>
 
-          <div className="bg-white border-2 border-[#F5C842] rounded-xl p-6 mb-8 text-left shadow-sm">
-            <h3 className="text-sm font-bold mb-2" style={{ color: '#1A1A1A' }}>Secure Management Link</h3>
+          <div className="bg-white border-2 border-primary-400 rounded-xl p-6 mb-8 text-left shadow-sm">
+            <h3 className="text-sm font-bold mb-2 text-neutral-900">Secure Management Link</h3>
             <p className="text-[11px] text-neutral-500 mb-4">Anyone with this link can view quotes and manage this job. No password needed.</p>
             <div className="flex items-center gap-2 p-3 bg-neutral-50 rounded-lg border border-neutral-200 mb-3">
               <code className="text-[10px] text-neutral-600 truncate flex-1 leading-none">
@@ -163,7 +163,7 @@ export default function CreateJob() {
             <p className="text-[10px] text-neutral-400">We&apos;ve also emailed this link to you. Keep it private.</p>
           </div>
 
-          <Link href={`/jobs/manage/${managementToken}`} className="inline-block text-sm font-semibold px-8 py-3 rounded-xl bg-[#3B2A1A] text-white hover:opacity-90 transition-opacity shadow-lg">
+          <Link href={`/jobs/manage/${managementToken}`} className="inline-block text-sm font-semibold px-8 py-3 rounded-xl bg-brown-700 text-white hover:opacity-90 transition-opacity shadow-lg">
             View Job & Quotes →
           </Link>
         </div>
@@ -173,14 +173,14 @@ export default function CreateJob() {
   }
 
   const inputClass = (field: string) =>
-    `w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842] outline-none ${errors[field] ? 'border-red-300' : 'border-neutral-300'}`
+    `w-full h-12 px-3 py-2 border rounded-lg text-base md:text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400 outline-none ${errors[field] ? 'border-red-500' : 'border-neutral-300'}`
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#FAFAF8' }}>
+    <div className="min-h-screen bg-[#FAFAF8]">
       <Header variant="app" />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16">
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2" style={{ color: '#1A1A1A' }}>Post a job</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-neutral-900">Post a job</h1>
           <p className="text-neutral-600 text-sm">Get quotes from Melbourne&apos;s best coffee carts.</p>
         </div>
 
@@ -190,45 +190,74 @@ export default function CreateJob() {
         {step === 1 && (
           <div className="space-y-5">
             <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Event title</label>
-              <input type="text" placeholder="e.g. Team breakfast at our Fitzroy office" value={formData.eventTitle} onChange={e => updateField('eventTitle', e.target.value)} className={inputClass('eventTitle')} />
-              {errors.eventTitle && <p className="text-red-500 text-xs mt-1">{errors.eventTitle}</p>}
+              <label htmlFor="eventTitle" className="block text-sm font-medium mb-1.5 text-neutral-900">Event title</label>
+              <input
+                id="eventTitle"
+                type="text"
+                placeholder="e.g. Team breakfast at our Fitzroy office"
+                value={formData.eventTitle}
+                onChange={e => updateField('eventTitle', e.target.value)}
+                className={inputClass('eventTitle')}
+              />
+              {errors.eventTitle && <p className="text-red-600 text-sm mt-1">{errors.eventTitle}</p>}
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Event type</label>
-                <select value={formData.eventType} onChange={e => updateField('eventType', e.target.value)} className={inputClass('eventType')}>
+                <label htmlFor="eventType" className="block text-sm font-medium mb-1.5 text-neutral-900">Event type</label>
+                <select
+                  id="eventType"
+                  value={formData.eventType}
+                  onChange={e => updateField('eventType', e.target.value)}
+                  className={inputClass('eventType')}
+                >
                   <option value="">Select type…</option>
                   {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
-                {errors.eventType && <p className="text-red-500 text-xs mt-1">{errors.eventType}</p>}
+                {errors.eventType && <p className="text-red-600 text-sm mt-1">{errors.eventType}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Event date</label>
-                <input type="date" min={minDate} value={formData.eventDate} onChange={e => updateField('eventDate', e.target.value)} className={inputClass('eventDate')} />
-                {errors.eventDate && <p className="text-red-500 text-xs mt-1">{errors.eventDate}</p>}
+                <label htmlFor="eventDate" className="block text-sm font-medium mb-1.5 text-neutral-900">Event date</label>
+                <input
+                  id="eventDate"
+                  type="date"
+                  min={minDate}
+                  value={formData.eventDate}
+                  onChange={e => updateField('eventDate', e.target.value)}
+                  className={inputClass('eventDate')}
+                />
+                {errors.eventDate && <p className="text-red-600 text-sm mt-1">{errors.eventDate}</p>}
               </div>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Duration (hours)</label>
-                <select value={formData.durationHours} onChange={e => updateField('durationHours', e.target.value)} className={inputClass('durationHours')}>
+                <label htmlFor="durationHours" className="block text-sm font-medium mb-1.5 text-neutral-900">Duration (hours)</label>
+                <select
+                  id="durationHours"
+                  value={formData.durationHours}
+                  onChange={e => updateField('durationHours', e.target.value)}
+                  className={inputClass('durationHours')}
+                >
                   <option value="">Select…</option>
                   {DURATIONS.map(d => <option key={d} value={d}>{d} hour{Number(d) > 1 ? 's' : ''}</option>)}
                 </select>
-                {errors.durationHours && <p className="text-red-500 text-xs mt-1">{errors.durationHours}</p>}
+                {errors.durationHours && <p className="text-red-600 text-sm mt-1">{errors.durationHours}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Guest count</label>
-                <select value={formData.guests} onChange={e => updateField('guests', e.target.value)} className={inputClass('guests')}>
+                <label htmlFor="guests" className="block text-sm font-medium mb-1.5 text-neutral-900">Guest count</label>
+                <select
+                  id="guests"
+                  value={formData.guests}
+                  onChange={e => updateField('guests', e.target.value)}
+                  className={inputClass('guests')}
+                >
                   <option value="">Select…</option>
                   {GUEST_OPTIONS.map(g => <option key={g} value={g}>{g} guests</option>)}
                 </select>
-                {errors.guests && <p className="text-red-500 text-xs mt-1">{errors.guests}</p>}
+                {errors.guests && <p className="text-red-600 text-sm mt-1">{errors.guests}</p>}
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Location</label>
+              <label htmlFor="location" className="block text-sm font-medium mb-1.5 text-neutral-900">Location</label>
               <LocationAutocomplete
                 value={formData.location}
                 onChange={val => updateField('location', val)}
@@ -236,7 +265,7 @@ export default function CreateJob() {
                 className={inputClass('location')}
                 error={errors.location}
               />
-              {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}
+              {errors.location && <p className="text-red-600 text-sm mt-1">{errors.location}</p>}
             </div>
           </div>
         )}
@@ -246,19 +275,34 @@ export default function CreateJob() {
           <div className="space-y-5">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Budget min $/hr <span className="text-neutral-400 font-normal">(optional)</span></label>
-                <input type="number" placeholder="150" value={formData.budgetMin} onChange={e => updateField('budgetMin', e.target.value)} className={inputClass('budgetMin')} />
-                {errors.budgetMin && <p className="text-red-500 text-xs mt-1">{errors.budgetMin}</p>}
+                <label htmlFor="budgetMin" className="block text-sm font-medium mb-1.5 text-neutral-900">Budget min $/hr <span className="text-neutral-400 font-normal">(optional)</span></label>
+                <input
+                  id="budgetMin"
+                  type="number"
+                  placeholder="150"
+                  value={formData.budgetMin}
+                  onChange={e => updateField('budgetMin', e.target.value)}
+                  className={inputClass('budgetMin')}
+                />
+                {errors.budgetMin && <p className="text-red-600 text-sm mt-1">{errors.budgetMin}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Budget max $/hr</label>
-                <input type="number" placeholder="350" value={formData.budgetMax} onChange={e => updateField('budgetMax', e.target.value)} className={inputClass('budgetMax')} />
-                {errors.budgetMax && <p className="text-red-500 text-xs mt-1">{errors.budgetMax}</p>}
+                <label htmlFor="budgetMax" className="block text-sm font-medium mb-1.5 text-neutral-900">Budget max $/hr</label>
+                <input
+                  id="budgetMax"
+                  type="number"
+                  placeholder="350"
+                  value={formData.budgetMax}
+                  onChange={e => updateField('budgetMax', e.target.value)}
+                  className={inputClass('budgetMax')}
+                />
+                {errors.budgetMax && <p className="text-red-600 text-sm mt-1">{errors.budgetMax}</p>}
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Special requirements <span className="text-neutral-400 font-normal">(optional)</span></label>
+              <label htmlFor="specialRequirements" className="block text-sm font-medium mb-1.5 text-neutral-900">Special requirements <span className="text-neutral-400 font-normal">(optional)</span></label>
               <textarea
+                id="specialRequirements"
                 placeholder="Dietary needs, power access, setup constraints…"
                 value={formData.specialRequirements}
                 onChange={e => updateField('specialRequirements', e.target.value)}
@@ -274,25 +318,43 @@ export default function CreateJob() {
           <div className="space-y-5">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Your name</label>
-                <input type="text" value={formData.contactName} onChange={e => updateField('contactName', e.target.value)} className={inputClass('contactName')} />
-                {errors.contactName && <p className="text-red-500 text-xs mt-1">{errors.contactName}</p>}
+                <label htmlFor="contactName" className="block text-sm font-medium mb-1.5 text-neutral-900">Your name</label>
+                <input
+                  id="contactName"
+                  type="text"
+                  value={formData.contactName}
+                  onChange={e => updateField('contactName', e.target.value)}
+                  className={inputClass('contactName')}
+                />
+                {errors.contactName && <p className="text-red-600 text-sm mt-1">{errors.contactName}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Email</label>
-                <input type="email" value={formData.contactEmail} onChange={e => updateField('contactEmail', e.target.value)} className={inputClass('contactEmail')} />
-                {errors.contactEmail && <p className="text-red-500 text-xs mt-1">{errors.contactEmail}</p>}
+                <label htmlFor="contactEmail" className="block text-sm font-medium mb-1.5 text-neutral-900">Email</label>
+                <input
+                  id="contactEmail"
+                  type="email"
+                  value={formData.contactEmail}
+                  onChange={e => updateField('contactEmail', e.target.value)}
+                  className={inputClass('contactEmail')}
+                />
+                {errors.contactEmail && <p className="text-red-600 text-sm mt-1">{errors.contactEmail}</p>}
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: '#1A1A1A' }}>Phone <span className="text-neutral-400 font-normal">(optional)</span></label>
-              <input type="tel" value={formData.contactPhone} onChange={e => updateField('contactPhone', e.target.value)} className={inputClass('contactPhone')} />
+              <label htmlFor="contactPhone" className="block text-sm font-medium mb-1.5 text-neutral-900">Phone <span className="text-neutral-400 font-normal">(optional)</span></label>
+              <input
+                id="contactPhone"
+                type="tel"
+                value={formData.contactPhone}
+                onChange={e => updateField('contactPhone', e.target.value)}
+                className={inputClass('contactPhone')}
+              />
             </div>
 
             {/* Review card */}
             <div className="space-y-4 pt-2">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-400" style={{ color: '#3B2A1A' }}>Vendor-Facing Preview</h3>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-brown-700">Vendor-Facing Preview</h3>
                 <span className="text-[10px] font-bold text-neutral-400 bg-neutral-100 px-2 py-0.5 rounded italic">Draft</span>
               </div>
 
@@ -314,7 +376,7 @@ export default function CreateJob() {
               <p className="text-[11px] text-center text-neutral-400 italic">This is exactly what vendors will see when they are notified of your job.</p>
             </div>
 
-            {errors.submit && <p className="text-red-500 text-xs">{errors.submit}</p>}
+            {errors.submit && <p className="text-red-600 text-sm">{errors.submit}</p>}
           </div>
         )}
 
@@ -326,15 +388,14 @@ export default function CreateJob() {
             </button>
           )}
           {step < 3 ? (
-            <button onClick={handleNext} className="px-6 py-2 text-sm font-semibold rounded-lg text-[#1A1A1A] hover:opacity-90" style={{ backgroundColor: '#F5C842' }}>
+            <button onClick={handleNext} className="h-12 px-6 text-sm font-semibold rounded-lg text-brown-700 bg-primary-400 hover:bg-primary-500 transition-colors">
               Continue
             </button>
           ) : (
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="w-full px-6 py-2.5 text-sm font-semibold rounded-lg text-[#1A1A1A] hover:opacity-90 disabled:opacity-60"
-              style={{ backgroundColor: '#F5C842' }}
+              className="w-full h-12 px-6 text-sm font-semibold rounded-lg text-brown-700 bg-primary-400 hover:bg-primary-500 disabled:opacity-60 transition-colors"
             >
               {isSubmitting ? 'Posting…' : 'Post Job'}
             </button>

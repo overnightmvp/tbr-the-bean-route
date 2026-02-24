@@ -270,7 +270,7 @@ export default function VendorRegister() {
   }
 
   const inputClass = (field: string) =>
-    `w-full h-12 px-3 py-2 border rounded-lg text-base md:text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400 outline-none ${errors[field] ? 'border-red-300' : 'border-neutral-300'}`
+    `w-full h-12 px-3 py-2 border rounded-lg text-base md:text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400 outline-none ${errors[field] ? 'border-red-500' : 'border-neutral-300'}`
 
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
@@ -308,7 +308,7 @@ export default function VendorRegister() {
                     className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${formData.vendorType === type.id ? 'border-[#F5C842] bg-[#FAF5F0]' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}
                   >
                     <span className="text-2xl mb-2">{type.icon}</span>
-                    <span className="text-sm font-semibold" className="text-neutral-900">{type.label}</span>
+                    <span className="text-sm font-semibold text-neutral-900">{type.label}</span>
                   </button>
                 ))}
               </div>
@@ -326,7 +326,7 @@ export default function VendorRegister() {
                 onChange={e => updateField('businessName', e.target.value)}
                 className={inputClass('businessName')}
               />
-              {errors.businessName && <p className="text-red-500 text-xs mt-1">{errors.businessName}</p>}
+              {errors.businessName && <p className="text-red-600 text-sm mt-1">{errors.businessName}</p>}
             </div>
             <div>
               <label htmlFor="specialty" className="block text-sm font-medium mb-1.5 text-neutral-900">Specialty</label>
@@ -351,7 +351,7 @@ export default function VendorRegister() {
                 className={inputClass('description')}
               />
               <div className="flex justify-between mt-1">
-                {errors.description ? <p className="text-red-500 text-xs">{errors.description}</p> : <span />}
+                {errors.description ? <p className="text-red-600 text-sm">{errors.description}</p> : <span />}
                 <span className={`text-xs ${formData.description.length < 30 ? 'text-neutral-400' : 'text-neutral-500'}`}>
                   {formData.description.length}/500
                 </span>
@@ -420,8 +420,7 @@ export default function VendorRegister() {
                       type="checkbox"
                       checked={formData.suburbs.includes(suburb)}
                       onChange={() => toggleArrayField('suburbs', suburb)}
-                      className="w-4 h-4 rounded"
-                      className="accent-primary-400"
+                      className="w-4 h-4 rounded accent-primary-400"
                     />
                     <span className="text-xs text-neutral-600">{suburb}</span>
                   </label>
@@ -498,8 +497,7 @@ export default function VendorRegister() {
                       type="checkbox"
                       checked={formData.eventTypes.includes(type)}
                       onChange={() => toggleArrayField('eventTypes', type)}
-                      className="w-4 h-4 rounded"
-                      className="accent-primary-400"
+                      className="w-4 h-4 rounded accent-primary-400"
                     />
                     <span className="text-xs text-neutral-600">{type}</span>
                   </label>
@@ -563,7 +561,7 @@ export default function VendorRegister() {
               <p className="text-[11px] text-center text-neutral-400 italic">This is how customers will see you in the marketplace. You can edit this later.</p>
             </div>
 
-            {errors.submit && <p className="text-red-500 text-xs">{errors.submit}</p>}
+            {errors.submit && <p className="text-red-600 text-sm">{errors.submit}</p>}
           </div>
         )}
 
