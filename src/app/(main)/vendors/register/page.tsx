@@ -270,7 +270,7 @@ export default function VendorRegister() {
   }
 
   const inputClass = (field: string) =>
-    `w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842] outline-none ${errors[field] ? 'border-red-300' : 'border-neutral-300'}`
+    `w-full h-12 px-3 py-2 border rounded-lg text-base md:text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400 outline-none ${errors[field] ? 'border-red-300' : 'border-neutral-300'}`
 
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
@@ -575,14 +575,14 @@ export default function VendorRegister() {
             </button>
           )}
           {step < 3 ? (
-            <button onClick={handleNext} className="px-6 py-2 text-sm font-semibold rounded-lg text-brown-700 bg-primary-400 hover:bg-primary-500 transition-colors">
+            <button onClick={handleNext} className="h-12 px-6 text-sm font-semibold rounded-lg text-brown-700 bg-primary-400 hover:bg-primary-500 transition-colors">
               Continue
             </button>
           ) : (
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="w-full px-6 py-2.5 text-sm font-semibold rounded-lg text-brown-700 bg-primary-400 hover:bg-primary-500 disabled:opacity-60 transition-colors"
+              className="w-full h-12 px-6 text-sm font-semibold rounded-lg text-brown-700 bg-primary-400 hover:bg-primary-500 disabled:opacity-60 transition-colors"
             >
               {isSubmitting ? 'Submitting…' : 'Submit Application'}
             </button>
