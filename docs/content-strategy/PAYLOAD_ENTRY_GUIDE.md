@@ -362,3 +362,470 @@ Files:
 **Difficulty:** Low-Medium (requires familiarity with Lexical editor but straightforward process)
 
 **Outcome:** 10 venue spotlight posts ready for publication (2 immediately, 8 after verification)
+
+---
+
+# Payload CMS Entry Guide: Location Guide Posts
+
+## Overview
+
+This section covers manual entry for the 7 location guide posts created in Plan 01-03. Location guides are longer-form content (1,500-2,000+ words) that aggregate multiple venue spotlights and serve as geographic SEO hubs.
+
+**Estimated Time:** 8-12 minutes per post (60-85 minutes total for all 7)
+
+**Prerequisites:**
+- All 10 venue spotlight posts already published (from Plan 01-02)
+- Access to Payload CMS admin at `/admin`
+- Familiarity with Lexical rich text editor and relationship fields
+- Featured images prepared (area photos of Chadstone, Fountain Gate, suburbs)
+
+---
+
+## Quick Reference: 7 Location Guide Posts
+
+| # | Slug | Title | Word Count | Spotlight Links |
+|---|------|-------|------------|-----------------|
+| 01 | best-coffee-carts-chadstone | Best Coffee Carts in Chadstone | ~2,750 | 10 spotlights |
+| 02 | best-coffee-carts-fountain-gate | Coffee Carts Near Fountain Gate | ~1,700 | 5 spotlights |
+| 03 | best-coffee-carts-glen-iris | Glen Iris Coffee Guide | ~2,220 | 2 spotlights |
+| 04 | best-coffee-carts-malvern | Malvern Specialty Coffee | ~2,560 | 2 spotlights |
+| 05 | best-coffee-carts-oakleigh | Oakleigh Mobile Baristas | ~2,630 | 1 spotlight |
+| 06 | coffee-shops-near-westfield-chadstone | Coffee at Westfield Chadstone | ~2,200 | 6 spotlights |
+| 07 | coffee-carts-for-weddings-chadstone | Wedding Coffee Carts Chadstone | ~3,590 | 7 spotlights |
+
+**Total:** 7 location guides, ~17,650 words, 33 spotlight links (creates strong internal linking topology)
+
+---
+
+## Location Guide Entry Process
+
+### Step 1: Access Payload Admin
+
+Same as venue spotlight process:
+1. Navigate to `/admin`
+2. Click "Posts" in sidebar
+3. Click "Create New"
+
+### Step 2: Fill Standard Fields
+
+**Title:**
+- Copy from markdown frontmatter
+- Example: "Best Coffee Carts in Chadstone: Your Complete 2026 Guide | The Bean Route"
+- Location guides include year (2026) for freshness signal
+
+**Slug:**
+- Example: `best-coffee-carts-chadstone`
+- Ensure slug matches internal link references in venue spotlight posts
+
+**Excerpt:**
+- Copy `meta_description` from frontmatter (150-160 characters)
+- Example: "Discover the 10 best mobile coffee carts and cafés serving Chadstone. Expert reviews, pricing, and booking tips for weddings, corporate events, and private functions."
+
+### Step 3: Convert Markdown to Lexical (Location Guides)
+
+**Important Differences from Venue Spotlights:**
+
+Location guides are longer (1,500-3,500 words) and contain more structure:
+
+1. **Multiple Vendor Sections:**
+   - Each vendor gets H3 heading: `### 1. Artisan Espresso Co. - Award-Winning Latte Art`
+   - Use Lexical heading level 3 for vendor sections
+   - Create clear visual hierarchy
+
+2. **Comparison Tables:**
+   - Some location guides include comparison information
+   - Convert markdown tables to Lexical bullet lists (Payload Lexical doesn't handle complex tables well)
+   - Format as structured lists with consistent formatting
+
+3. **Internal Links to Spotlights:**
+   - **CRITICAL:** Each vendor section includes link to full spotlight
+   - Format: `[Read full [Vendor Name] spotlight →](/blog/[spotlight-slug])`
+   - These become Payload relationship links (see Step 9)
+
+4. **Section Organization:**
+   - Introduction (200-300 words)
+   - Vendor sections (5-10 vendors, each 150-250 words)
+   - How to Choose section (200-300 words)
+   - Pricing Guide (150-200 words)
+   - Conclusion (100-150 words)
+   - Related guides links
+
+**Conversion Tips:**
+
+- **Work section by section:** Copy one vendor at a time from markdown
+- **Bold vendor names:** Select business name in each section, click Bold button
+- **Create consistent formatting:** All vendor sections should look identical in structure
+- **Link spotlight references:** Note which spotlights to link in Step 9
+
+### Step 4: Featured Image Upload (Location Guides)
+
+**Recommended Featured Images:**
+
+1. **Best Coffee Carts in Chadstone:** Photo of Chadstone Shopping Centre or Chadstone Park
+2. **Coffee Near Fountain Gate:** Fountain Gate Shopping Centre exterior
+3. **Glen Iris Coffee Guide:** Glen Iris suburb streetscape or coffee cart at park
+4. **Malvern Specialty Coffee:** Malvern Village shopping district or heritage venue
+5. **Oakleigh Mobile Baristas:** Oakleigh Greek precinct or community event
+6. **Westfield Chadstone Coffee:** Westfield shopping centre entrance or food court
+7. **Wedding Coffee Carts Chadstone:** Mobile coffee cart at wedding (generic romantic setup)
+
+**Image Sourcing:**
+- Unsplash: Search "Melbourne shopping centre", "coffee cart wedding", "suburban Australia"
+- Pexels: Search "mobile coffee cart", "specialty coffee", "barista wedding"
+- Generic stock: Use high-quality coffee cart images with location overlay text
+
+**Alt Text Examples:**
+- "Chadstone Shopping Centre with mobile coffee cart in foreground"
+- "Mobile coffee cart serving wedding reception in Melbourne"
+- "Specialty coffee barista at Westfield Chadstone"
+
+### Step 5: Set Status and Publishing
+
+**Status Field:**
+- **All 7 location guides:** Set to `published` (these are aggregation/guide content, not business profiles requiring verification)
+
+**Published At:**
+- Stagger publication: 1 per day after venue spotlights published
+- Example schedule:
+  - Day 1-2: Venue spotlights 01-02 (verified)
+  - Day 3: Location Guide 01 (Chadstone main hub)
+  - Day 4: Location Guide 02 (Fountain Gate)
+  - Day 5: Location Guide 03 (Glen Iris)
+  - And so on...
+
+**Publishing Strategy:**
+- Location guides establish SEO authority hubs
+- Publish before remaining venue spotlights to create parent-child linking structure
+- Guides can rank for geographic keywords while spotlights rank for brand names
+
+### Step 6: Category & Conversion Goal
+
+**Category:**
+- Select `event-focused` (all location guides are event-focused content)
+
+**Conversion Goal:**
+- Select `vendor_signup` (guides drive vendor discovery → inquiries → potential vendor signups)
+
+### Step 7: SEO Fields (Location Guides)
+
+**Target Keywords:**
+
+Location guides target geographic + service keywords (higher search volume than brand names):
+
+**Example for "Best Coffee Carts in Chadstone":**
+- "coffee carts Chadstone"
+- "mobile coffee cart Chadstone"
+- "hire coffee cart Chadstone"
+- "event coffee Chadstone"
+- "specialty coffee Chadstone"
+- "wedding coffee cart Chadstone"
+
+**Example for "Wedding Coffee Carts Chadstone":**
+- "wedding coffee cart Chadstone"
+- "mobile coffee cart wedding Melbourne"
+- "hire coffee cart wedding"
+- "specialty coffee weddings"
+- "barista wedding reception"
+
+**Keyword Strategy:**
+- 5-8 keywords per location guide (more than spotlights because guides target broader searches)
+- Mix primary geographic keywords with event-type modifiers
+- Include long-tail variations
+
+**Search Intent:**
+- Template: "Find and compare [service type] in [suburb] for [event type]"
+- Example: "Find and compare mobile coffee cart vendors in Chadstone for events, weddings, and corporate functions"
+
+**Meta Description:**
+- Auto-populated from Excerpt (verify 150-160 characters)
+
+**OG Image:**
+- Same as Featured Image
+
+### Step 8: Editorial Metadata (Location Guides)
+
+**Priority:**
+- Select `authority`
+- Location guides are authority-building content (high-value SEO targets)
+
+**Difficulty:**
+- Select `medium`
+- Geographic keywords are moderately competitive (harder than brand names, easier than "best coffee Melbourne")
+
+**Traffic Potential:**
+- Enter `100-300`
+- Location guides have higher traffic potential than individual spotlights
+- Main hub guide (Chadstone) could reach 250-300 monthly visits
+- Smaller suburbs (Oakleigh) more like 100-150 monthly visits
+
+### Step 9: Internal Linking (Location Guides - CRITICAL)
+
+**This is the most important step for location guides.** They create bidirectional linking with venue spotlights.
+
+**Internal Links Field:**
+
+For each location guide, add 5-10 internal links using Payload's relationship picker:
+
+**Example for "Best Coffee Carts in Chadstone":**
+
+Add these Post relationships:
+1. `artisan-espresso-chadstone` (venue spotlight)
+2. `coffee-culture-westfield` (venue spotlight)
+3. `brew-hub-chadstone` (venue spotlight)
+4. `mobile-brew-fountain-gate` (venue spotlight)
+5. `bean-cart-glen-iris` (venue spotlight)
+6. `hire-coffee-cart-guide` (how-to guide - will be created in Plan 01-04)
+7. `specialty-coffee-benefits` (education post - will be created in Plan 01-04)
+8. `corporate-event-coffee` (how-to guide - will be created in Plan 01-04)
+
+**How to Add Relationship Links:**
+
+1. Click "Add Internal Link" button
+2. Search for post by slug (e.g., "artisan-espresso-chadstone")
+3. Select from dropdown
+4. Repeat for all 5-10 links
+
+**For posts that don't exist yet (Plan 01-04 how-to guides):**
+- Document in internal notes: "TODO: Add links to how-to guides after Plan 01-04 completes"
+- Return to update after Plan 01-04 posts are published
+
+**Linking Matrix Reference:**
+
+Refer to `docs/content-strategy/internal-linking-matrix.md` for exact link targets per guide.
+
+**Related Posts:**
+- Leave empty (auto-populated by Payload based on category)
+
+### Step 10: Save, Preview, Publish
+
+1. Click "Save" (top right)
+2. Click "Preview" to verify rendering
+3. **Check these elements:**
+   - ✅ All vendor sections have proper H3 headings
+   - ✅ Internal links to spotlights resolve (no 404s)
+   - ✅ Comparison information formatted clearly
+   - ✅ Images display properly
+   - ✅ Related guides section at bottom shows links
+4. Return to edit if issues found
+5. Click "Publish" (status should already be 'published')
+
+---
+
+## Batch Entry Tips for Location Guides
+
+### Efficiency Strategies:
+
+1. **Prepare Content in Batches:**
+   - Convert markdown for 2-3 guides before starting Payload entry
+   - Have all featured images downloaded and ready in folder
+   - Create spreadsheet with SEO keywords for quick copy/paste
+
+2. **Use Template Approach for Repeated Fields:**
+   - Category: `event-focused` (same for all 7)
+   - Conversion Goal: `vendor_signup` (same for all 7)
+   - Priority: `authority` (same for all 7)
+   - Difficulty: `medium` (same for all 7)
+
+3. **Spotlight Links Pattern:**
+   - Main Chadstone guide links to ALL 10 spotlights
+   - Smaller suburb guides link to 1-5 spotlights in that area
+   - Follow internal-linking-matrix.md exactly
+
+### Time Estimates:
+
+- **Chadstone main guide (01):** 12-15 minutes (longest, most links)
+- **Standard suburb guides (02-05):** 8-10 minutes each
+- **Specialty guides (06-07):** 10-12 minutes each
+- **Total for all 7:** 60-85 minutes
+
+### Common Pitfalls:
+
+1. **Forgetting to link spotlights:** Location guides MUST link to venue spotlights (creates SEO topology)
+2. **Inconsistent heading hierarchy:** All vendor sections should be H3, main sections H2
+3. **Missing geographic keywords:** Each guide needs 5-8 keywords targeting suburb + service
+4. **Publishing out of order:** Publish main Chadstone guide first, then smaller suburb guides
+
+---
+
+## Post-Publication: Bidirectional Linking
+
+**CRITICAL FINAL STEP:** After all 7 location guides are published, update venue spotlight posts with backlinks.
+
+### Why Bidirectional Linking Matters:
+
+- **SEO equity flow:** Authority flows from parent guides to child spotlights and back
+- **User navigation:** Readers can discover related content easily
+- **Topic clustering:** Creates cohesive content cluster around Chadstone coffee
+
+### How to Create Backlinks:
+
+1. Navigate to each venue spotlight post in Payload admin
+2. Edit the post
+3. Add parent location guide to `internalLinks` field
+4. Save
+
+**Example:**
+
+For `artisan-espresso-chadstone` spotlight:
+- Add `best-coffee-carts-chadstone` to internalLinks
+- Add `coffee-carts-for-weddings-chadstone` to internalLinks (if relevant)
+
+**Time Required:** 3-4 minutes per spotlight × 10 spotlights = 30-40 minutes
+
+**When to Do This:** After all 7 location guides are published (don't do this before guides exist)
+
+---
+
+## Verification Checklist (Per Location Guide)
+
+Before publishing each location guide, verify:
+
+- [ ] Title includes geographic area and "| The Bean Route" suffix
+- [ ] Slug matches references in internal linking matrix
+- [ ] Excerpt is 150-160 characters
+- [ ] Content fully formatted with proper heading hierarchy (H2 for sections, H3 for vendors)
+- [ ] Featured image uploaded with geographic alt text
+- [ ] Status = `published`
+- [ ] Category = `event-focused`
+- [ ] Conversion Goal = `vendor_signup`
+- [ ] Priority = `authority`
+- [ ] Difficulty = `medium`
+- [ ] Traffic Potential = 100-300 (varies by suburb)
+- [ ] 5-10 target keywords added (geographic + service)
+- [ ] Search intent documented
+- [ ] 5-10 internal links added (mostly spotlights, some how-to/education)
+- [ ] Preview renders correctly without errors
+- [ ] All spotlight links resolve (no 404s)
+
+---
+
+## Publishing Schedule Recommendation
+
+**Week 1: Foundation Content**
+- Day 1: Publish 2 verified venue spotlights (01, 03)
+- Day 2: Publish Location Guide 01 (Chadstone main hub)
+- Day 3: Publish Location Guide 06 (Westfield Chadstone)
+- Day 4: Publish Location Guide 07 (Wedding Coffee Carts)
+- Day 5: Publish Location Guide 02 (Fountain Gate)
+
+**Week 2: Suburb Coverage**
+- Day 6: Publish Location Guide 03 (Glen Iris)
+- Day 7: Publish Location Guide 04 (Malvern)
+- Day 8: Publish Location Guide 05 (Oakleigh)
+- Day 9-12: Publish remaining venue spotlights (as verified)
+
+**Why This Order:**
+
+1. **Establish authority hubs first:** Main Chadstone guide published early
+2. **Create linking structure:** Guides can link to existing spotlights immediately
+3. **Build content velocity:** Publishing 1/day signals fresh content to search engines
+4. **Prioritize high-value content:** Chadstone main hub and wedding guide have highest traffic potential
+
+---
+
+## Batch Publishing All 7 Guides (Alternative Approach)
+
+If you prefer to publish all 7 location guides at once (rather than 1/day):
+
+**Advantages:**
+- Complete content cluster launched simultaneously
+- Full bidirectional linking can be done immediately
+- Stronger "content velocity" signal to search engines
+
+**Disadvantages:**
+- Less sustained "freshness" signal (1 big update vs. 7 daily updates)
+- More work upfront (60-85 minutes continuous Payload entry)
+
+**Recommended:** Stagger publication 1/day for better SEO freshness signals
+
+---
+
+## After Location Guides Published
+
+### 1. Update Venue Spotlight Backlinks (Required)
+
+Go back to all 10 venue spotlight posts and add location guide links to their `internalLinks` fields.
+
+**Time:** 30-40 minutes total
+
+### 2. Verify Blog Listing Display
+
+Navigate to `/blog` and confirm:
+- 17 total posts visible (10 spotlights + 7 guides)
+- Location guides appear in appropriate category
+- Filtering and sorting work correctly
+
+### 3. Test Individual Guide Pages
+
+Visit `/blog/[slug]` for each location guide:
+- Verify RichTextRenderer displays content properly
+- Check all internal links to spotlights resolve correctly
+- Test social share preview (Open Graph)
+
+### 4. Submit Updated Sitemap to Google
+
+After publishing all guides:
+- Sitemap auto-updates at `/sitemap.xml`
+- Submit to Google Search Console
+- Monitor indexing over next 1-2 weeks
+
+### 5. Update REQUIREMENTS.md Traceability
+
+Mark CONTENT-05 and CONTENT-06 requirements complete:
+- Add links to published location guides
+- Update traceability table with post URLs
+
+---
+
+## Troubleshooting Location Guide Issues
+
+### Issue: Too Many Internal Links to Add Manually
+
+**Solution:**
+- Focus on spotlight links first (most important for SEO)
+- Add how-to guide links later after Plan 01-04 completes
+- Document missing links in internal notes
+
+### Issue: Lexical Editor Struggles with Long Content
+
+**Solution:**
+- Work in smaller sections (copy 300-500 words at a time)
+- Save frequently to prevent data loss
+- Clear browser cache if editor becomes sluggish
+
+### Issue: Featured Images Not Available for All Suburbs
+
+**Solution:**
+- Use generic coffee cart stock images with location overlay text
+- Document placeholder status in notes
+- Replace with authentic suburb photos later
+
+### Issue: Can't Remember Which Spotlights to Link
+
+**Solution:**
+- Refer to `docs/content-strategy/internal-linking-matrix.md`
+- Each guide has specific spotlight links documented
+- Follow matrix exactly for SEO topology
+
+---
+
+## Total Time Investment Summary
+
+**Location Guide Entry:**
+- 7 location guides × 8-12 min each = 60-85 minutes
+- Bidirectional linking update = 30-40 minutes
+- Verification and testing = 15-20 minutes
+- **Total: 105-145 minutes (1.75-2.5 hours)**
+
+**Combined with Venue Spotlights:**
+- 10 venue spotlights = 50-70 minutes
+- 7 location guides = 105-145 minutes
+- **Total Phase 1 content entry: 155-215 minutes (2.5-3.5 hours)**
+
+**Difficulty:** Medium (requires careful attention to internal linking and relationship fields)
+
+**Outcome:** 17 published posts with comprehensive internal linking creating strong SEO topology for Chadstone area coffee content
+
+---
+
+**Next: Plan 01-04 will create how-to guides and education posts, completing the 30-post Phase 1 goal.**
