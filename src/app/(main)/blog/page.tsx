@@ -14,24 +14,29 @@ export default async function BlogPage() {
   let posts: any[] = []
   let error: string | null = null
 
-  try {
-    const payload = await getPayload({ config: await configPromise })
-
-    const { docs } = await payload.find({
-      collection: 'posts',
-      where: {
-        status: {
-          equals: 'published',
-        },
-      },
-      sort: '-publishedAt',
-      limit: 50,
-    })
-
-    posts = docs
-  } catch (err) {
-    console.error('Blog database error:', err)
+  // Check if Payload CMS is configured before attempting to connect
+  if (!process.env.DATABASE_URI) {
     error = 'Blog is currently unavailable. Please check back soon.'
+  } else {
+    try {
+      const payload = await getPayload({ config: await configPromise })
+
+      const { docs } = await payload.find({
+        collection: 'posts',
+        where: {
+          status: {
+            equals: 'published',
+          },
+        },
+        sort: '-publishedAt',
+        limit: 50,
+      })
+
+      posts = docs
+    } catch (err) {
+      console.error('Blog database error:', err)
+      error = 'Blog is currently unavailable. Please check back soon.'
+    }
   }
 
   // Show error state if database fails
