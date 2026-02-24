@@ -44,7 +44,14 @@ Plans:
 - Simplify testing approach with component breakdown
 - Improve overall UX across public site, admin portal, and blog
 
-**Plans:** TBD (discuss-phase will determine)
+**Plans:** 5 plans across 3 waves
+
+Plans:
+- [ ] 02-01-PLAN.md — Design System Foundation & Flow Diagrams (shadcn/ui setup, flow diagrams, color validation)
+- [ ] 02-02-PLAN.md — Component Migration (migrate Button, Input, Card, Badge, Dialog, Select, Skeleton, Form)
+- [ ] 02-03-PLAN.md — Critical Flows: Vendor Registration & Organizer Inquiry (optimize mobile flows, E2E tests)
+- [ ] 02-04-PLAN.md — Landing Page & Onboarding Improvements (social proof, value prop, CTAs, post-reg feedback)
+- [ ] 02-05-PLAN.md — Form Validation & Error Handling (mobile keyboard tests, design system audit)
 
 **Success Criteria:**
 - shadcn/ui fully integrated and applied consistently
