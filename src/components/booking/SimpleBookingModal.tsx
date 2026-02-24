@@ -1,8 +1,20 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Card, CardContent, Button } from '@/components/ui'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/Input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
 import { type LegacyVendor as Vendor, formatPriceRange } from '@/lib/supabase'
+import { CheckCircle2 } from 'lucide-react'
 
 interface InquiryFormData {
   contactName: string
@@ -39,7 +51,7 @@ export function InquiryModal({ vendor, isOpen, onClose, onSuccess }: InquiryModa
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
-  if (!isOpen || !vendor) return null
+  if (!vendor) return null
 
   const validateEmail = (email: string): boolean => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -144,111 +156,135 @@ export function InquiryModal({ vendor, isOpen, onClose, onSuccess }: InquiryModa
     onClose()
   }
 
-  // Success state
-  if (submitted) {
-    return (
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-        <Card className="w-full max-w-md text-center">
-          <CardContent className="p-8">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#F5C842' }}>
-              <svg className="w-8 h-8" fill="none" stroke="#1A1A1A" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className="text-xl font-bold mb-2" style={{ color: '#1A1A1A' }}>Inquiry sent</h2>
-            <p className="text-sm text-neutral-600 mb-1">
-              <span className="font-semibold" style={{ color: '#3B2A1A' }}>{vendor.businessName}</span> will be in touch shortly.
-            </p>
-            <p className="text-xs text-neutral-500 mb-6">
-              We've sent a confirmation to {formData.contactEmail}
-            </p>
-            <Button onClick={handleClose} fullWidth className="bg-[#F5C842] text-[#1A1A1A] hover:bg-[#E8B430] font-semibold">
-              Done
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    )
-  }
-
   const eventTypes = ['Corporate event', 'Wedding', 'Festival', 'Birthday party', 'Conference', 'Private gathering']
   const guestOptions = [20, 30, 50, 75, 100, 150, 200, 300]
   const durationOptions = [1, 2, 3, 4, 5, 6, 8]
 
-  return (
-    <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-2 sm:p-4"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) handleClose()
-      }}
-    >
-      <Card
-        className="w-full max-w-xl max-h-[90vh] overflow-y-auto relative z-[10000]"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-      >
-        {/* Sticky Header */}
-        <div className="sticky top-0 bg-white border-b border-neutral-200 p-4 sm:p-6 rounded-t-lg z-10">
-          <div className="flex items-start justify-between">
-            <div>
-              <h2 id="modal-title" className="text-lg sm:text-xl font-bold" style={{ color: '#1A1A1A' }}>
-                Get a quote from {vendor.businessName}
-              </h2>
-              <p className="text-sm text-neutral-600 mt-0.5">
-                {vendor.specialty} • {formatPriceRange(vendor)}/hr
-              </p>
+  // Success state
+  if (submitted) {
+    return (
+      <Dialog open={isOpen} onOpenChange={handleClose}>
+        <DialogContent className="w-[calc(100%-2rem)] max-w-md sm:max-w-lg">
+          <div className="flex flex-col items-center text-center py-4">
+            <div className="w-20 h-20 rounded-full bg-primary-400 flex items-center justify-center mb-6">
+              <CheckCircle2 className="w-10 h-10 text-brown-700" />
             </div>
-            <button
-              onClick={handleClose}
-              className="text-neutral-400 hover:text-neutral-600 p-1 -m-1"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
 
-        <CardContent className="p-4 sm:p-6">
+            <DialogTitle className="text-2xl mb-3">Inquiry Sent Successfully</DialogTitle>
+            <DialogDescription className="text-base mb-6">
+              Your quote request has been sent to <strong>{vendor.businessName}</strong>.
+            </DialogDescription>
+
+            <div className="w-full bg-neutral-50 rounded-lg p-5 mb-6 text-left">
+              <h3 className="text-sm font-semibold mb-3 text-brown-700">What Happens Next?</h3>
+              <ul className="space-y-2.5 text-sm text-neutral-700">
+                <li className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-400 flex items-center justify-center text-xs font-bold text-brown-700">
+                    1
+                  </span>
+                  <span>
+                    <strong>{vendor.businessName}</strong> will review your event details
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-400 flex items-center justify-center text-xs font-bold text-brown-700">
+                    2
+                  </span>
+                  <span>
+                    You'll receive a quote via email within <strong>24-48 hours</strong>
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-400 flex items-center justify-center text-xs font-bold text-brown-700">
+                    3
+                  </span>
+                  <span>
+                    You can discuss details directly with the vendor
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="w-full space-y-3">
+              <p className="text-xs text-neutral-500 mb-3">
+                A confirmation email has been sent to <strong>{formData.contactEmail}</strong>
+              </p>
+
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={handleClose}
+                className="w-full h-12"
+              >
+                Done
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="w-[calc(100%-2rem)] max-w-md sm:max-w-lg max-h-[85vh] p-0">
+        {/* Sticky Header */}
+        <DialogHeader className="sticky top-0 bg-white px-6 pt-6 pb-4 border-b z-10">
+          <DialogTitle className="text-xl">Get a quote from {vendor.businessName}</DialogTitle>
+          <DialogDescription className="text-sm mt-1">
+            {vendor.specialty} • {formatPriceRange(vendor)}/hr
+          </DialogDescription>
+        </DialogHeader>
+
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto px-6 py-4">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Contact Info */}
             <div className="space-y-3">
               <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Your details</div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">Name *</label>
-                  <input
+                  <Label htmlFor="contactName" className="text-sm font-medium text-neutral-700">
+                    Name *
+                  </Label>
+                  <Input
+                    id="contactName"
                     type="text"
                     value={formData.contactName}
                     onChange={(e) => updateFormData('contactName', e.target.value)}
                     placeholder="Jane Smith"
-                    className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842] ${errors.contactName ? 'border-red-300' : 'border-neutral-300'}`}
+                    className={`w-full mt-1 ${errors.contactName ? 'border-red-300' : ''}`}
                   />
-                  {errors.contactName && <p className="text-red-600 text-xs mt-1">{errors.contactName}</p>}
+                  {errors.contactName && <p className="text-red-600 text-sm mt-1">{errors.contactName}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">Email *</label>
-                  <input
+                  <Label htmlFor="contactEmail" className="text-sm font-medium text-neutral-700">
+                    Email *
+                  </Label>
+                  <Input
+                    id="contactEmail"
                     type="email"
                     value={formData.contactEmail}
                     onChange={(e) => updateFormData('contactEmail', e.target.value)}
                     placeholder="jane@company.com"
-                    className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842] ${errors.contactEmail ? 'border-red-300' : 'border-neutral-300'}`}
+                    className={`w-full mt-1 ${errors.contactEmail ? 'border-red-300' : ''}`}
                   />
-                  {errors.contactEmail && <p className="text-red-600 text-xs mt-1">{errors.contactEmail}</p>}
+                  {errors.contactEmail && <p className="text-red-600 text-sm mt-1">{errors.contactEmail}</p>}
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">Phone</label>
-                <input
-                  type="tel"
-                  value={formData.contactPhone}
-                  onChange={(e) => updateFormData('contactPhone', e.target.value)}
-                  placeholder="+61 4XX XXX XXX"
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842]"
-                />
-                <p className="text-xs text-neutral-500 mt-1">Optional — for faster response</p>
+                <div>
+                  <Label htmlFor="contactPhone" className="text-sm font-medium text-neutral-700">
+                    Phone
+                  </Label>
+                  <Input
+                    id="contactPhone"
+                    type="tel"
+                    value={formData.contactPhone}
+                    onChange={(e) => updateFormData('contactPhone', e.target.value)}
+                    placeholder="+61 4XX XXX XXX"
+                    className="w-full mt-1"
+                  />
+                  <p className="text-xs text-neutral-500 mt-1">Optional — for faster response</p>
+                </div>
               </div>
             </div>
 
@@ -256,142 +292,163 @@ export function InquiryModal({ vendor, isOpen, onClose, onSuccess }: InquiryModa
             <div className="space-y-3">
               <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Event details</div>
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">Event type *</label>
-                <select
-                  value={formData.eventType}
-                  onChange={(e) => updateFormData('eventType', e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842] ${errors.eventType ? 'border-red-300' : 'border-neutral-300'}`}
-                >
-                  <option value="">Select event type</option>
-                  {eventTypes.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-                {errors.eventType && <p className="text-red-600 text-xs mt-1">{errors.eventType}</p>}
+                <Label htmlFor="eventType" className="text-sm font-medium text-neutral-700">
+                  Event type *
+                </Label>
+                <Select value={formData.eventType} onValueChange={(val) => updateFormData('eventType', val)}>
+                  <SelectTrigger id="eventType" className={`w-full mt-1 h-12 ${errors.eventType ? 'border-red-300' : ''}`}>
+                    <SelectValue placeholder="Select event type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {eventTypes.map(type => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.eventType && <p className="text-red-600 text-sm mt-1">{errors.eventType}</p>}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">Event date *</label>
-                  <input
+                  <Label htmlFor="eventDate" className="text-sm font-medium text-neutral-700">
+                    Event date *
+                  </Label>
+                  <Input
+                    id="eventDate"
                     type="date"
                     value={formData.eventDate}
                     onChange={(e) => updateFormData('eventDate', e.target.value)}
                     min={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
-                    className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842] ${errors.eventDate ? 'border-red-300' : 'border-neutral-300'}`}
+                    className={`w-full mt-1 ${errors.eventDate ? 'border-red-300' : ''}`}
                   />
-                  {errors.eventDate && <p className="text-red-600 text-xs mt-1">{errors.eventDate}</p>}
+                  {errors.eventDate && <p className="text-red-600 text-sm mt-1">{errors.eventDate}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">Duration (hours)</label>
-                  <select
-                    value={formData.durationHours}
-                    onChange={(e) => updateFormData('durationHours', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842]"
-                  >
-                    {durationOptions.map(h => (
-                      <option key={h} value={h}>{h} hour{h > 1 ? 's' : ''}</option>
-                    ))}
-                  </select>
+                  <Label htmlFor="durationHours" className="text-sm font-medium text-neutral-700">
+                    Duration (hours)
+                  </Label>
+                  <Select value={String(formData.durationHours)} onValueChange={(val) => updateFormData('durationHours', parseInt(val))}>
+                    <SelectTrigger id="durationHours" className="w-full mt-1 h-12">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {durationOptions.map(h => (
+                        <SelectItem key={h} value={String(h)}>{h} hour{h > 1 ? 's' : ''}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">Guests</label>
-                  <select
-                    value={formData.guestCount}
-                    onChange={(e) => updateFormData('guestCount', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842]"
-                  >
-                    {guestOptions.map(n => (
-                      <option key={n} value={n}>{n} guests</option>
-                    ))}
-                  </select>
+                  <Label htmlFor="guestCount" className="text-sm font-medium text-neutral-700">
+                    Guests
+                  </Label>
+                  <Select value={String(formData.guestCount)} onValueChange={(val) => updateFormData('guestCount', parseInt(val))}>
+                    <SelectTrigger id="guestCount" className="w-full mt-1 h-12">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {guestOptions.map(n => (
+                        <SelectItem key={n} value={String(n)}>{n} guests</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">Location *</label>
-                  <input
+                  <Label htmlFor="location" className="text-sm font-medium text-neutral-700">
+                    Location *
+                  </Label>
+                  <Input
+                    id="location"
                     type="text"
                     value={formData.location}
                     onChange={(e) => updateFormData('location', e.target.value)}
                     placeholder="e.g. Fitzroy Gardens, VIC"
-                    className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842] ${errors.location ? 'border-red-300' : 'border-neutral-300'}`}
+                    className={`w-full mt-1 ${errors.location ? 'border-red-300' : ''}`}
                   />
-                  {errors.location && <p className="text-red-600 text-xs mt-1">{errors.location}</p>}
+                  {errors.location && <p className="text-red-600 text-sm mt-1">{errors.location}</p>}
                 </div>
               </div>
-            </div>
 
+              <div>
+                <Label htmlFor="specialRequests" className="text-sm font-medium text-neutral-700">
+                  Special requests
+                </Label>
+                <Textarea
+                  id="specialRequests"
+                  value={formData.specialRequests}
+                  onChange={(e) => updateFormData('specialRequests', e.target.value)}
+                  placeholder="Dietary requirements, specific setup needs, anything else..."
+                  rows={3}
+                  className="w-full mt-1 min-h-[96px]"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+
+        {/* Sticky Footer */}
+        <div className="sticky bottom-0 bg-white border-t px-6 py-4">
+          <div className="space-y-4">
             {/* Estimated Cost */}
-            <div className="rounded-lg p-4" style={{ backgroundColor: '#FAF5F0' }}>
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Estimated cost</div>
-                  <div className="text-xs text-neutral-500 mt-0.5">
-                    Based on avg rate • {formData.durationHours}hr • Final price confirmed by vendor
+            <div className="bg-primary-50 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-brown-700">
+                    Estimated Cost
+                  </div>
+                  <div className="text-xs text-neutral-600 mt-0.5">
+                    Based on average rate • {formData.durationHours} hour{formData.durationHours > 1 ? 's' : ''}
+                  </div>
+                  <div className="text-[10px] text-neutral-500 mt-1">
+                    Final price confirmed by vendor
                   </div>
                 </div>
-                <div className="text-2xl font-bold" style={{ color: '#3B2A1A' }}>
+                <div className="text-3xl font-bold text-brown-700">
                   ${estimatedCost.toLocaleString('en-AU')}
                 </div>
               </div>
             </div>
 
-            {/* Special Requests */}
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">Special requests</label>
-              <textarea
-                value={formData.specialRequests}
-                onChange={(e) => updateFormData('specialRequests', e.target.value)}
-                placeholder="Dietary requirements, specific setup needs, anything else..."
-                rows={2}
-                className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-[#F5C842] focus:border-[#F5C842]"
-              />
-            </div>
-
-            {/* Trust elements */}
-            <div className="flex items-center gap-4 text-xs text-neutral-500">
-              <span className="flex items-center gap-1">
-                <svg className="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
+            {/* Trust Elements */}
+            <div className="flex items-center justify-center gap-4 text-xs text-neutral-500">
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
                 Free to inquire
               </span>
-              <span className="flex items-center gap-1">
-                <svg className="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
                 No commitment
               </span>
-              <span className="flex items-center gap-1">
-                <svg className="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                Direct vendor contact
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
+                Direct contact
               </span>
             </div>
 
-            {/* Submit */}
+            {/* Submit Button */}
             <Button
               type="submit"
-              fullWidth
+              variant="primary"
               size="lg"
               disabled={isSubmitting}
-              className="bg-[#F5C842] text-[#1A1A1A] hover:bg-[#E8B430] font-semibold min-h-[48px]"
+              onClick={handleSubmit}
+              className="w-full h-12"
             >
               {isSubmitting ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-[#1A1A1A] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-brown-700 border-t-transparent rounded-full animate-spin"></div>
                   Sending...
                 </div>
               ) : (
                 'Send Inquiry'
               )}
             </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
