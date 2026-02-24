@@ -9,10 +9,10 @@
 ## Current Position
 
 **Phase:** 02-Design-System-UX
-**Current Plan:** 3 of 5 (component migration complete)
+**Current Plan:** 4 of 5 (mobile flows optimized)
 **Status:** Executing Phase 2 plans
 
-**Progress:** [████████░░] 78%
+**Progress:** [█████████░] 89%
 
 ## Recent Decisions
 
@@ -27,6 +27,8 @@
 - **Testing:** E2E (Playwright) focus on critical flows, form validation, mobile responsiveness
 - **Modal success state:** Chosen over page redirect for faster feedback and better UX with confetti
 - **24-48 hour approval timeline:** Explicitly stated in success modal to set clear expectations
+- **Single-step form with sticky footer:** Keep SimpleBookingModal single-step (defer multi-step to Phase 3) - simpler, faster execution, sticky footer achieves mobile UX goals
+- **Skip FormField pattern:** Use Label + manual error display instead of react-hook-form FormField - consistent with existing validation approach, no new dependencies
 
 ### Phase 1: Content Strategy (Confirmed)
 - Payload CMS selected for blog backend (allows non-dev publishing)
@@ -74,11 +76,12 @@ None currently tracked. Todos should be created when roadmap is broken into phas
 | Phase 02 P01 | 8 | 2 tasks | 12 files |
 | Phase 02 P04 | 7 | 3 tasks | 10 files |
 | Phase 02 P02 | 10 | 3 tasks | 8 files |
+| Phase 02 P03 | 5 | 2 tasks | 7 files |
 
 ## Session Continuity
 
-**Last session:** 2026-02-24T16:39:43.004Z
-**Stopped at:** Completed 02-02-PLAN.md
+**Last session:** 2026-02-24T16:49:19.560Z
+**Stopped at:** Completed 02-03-PLAN.md
 **Resume file:** None
 
 ---
