@@ -7,6 +7,7 @@ import { Footer } from '@/components/navigation/Footer'
 import { StepIndicator } from '@/components/shared/StepIndicator'
 import { VendorCard } from '@/components/vendors/VendorCard'
 import { LocationAutocomplete } from '@/components/shared/LocationAutocomplete'
+import { RegistrationSuccessModal } from '@/components/vendors/RegistrationSuccessModal'
 import confetti from 'canvas-confetti'
 
 interface RegistrationFormData {
@@ -41,6 +42,7 @@ const EVENT_TYPES = [
 export default function VendorRegister() {
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [submitted, setSubmitted] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -228,6 +230,7 @@ export default function VendorRegister() {
       }
 
       setSubmitted(true)
+      setShowSuccessModal(true)
       confetti({
         particleCount: 150,
         spread: 70,
@@ -279,6 +282,13 @@ export default function VendorRegister() {
         </div>
 
         <StepIndicator currentStep={step} totalSteps={3} />
+
+        {/* Registration Success Modal */}
+        <RegistrationSuccessModal
+          open={showSuccessModal}
+          onOpenChange={setShowSuccessModal}
+          businessName={formData.businessName}
+        />
 
         {/* Step 1 — Your Business */}
         {step === 1 && (
