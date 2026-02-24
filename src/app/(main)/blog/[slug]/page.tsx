@@ -14,6 +14,14 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // Skip if Payload CMS is not configured
+  if (!process.env.DATABASE_URI) {
+    return {
+      title: 'Blog Post | The Bean Route',
+      description: 'Coffee cart hire guides for Melbourne event organizers and vendors',
+    }
+  }
+
   try {
     const { slug } = await params
     const payload = await getPayload({ config: await configPromise })
@@ -60,6 +68,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
+  // Skip if Payload CMS is not configured
+  if (!process.env.DATABASE_URI) {
+    return [] // No static pages to generate
+  }
+
   try {
     const payload = await getPayload({ config: await configPromise })
 
@@ -85,9 +98,13 @@ export default async function BlogPostPage({ params }: Props) {
   let relatedPosts: any[] = []
   let error: string | null = null
 
-  try {
-    const { slug } = await params
-    const payload = await getPayload({ config: await configPromise })
+  // Check if Payload CMS is configured
+  if (!process.env.DATABASE_URI) {
+    error = 'Blog is currently unavailable'
+  } else {
+    try {
+      const { slug } = await params
+      const payload = await getPayload({ config: await configPromise })
 
     const { docs } = await payload.find({
       collection: 'posts',
@@ -111,9 +128,10 @@ export default async function BlogPostPage({ params }: Props) {
       })
       relatedPosts = related
     }
-  } catch (err) {
-    console.error('Blog post error:', err)
-    error = 'Unable to load blog post'
+    } catch (err) {
+      console.error('Blog post error:', err)
+      error = 'Unable to load blog post'
+    }
   }
 
   // Show error state if database fails or post not found
