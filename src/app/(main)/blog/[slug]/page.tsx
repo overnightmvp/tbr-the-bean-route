@@ -2,12 +2,13 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getPayload } from 'payload'
-import configPromise from '@/payload-config-promise'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import JsonLd from '@/components/seo/JsonLd'
 import RichTextRenderer from '@/components/blog/RichTextRenderer'
+
+// Force dynamic rendering to avoid prerender issues when Payload is not configured
+export const dynamic = 'force-dynamic'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -24,7 +25,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     const { slug } = await params
-    const payload = await getPayload({ config: await configPromise })
+    const { getPayload } = await import('payload')
+    const configPromise = await import('@/payload-config-promise')
+    const payload = await getPayload({ config: await configPromise.default })
 
     const { docs } = await payload.find({
       collection: 'posts',
@@ -74,7 +77,9 @@ export async function generateStaticParams() {
   }
 
   try {
-    const payload = await getPayload({ config: await configPromise })
+    const { getPayload } = await import('payload')
+    const configPromise = await import('@/payload-config-promise')
+    const payload = await getPayload({ config: await configPromise.default })
 
     const { docs: posts } = await payload.find({
       collection: 'posts',
@@ -104,7 +109,9 @@ export default async function BlogPostPage({ params }: Props) {
   } else {
     try {
       const { slug } = await params
-      const payload = await getPayload({ config: await configPromise })
+      const { getPayload } = await import('payload')
+      const configPromise = await import('@/payload-config-promise')
+      const payload = await getPayload({ config: await configPromise.default })
 
     const { docs } = await payload.find({
       collection: 'posts',

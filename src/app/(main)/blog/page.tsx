@@ -1,9 +1,10 @@
 import Image from 'next/image'
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { getPayload } from 'payload'
-import configPromise from '@/payload-config-promise'
 import { Badge } from '@/components/ui/Badge'
+
+// Force dynamic rendering to avoid prerender issues when Payload is not configured
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Coffee Cart Hire Blog | Melbourne Event Planning & Vendor Guides',
@@ -19,7 +20,10 @@ export default async function BlogPage() {
     error = 'Blog is currently unavailable. Please check back soon.'
   } else {
     try {
-      const payload = await getPayload({ config: await configPromise })
+      // Dynamically import Payload to avoid loading it when DATABASE_URI is missing
+      const { getPayload } = await import('payload')
+      const configPromise = await import('@/payload-config-promise')
+      const payload = await getPayload({ config: await configPromise.default })
 
       const { docs } = await payload.find({
         collection: 'posts',
