@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Badge } from '@/components/ui/Badge'
+import { Badge } from '@/components/ui/badge'
 
 // Force dynamic rendering to avoid prerender issues when Payload is not configured
 export const dynamic = 'force-dynamic'

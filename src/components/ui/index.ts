@@ -1,14 +1,14 @@
 // UI Component Library Exports
 // Single import point for all UI components
 
-export { Button } from './Button'
-export { Input } from './Input'
-export { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
+export { Button } from './button'
+export { Input } from './input'
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
   CardFooter
-} from './Card'
-export { Badge } from './Badge'
+} from './card'
+export { Badge } from './badge'
