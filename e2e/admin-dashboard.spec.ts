@@ -208,9 +208,9 @@ test.describe('Admin Dashboard', () => {
   })
 
   test.describe('Responsive Design - Mobile (375px)', () => {
-    test.use({ ...devices['iPhone SE'] })
-
-    test('dashboard loads on mobile viewport', async ({ page }) => {
+    test('dashboard loads on mobile viewport', async ({ page, browser }) => {
+      // Set mobile viewport manually
+      await page.setViewportSize({ width: 375, height: 667 })
       await page.goto('/dashboard')
       await page.waitForLoadState('networkidle')
 
@@ -222,6 +222,8 @@ test.describe('Admin Dashboard', () => {
     })
 
     test('tab navigation works on mobile', async ({ page }) => {
+      // Set mobile viewport manually
+      await page.setViewportSize({ width: 375, height: 667 })
       await page.goto('/dashboard')
 
       // Check that at least one tab is clickable
