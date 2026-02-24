@@ -4,6 +4,9 @@ import { Button, Card, CardContent } from '@/components/ui'
 import { Header } from '@/components/navigation/Header'
 import { Footer } from '@/components/navigation/Footer'
 import { VendorCarousel } from '@/components/experiences/HorizontalExperiences'
+import { CTASection } from '@/components/landing/CTASection'
+import { ValuePropositionSection } from '@/components/landing/ValuePropositionSection'
+import { SocialProofSection } from '@/components/landing/SocialProofSection'
 import JsonLd from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
@@ -57,36 +60,11 @@ export default function Home() {
       <JsonLd data={faqSchema} />
       <Header variant="landing" />
 
-      {/* Hero */}
-      <section className="bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#A0785A' }}>
-              Melbourne's Coffee Cart Marketplace
-            </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight" style={{ color: '#1A1A1A' }}>
-              Great coffee,
-              <span className="block" style={{ color: '#3B2A1A' }}>wherever you are.</span>
-            </h1>
-            <p className="mt-6 text-lg text-neutral-600 max-w-xl leading-relaxed">
-              Find and book Melbourne's best mobile coffee carts for your next event.
-              Corporate mornings, festivals, private gatherings — sorted in minutes.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-3">
-              <Link href="/app">
-                <Button size="lg" className="bg-[#F5C842] text-[#1A1A1A] hover:bg-[#E8B430] font-semibold min-h-[48px] px-8">
-                  Browse Vendors
-                </Button>
-              </Link>
-              <Link href="/vendors-guide/get-listed">
-                <Button size="lg" variant="outline" className="min-h-[48px] px-8">
-                  List Your Cart
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Above-the-fold CTA Section */}
+      <CTASection />
+
+      {/* Value Proposition Section */}
+      <ValuePropositionSection />
 
       {/* Vendor Carousel */}
       <section id="vendors" className="py-20 bg-white border-t border-neutral-200">
@@ -94,6 +72,9 @@ export default function Home() {
           <VendorCarousel />
         </div>
       </section>
+
+      {/* Social Proof Section */}
+      <SocialProofSection />
 
       {/* How It Works */}
       <section className="py-20" style={{ backgroundColor: '#FAFAF8' }}>
