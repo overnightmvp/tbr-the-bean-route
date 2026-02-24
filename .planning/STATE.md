@@ -8,17 +8,25 @@
 
 ## Current Position
 
-**Phase:** 01-Chadstone-Deep-Dive
-**Current Plan:** 4 of 4
-**Status:** In Progress — Location guides drafted, how-to & education content next
+**Phase:** 02-Design-System-UX
+**Current Plan:** Context captured (ready for planning)
+**Status:** Next: Research → Plan → Execute
 
-**Progress:** [██████████] 100%
+**Progress:** [██████░░░░] 20%
 
 ## Recent Decisions
 
+### Phase 2: Design System & UX Optimization (NEW - Days 31-40)
+- **shadcn/ui strategy:** Comprehensive migration with CSS variables + Tailwind theming, light mode only
+- **Flow priorities:** Vendor registration (mobile broken) → Event organizer inquiry (mobile broken)
+- **Focus areas:** Visual clarity, mobile optimization, form friction reduction, flow diagrams
+- **Onboarding fixes:** Landing page clarity (mission/value/CTA/proof), post-reg gaps (feedback/approval/next steps)
+- **Testing:** E2E (Playwright) focus on critical flows, form validation, mobile responsiveness
+
+### Phase 1: Content Strategy (Confirmed)
 - Payload CMS selected for blog backend (allows non-dev publishing)
 - 90-post strategy: 30 venue spotlights, 20 location guides, 15 how-to guides, 25 coffee education
-- Geographic phases: Days 1-30 (Chadstone), 31-60 (Knox/Notting Hill/Bentleigh), 61-90 (expansion + meta)
+- Geographic phases: Days 1-30 (Chadstone), 31-40 (design system), 41-70 (Knox expansion), 71-90 (broader coverage)
 - 1 post per day target for consistent SEO signal
 - AI-assisted production with human refinement
 - Free coffee incentive model for vendor acquisition
@@ -61,10 +69,10 @@ None currently tracked. Todos should be created when roadmap is broken into phas
 
 ## Session Continuity
 
-**Last session:** 2026-02-24T11:37:23.397Z
-**Stopped at:** Phase 01 Complete: 30 posts drafted, ready for Payload CMS publication
-**Resume file:** None
+**Last session:** 2026-02-24T14:15:00.000Z
+**Stopped at:** Phase 2 context captured — ready for research → planning → execution
+**Resume file:** `.planning/phases/02-Design-System-UX/02-CONTEXT.md`
 
 ---
 
-*Last updated: 2026-02-24 after Plan 01-03 completion*
+*Last updated: 2026-02-24 after Phase 2 context capture (discuss-phase complete)*
