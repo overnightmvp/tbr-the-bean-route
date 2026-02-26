@@ -30,6 +30,8 @@ BREVO_API_KEY=
 - Architecture: `docs/ARCHITECTURE.md`
 - Deployment: `docs/DEPLOYMENT.md`
 - Operations runbook: `docs/RUNBOOK.md`
+- Docs index: `docs/README.md`
+- Repo rename checklist: `docs/REPO-RENAME-CHECKLIST.md`
 
 ## Deployment
 - Production deploys from `main` via Vercel.
