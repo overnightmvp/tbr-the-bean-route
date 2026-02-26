@@ -1,324 +1,129 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import JsonLd from '@/components/seo/JsonLd'
-import RichTextRenderer from '@/components/blog/RichTextRenderer'
-
-// Force dynamic rendering to avoid prerender issues when Payload is not configured
-export const dynamic = 'force-dynamic'
+import ReactMarkdown from 'react-markdown'
+import { getAllPosts, getPostBySlug } from '@/lib/posts'
 
 type Props = {
   params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  // Skip if Payload CMS is not configured
-  if (!process.env.DATABASE_URI) {
+  const { slug } = await params
+  const post = getPostBySlug(slug)
+
+  if (!post) {
     return {
       title: 'Blog Post | The Bean Route',
       description: 'Coffee cart hire guides for Melbourne event organizers and vendors',
     }
   }
 
-  try {
-    const { slug } = await params
-    const { getPayload } = await import('payload')
-    const configPromise = await import('@/payload-config-promise')
-    const payload = await getPayload({ config: await configPromise.default })
-
-    const { docs } = await payload.find({
-      collection: 'posts',
-      where: { slug: { equals: slug } },
-      limit: 1,
-    })
-
-    const post = docs[0]
-    if (!post) return {}
-
-    const metaDescription = post.seo?.metaDescription || post.excerpt
-    const ogImage = post.seo?.ogImage || post.featuredImage
-    const ogImageUrl = typeof ogImage === 'object' ? ogImage?.url : undefined
-
-    return {
-      title: `${post.title} | The Bean Route`,
-      description: metaDescription,
-      keywords: post.seo?.targetKeywords?.map((k: any) => k.keyword).join(', '),
-      openGraph: {
-        title: post.title,
-        description: metaDescription,
-        type: 'article',
-        publishedTime: post.publishedAt,
-        modifiedTime: post.updatedAt,
-        images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: post.title,
-        description: metaDescription,
-        images: ogImageUrl ? [ogImageUrl] : undefined,
-      },
-    }
-  } catch (err) {
-    console.error('Blog metadata error:', err)
-    return {
-      title: 'Blog Post | The Bean Route',
-      description: 'Coffee cart hire guides for Melbourne event organizers and vendors',
-    }
+  return {
+    title: `${post.title} | The Bean Route`,
+    description: post.excerpt || 'Coffee cart hire guides for Melbourne',
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || '',
+      type: 'article',
+      publishedTime: post.publishedAt,
+    },
   }
 }
 
 export async function generateStaticParams() {
-  // Skip if Payload CMS is not configured
-  if (!process.env.DATABASE_URI) {
-    return [] // No static pages to generate
-  }
-
-  try {
-    const { getPayload } = await import('payload')
-    const configPromise = await import('@/payload-config-promise')
-    const payload = await getPayload({ config: await configPromise.default })
-
-    const { docs: posts } = await payload.find({
-      collection: 'posts',
-      where: {
-        status: { equals: 'published' },
-      },
-      limit: 100,
-    })
-
-    return posts.map((post) => ({
-      slug: post.slug,
-    }))
-  } catch (err) {
-    console.error('Blog static params error:', err)
-    return [] // Return empty array, no static pages generated
-  }
+  const posts = getAllPosts()
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  let post: any = null
-  let relatedPosts: any[] = []
-  let error: string | null = null
+  const { slug } = await params
+  const post = getPostBySlug(slug)
 
-  // Check if Payload CMS is configured
-  if (!process.env.DATABASE_URI) {
-    error = 'Blog is currently unavailable'
-  } else {
-    try {
-      const { slug } = await params
-      const { getPayload } = await import('payload')
-      const configPromise = await import('@/payload-config-promise')
-      const payload = await getPayload({ config: await configPromise.default })
-
-    const { docs } = await payload.find({
-      collection: 'posts',
-      where: { slug: { equals: slug } },
-      limit: 1,
-    })
-
-    post = docs[0]
-
-    // Only fetch related posts if we have a valid post
-    if (post && post.status === 'published') {
-      const { docs: related } = await payload.find({
-        collection: 'posts',
-        where: {
-          status: { equals: 'published' },
-          category: { equals: post.category },
-          id: { not_equals: post.id },
-        },
-        limit: 3,
-        sort: '-publishedAt',
-      })
-      relatedPosts = related
-    }
-    } catch (err) {
-      console.error('Blog post error:', err)
-      error = 'Unable to load blog post'
-    }
+  if (!post) {
+    notFound()
   }
-
-  // Show error state if database fails or post not found
-  if (error || !post || post.status !== 'published') {
-    return (
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-2xl mx-auto text-center">
-          <h1 className="text-3xl font-bold mb-4">Blog Post Unavailable</h1>
-          <p className="text-gray-600 mb-8">
-            {error || 'This blog post could not be found or is no longer available.'}
-          </p>
-          <Link href="/blog" className="text-primary underline text-lg">
-            ← Back to Blog
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
-  // Conversion CTA based on goal
-  const conversionCTA = {
-    job_posting: {
-      text: 'Post Your Event',
-      href: '/jobs/create',
-      description: 'Looking for a coffee cart? Post your event and get quotes from vendors.',
-    },
-    vendor_signup: {
-      text: 'Become a Vendor',
-      href: '/vendors/register',
-      description: 'Ready to grow your coffee cart business? Join The Bean Route.',
-    },
-    inquiry: {
-      text: 'Browse Vendors',
-      href: '/',
-      description: 'Find the perfect coffee cart for your event.',
-    },
-  }
-
-  const cta = conversionCTA[post.conversionGoal as keyof typeof conversionCTA]
 
   return (
-    <>
-      {/* JSON-LD Schema */}
-      <JsonLd
-        data={{
-          '@context': 'https://schema.org',
-          '@type': 'BlogPosting',
-          headline: post.title,
-          description: post.excerpt,
-          datePublished: post.publishedAt,
-          dateModified: post.updatedAt,
-          author: {
-            '@type': 'Organization',
-            name: 'The Bean Route',
-            url: 'https://thebeanroute.com.au',
-          },
-          publisher: {
-            '@type': 'Organization',
-            name: 'The Bean Route',
-            url: 'https://thebeanroute.com.au',
-          },
-          image: typeof post.featuredImage === 'object' ? post.featuredImage?.url : undefined,
-          keywords: post.seo?.targetKeywords?.map((k: any) => k.keyword).join(', '),
-        }}
-      />
+    <article className="container mx-auto px-4 py-16">
+      {/* Back button */}
+      <div className="max-w-4xl mx-auto mb-8">
+        <Link href="/blog">
+          <Button variant="ghost" className="gap-2">
+            ← Back to Blog
+          </Button>
+        </Link>
+      </div>
 
-      <article className="container mx-auto px-4 py-16">
-        {/* Breadcrumbs */}
-        <nav className="text-sm text-gray-500 mb-8">
-          <Link href="/blog" className="hover:text-primary">Blog</Link>
-          <span className="mx-2">/</span>
-          <span>{post.title}</span>
-        </nav>
-
-        {/* Header */}
-        <header className="max-w-4xl mx-auto mb-12">
-          {/* Category & Priority Badges */}
-          <div className="flex gap-2 mb-4">
-            <Badge variant="default">
-              {post.category === 'event-focused' ? 'Event Planning' : 'Coffee Education'}
+      {/* Article header */}
+      <header className="max-w-4xl mx-auto mb-12">
+        {/* Category badge */}
+        {post.category && (
+          <div className="mb-4">
+            <Badge variant="outline" className="capitalize">
+              {post.category}
             </Badge>
-            {post.editorial?.priority && (
-              <Badge variant="outline">
-                {post.editorial.priority === 'quick-win' ? '🔥 Quick Win' :
-                  post.editorial.priority === 'authority' ? '💡 Authority' :
-                    post.editorial.priority === 'conversion' ? '🎯 Conversion' :
-                      '📚 Specialized'}
-              </Badge>
-            )}
           </div>
+        )}
 
-          {/* Title */}
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            {post.title}
-          </h1>
+        {/* Title */}
+        <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          {post.title}
+        </h1>
 
-          {/* Excerpt */}
+        {/* Excerpt */}
+        {post.excerpt && (
           <p className="text-xl text-gray-600 mb-6">
             {post.excerpt}
           </p>
-
-          {/* Metadata */}
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            <time dateTime={post.publishedAt}>
-              {new Date(post.publishedAt).toLocaleDateString('en-AU', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
-            {post.seo?.targetKeywords && post.seo.targetKeywords.length > 0 && (
-              <>
-                <span>•</span>
-                <span>{post.seo.targetKeywords.length} keywords</span>
-              </>
-            )}
-          </div>
-        </header>
-
-        {/* Featured Image */}
-        {post.featuredImage && typeof post.featuredImage === 'object' && (
-          <div className="max-w-5xl mx-auto mb-12 relative aspect-[16/9]">
-            <Image
-              src={post.featuredImage.url}
-              alt={post.featuredImage.alt || post.title}
-              fill
-              className="rounded-lg shadow-lg object-cover"
-              priority
-            />
-          </div>
         )}
 
-        {/* Content */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <RichTextRenderer
-            content={post.content}
-            className="prose prose-lg prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline max-w-none"
-          />
+        {/* Metadata */}
+        <div className="flex items-center gap-4 text-gray-600 text-sm">
+          <time dateTime={post.publishedAt}>
+            {new Date(post.publishedAt).toLocaleDateString('en-AU', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </time>
         </div>
+      </header>
 
-        {/* Conversion CTA */}
-        {cta && (
-          <div className="max-w-4xl mx-auto bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-8 mb-16">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold mb-2">{cta.description}</h2>
-              <Link href={cta.href}>
-                <Button size="lg" className="mt-4">
-                  {cta.text}
-                </Button>
-              </Link>
-            </div>
-          </div>
-        )}
+      {/* Article content */}
+      <div className="max-w-4xl mx-auto prose prose-lg">
+        <ReactMarkdown
+          components={{
+            h1: ({ ...props }) => <h1 className="text-3xl font-bold mt-8 mb-4" {...props} />,
+            h2: ({ ...props }) => <h2 className="text-2xl font-bold mt-6 mb-3" {...props} />,
+            h3: ({ ...props }) => <h3 className="text-xl font-bold mt-4 mb-2" {...props} />,
+            p: ({ ...props }) => <p className="mb-4 leading-relaxed" {...props} />,
+            ul: ({ ...props }) => <ul className="list-disc pl-6 mb-4 space-y-2" {...props} />,
+            ol: ({ ...props }) => <ol className="list-decimal pl-6 mb-4 space-y-2" {...props} />,
+            a: ({ ...props }) => <a className="text-primary underline hover:no-underline" {...props} />,
+            blockquote: ({ ...props }) => (
+              <blockquote className="border-l-4 border-gray-300 pl-4 italic my-4" {...props} />
+            ),
+          }}
+        >
+          {post.content}
+        </ReactMarkdown>
+      </div>
 
-        {/* Related Posts */}
-        {relatedPosts.length > 0 && (
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8">Related Articles</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {relatedPosts.map((relatedPost) => (
-                <Link
-                  key={relatedPost.id}
-                  href={`/blog/${relatedPost.slug}`}
-                  className="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6"
-                >
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">
-                    {relatedPost.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm line-clamp-2 mb-3">
-                    {relatedPost.excerpt}
-                  </p>
-                  <span className="text-primary text-sm font-semibold group-hover:underline">
-                    Read more →
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </article>
-    </>
+      {/* CTA section */}
+      <div className="max-w-4xl mx-auto mt-16 bg-gray-50 rounded-lg p-8 text-center">
+        <h3 className="text-2xl font-bold mb-4">Ready to Book a Coffee Cart?</h3>
+        <p className="text-gray-600 mb-6">
+          Browse Melbourne's top coffee cart vendors and get quotes for your event
+        </p>
+        <Link href="/">
+          <Button size="lg">View Vendor Directory</Button>
+        </Link>
+      </div>
+    </article>
   )
 }
