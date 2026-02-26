@@ -40,7 +40,8 @@ This is the centralized source of truth for all current and future work on The B
 ---
 
 ## ⚪ Epic 4: Regional & Category Expansion (Roadmap)
-- [x] **Barista Directory Expansion**: Dedicated profiles and filters for independent baristas.
+- [x] **Coffee Shop Vendor Type**: Database schema, registration form, profile pages, and directory (completed Feb 6, 2026 - commit 7a11e95)
+- [x] **Barista Vendor Type**: Database schema, registration form, profile pages with skills/experience fields (completed Feb 6, 2026 - commit 7a11e95)
 - [ ] **Multi-State Launch**: Hubs for NSW, QLD, and SA.
 - [ ] **Category Filters**: Dedicated sections for "Specialty Beans" or "Sustainability Focused" carts.
 - [ ] **Payment Bridge**: Integrate Stripe for secure deposit handling.

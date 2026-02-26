@@ -69,7 +69,7 @@ cp .env.local.example .env.local
 ```
 
 **Admin Portal:**
-- Access at `/admin`
+- Access at `/dashboard`
 - Authentication: Email + 6-digit code (iron-session cookies, 24hr expiry)
 - Tabs: Inquiries, Applications, Jobs
 - Manage vendor applications, booking inquiries, job postings
@@ -96,6 +96,8 @@ cp .env.local.example .env.local
 
 **Public Pages:**
 - `/` - Landing page with vendor directory
+- `/app` - Browse vendors marketplace with filters
+- `/coffee-shops` - Dedicated coffee shop directory with enhanced SEO
 - `/vendors/[slug]` - Individual vendor detail pages (supports mobile carts, coffee shops, baristas)
 - `/vendors/register` - Vendor self-registration form
 - `/jobs` - Public job board for event postings
@@ -103,11 +105,9 @@ cp .env.local.example .env.local
 - `/jobs/[id]` - Individual job detail with quote submission
 - `/contractors/*` - Content marketing pages (how-to-hire, costs)
 - `/vendors-guide/*` - Vendor resources (get-listed, grow-business)
-- `/app` - User dashboard (post-login landing)
-- `/app/jobs/manage` - Job management for event organizers
 
 **Admin Portal:**
-- `/admin` - Tab-based admin interface (InquiriesTab, ApplicationsTab, JobsTab)
+- `/dashboard` - Tab-based admin interface (InquiriesTab, ApplicationsTab, JobsTab)
 - Authentication required: Email + 6-digit OTP (stored in Supabase `admin_sessions`, verified via iron-session)
 - API routes under `/api/dashboard/*` (protected by session middleware)
 
@@ -133,7 +133,7 @@ cp .env.local.example .env.local
 
 **Vendor Applications** (`vendor_applications` table):
 - Self-registration submissions from new vendors
-- Admin reviews and approves/rejects via `/admin` portal
+- Admin reviews and approves/rejects via `/dashboard` portal
 - Status: pending → approved/rejected
 
 **Jobs** (`jobs` table):
@@ -200,9 +200,9 @@ users (id, email, role, createdAt)  -- CMS admin users, not end users
 
 **Admin Components:**
 - `src/app/(main)/app/page.tsx` - User dashboard landing
-- `src/app/admin/InquiriesTab.tsx` - Manage booking requests
-- `src/app/admin/ApplicationsTab.tsx` - Approve/reject vendor applications
-- `src/app/admin/JobsTab.tsx` - View job postings and quotes
+- `src/app/(main)/dashboard/InquiriesTab.tsx` - Manage booking requests
+- `src/app/(main)/dashboard/ApplicationsTab.tsx` - Approve/reject vendor applications
+- `src/app/(main)/dashboard/JobsTab.tsx` - View job postings and quotes
 - `src/components/admin/AuthGate.tsx` - Session verification wrapper
 
 ### Critical Files
