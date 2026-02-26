@@ -105,6 +105,9 @@ cp .env.local.example .env.local
 - `/jobs/[id]` - Individual job detail with quote submission
 - `/contractors/*` - Content marketing pages (how-to-hire, costs)
 - `/vendors-guide/*` - Vendor resources (get-listed, grow-business)
+- `/blog` - Blog listing and individual posts (Payload CMS)
+- `/suburbs/[slug]` - Location-based SEO pages
+- `/design-system` - Design system documentation (intentionally public showcase)
 
 **Admin Portal:**
 - `/dashboard` - Tab-based admin interface (InquiriesTab, ApplicationsTab, JobsTab)

@@ -36,6 +36,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
                 <Link href="/app" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                   Browse
                 </Link>
+                <Link href="/coffee-shops" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
+                  Coffee Shops
+                </Link>
                 <Link href="/jobs" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                   Jobs
                 </Link>
@@ -56,6 +59,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
                 </Link>
                 <Link href="/app" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                   Browse
+                </Link>
+                <Link href="/coffee-shops" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
+                  Coffee Shops
                 </Link>
                 <Link href="/jobs" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                   Jobs
@@ -105,6 +111,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
                   <Link href="/app" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
                     Browse
                   </Link>
+                  <Link href="/coffee-shops" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
+                    Coffee Shops
+                  </Link>
                   <Link href="/jobs" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
                     Jobs
                   </Link>
@@ -125,6 +134,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
                   </Link>
                   <Link href="/app" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
                     Browse
+                  </Link>
+                  <Link href="/coffee-shops" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
+                    Coffee Shops
                   </Link>
                   <Link href="/jobs" onClick={() => setMobileMenuOpen(false)} className="text-neutral-600 hover:text-neutral-900 px-2 py-1 text-sm">
                     Jobs
