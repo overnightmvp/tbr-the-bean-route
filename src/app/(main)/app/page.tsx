@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
+import { useQuery } from '@tanstack/react-query'
+import { supabase } from '@/lib/supabase'
 import { type Vendor, type LegacyVendor, type VendorType, formatVendorPrice, isCoffeeShop, isMobileCart } from '@/lib/supabase'
 import { Header } from '@/components/navigation/Header'
 import { Footer } from '@/components/navigation/Footer'
@@ -11,8 +13,6 @@ import { OpenNowBadge } from '@/components/vendors/OpeningHoursDisplay'
 import { VendorCard } from '@/components/vendors/VendorCard'
 
 export default function BrowseVendors() {
-  const [allVendors, setAllVendors] = useState<Vendor[]>([])
-  const [loading, setLoading] = useState(true)
   const [selectedVendor, setSelectedVendor] = useState<LegacyVendor | null>(null)
   const [showInquiryModal, setShowInquiryModal] = useState(false)
   const [filterVendorType, setFilterVendorType] = useState<VendorType | ''>('')
@@ -20,32 +20,25 @@ export default function BrowseVendors() {
   const [filterTag, setFilterTag] = useState('')
   const [filterMaxPrice, setFilterMaxPrice] = useState('')
 
-  // Fetch vendors from Supabase
-  useEffect(() => {
-    const fetchVendors = async () => {
-      try {
-        const { supabase } = await import('@/lib/supabase')
-        const { data, error } = await supabase
-          .from('vendors')
-          .select('*')
-          .eq('verified', true)
-          .order('created_at', { ascending: false })
+  // Fetch vendors with React Query - automatic caching and deduplication
+  const { data: allVendors = [], isLoading: loading } = useQuery({
+    queryKey: ['vendors'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('vendors')
+        .select('*')
+        .eq('verified', true)
+        .order('created_at', { ascending: false })
 
-        if (error) {
-          console.error('Error fetching vendors:', error)
-        } else {
-          console.log('Fetched vendors:', data?.map(v => ({ id: v.id, name: v.business_name, type: v.vendor_type })))
-          setAllVendors(data || [])
-        }
-      } catch (err) {
-        console.error('Unexpected error fetching vendors:', err)
-      } finally {
-        setLoading(false)
+      if (error) {
+        console.error('Error fetching vendors:', error)
+        throw error
       }
-    }
 
-    fetchVendors()
-  }, [])
+      console.log('Fetched vendors:', data?.map(v => ({ id: v.id, name: v.business_name, type: v.vendor_type })))
+      return data as Vendor[]
+    },
+  })
 
   // Collect unique suburbs and tags for filters
   const allSuburbs = Array.from(new Set(allVendors.flatMap(v => v.suburbs))).sort()

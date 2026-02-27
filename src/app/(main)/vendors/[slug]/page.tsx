@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/lib/supabase-admin'
+import { getVendorBySlug } from '@/lib/data/vendors'
 import VendorPageClient from './VendorPageClient'
 import JsonLd from '@/components/seo/JsonLd'
 
@@ -6,12 +6,7 @@ const baseUrl = 'https://thebeanroute.com.au'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const { data: vendor } = await supabaseAdmin
-    .from('vendors')
-    .select('*')
-    .eq('slug', slug)
-    .eq('verified', true)
-    .single()
+  const vendor = await getVendorBySlug(slug) // React.cache() deduplicates with page component
 
   if (!vendor) return { title: 'Vendor Not Found | The Bean Route' }
 
@@ -63,12 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function VendorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const { data: vendor } = await supabaseAdmin
-    .from('vendors')
-    .select('*')
-    .eq('slug', slug)
-    .eq('verified', true)
-    .single()
+  const vendor = await getVendorBySlug(slug) // Cache hit from generateMetadata!
 
   const isCoffeeShop = vendor?.vendor_type === 'coffee_shop'
 

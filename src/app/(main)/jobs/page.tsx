@@ -1,7 +1,9 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
+import { useQuery } from '@tanstack/react-query'
+import { supabase } from '@/lib/supabase'
 import { Header } from '@/components/navigation/Header'
 import { Footer } from '@/components/navigation/Footer'
 import type { Job } from '@/lib/supabase'
@@ -11,28 +13,39 @@ const SUBURBS = ['All suburbs', 'CBD', 'Camberwell', 'Carlton', 'Collingwood', '
 const BUDGETS = ['Any budget', '$100', '$200', '$300', '$500', '$1000']
 
 export default function JobsPage() {
-  const [jobs, setJobs] = useState<Job[]>([])
-  const [quoteCounts, setQuoteCounts] = useState<Record<string, number>>({})
-  const [loading, setLoading] = useState(true)
   const [filterType, setFilterType] = useState('All types')
   const [filterSuburb, setFilterSuburb] = useState('All suburbs')
   const [filterBudget, setFilterBudget] = useState('Any budget')
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { supabase } = await import('@/lib/supabase')
-      const { data: jobData } = await supabase.from('jobs').select('*').eq('status', 'open').order('created_at', { ascending: false })
-      setJobs(jobData || [])
-      if (jobData?.length) {
-        const { data: quoteData } = await supabase.from('quotes').select('job_id')
-        const counts: Record<string, number> = {}
-        quoteData?.forEach((q: { job_id: string }) => { counts[q.job_id] = (counts[q.job_id] || 0) + 1 })
-        setQuoteCounts(counts)
-      }
-      setLoading(false)
-    }
-    fetchData()
-  }, [])
+  // Parallel data fetching with React Query - eliminates waterfall
+  const { data: jobsData, isLoading: jobsLoading } = useQuery({
+    queryKey: ['jobs'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('status', 'open')
+        .order('created_at', { ascending: false })
+      return data as Job[]
+    },
+  })
+
+  const { data: quotesData } = useQuery({
+    queryKey: ['quotes'],
+    queryFn: async () => {
+      const { data } = await supabase.from('quotes').select('job_id')
+      return data as Array<{ job_id: string }>
+    },
+  })
+
+  // Calculate quote counts from quotes data
+  const jobs = jobsData || []
+  const quoteCounts: Record<string, number> = {}
+  quotesData?.forEach((q) => {
+    quoteCounts[q.job_id] = (quoteCounts[q.job_id] || 0) + 1
+  })
+
+  const loading = jobsLoading
 
   const filtered = jobs.filter(job => {
     if (filterType !== 'All types' && job.event_type !== filterType) return false
