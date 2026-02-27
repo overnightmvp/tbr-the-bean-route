@@ -6,7 +6,9 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { Header } from '@/components/navigation/Header'
 import { Footer } from '@/components/navigation/Footer'
+import { JobCardSkeleton } from '@/components/skeletons/JobCardSkeleton'
 import type { Job } from '@/lib/supabase'
+import { cn } from '@/lib/utils'
 
 const EVENT_TYPES = ['All types', 'Corporate event', 'Wedding', 'Festival', 'Birthday party', 'Conference', 'Private gathering']
 const SUBURBS = ['All suburbs', 'CBD', 'Camberwell', 'Carlton', 'Collingwood', 'Fitzroy', 'Fitzroy North', 'Glen Iris', 'Hawthorn', 'Kew', 'Malvern', 'North Melbourne', 'Northcote', 'Parkville', 'Prahran', 'Richmond', 'South Yarra', 'St Kilda', 'Southbank', 'Brunswick', 'Windsor', 'Toorak', 'Docklands']
@@ -64,8 +66,29 @@ export default function JobsPage() {
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#FAFAF8' }}>
         <Header variant="app" />
-        <div className="max-w-6xl mx-auto px-4 py-32 text-center">
-          <div className="w-8 h-8 border-2 border-neutral-300 border-t-[#F5C842] rounded-full animate-spin mx-auto" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Header Skeleton */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            <div>
+              <div className="h-8 w-48 bg-brown-100 rounded animate-pulse mb-2" />
+              <div className="h-4 w-64 bg-brown-100 rounded animate-pulse" />
+            </div>
+            <div className="h-10 w-32 bg-brown-100 rounded-lg animate-pulse" />
+          </div>
+
+          {/* Filters Skeleton */}
+          <div className="flex flex-wrap items-center gap-3 mb-8">
+            {Array(3).fill(0).map((_, i) => (
+              <div key={i} className="h-9 w-32 bg-brown-100 rounded-lg animate-pulse" />
+            ))}
+          </div>
+
+          {/* Job Grid Skeleton */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Array(6).fill(0).map((_, i) => (
+              <JobCardSkeleton key={i} />
+            ))}
+          </div>
         </div>
         <Footer />
       </div>
@@ -113,8 +136,15 @@ export default function JobsPage() {
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map(job => (
-              <div key={job.id} className="bg-white rounded-xl border border-neutral-200 p-5 flex flex-col">
+            {filtered.map((job, index) => (
+              <div
+                key={job.id}
+                className={cn(
+                  'bg-white rounded-xl border border-neutral-200 p-5 flex flex-col',
+                  'animate-in fade-in-0 slide-in-from-bottom-4 duration-300',
+                  `[animation-delay:${Math.min(index * 50, 300)}ms]`
+                )}
+              >
                 <div className="flex justify-between items-start mb-3">
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold" style={{ backgroundColor: '#FEF3C7', color: '#92400E' }}>{job.event_type}</span>
                   <span className="text-xs text-neutral-400">{quoteCounts[job.id] || 0} quotes</span>
