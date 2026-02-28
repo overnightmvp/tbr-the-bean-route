@@ -29,8 +29,8 @@ const pageVariants = {
 }
 
 const pageTransition = {
-  type: 'tween',
-  ease: [0.25, 0.1, 0.25, 1], // Custom easing curve
+  type: 'tween' as const,
+  ease: [0.25, 0.1, 0.25, 1] as const, // Custom easing curve
   duration: 0.3,
 }
 
