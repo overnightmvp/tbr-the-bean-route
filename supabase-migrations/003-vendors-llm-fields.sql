@@ -4,7 +4,7 @@
 ALTER TABLE vendors
 ADD COLUMN IF NOT EXISTS profile_llm JSONB DEFAULT '{}',
 ADD COLUMN IF NOT EXISTS profile_embedding vector(1536),
-ADD COLUMN IF NOT EXISTS last_embedding_generated TIMESTAMPTZ,
+ADD COLUMN IF NOT EXISTS embedding_updated_at TIMESTAMPTZ,
 ADD COLUMN IF NOT EXISTS profile_completion_percent INTEGER DEFAULT 0;
 
 -- Add check constraint for valid completion percentage
@@ -23,4 +23,4 @@ WITH (lists = 100);
 COMMENT ON COLUMN vendors.profile_llm IS 'Structured profile data: bio, specialties, certifications, availability, equipment_expertise, languages, service_style';
 COMMENT ON COLUMN vendors.profile_embedding IS 'OpenAI embedding (1536 dims) for semantic search';
 COMMENT ON COLUMN vendors.profile_completion_percent IS 'Profile completion percentage (0-100)';
-COMMENT ON COLUMN vendors.last_embedding_generated IS 'Timestamp of last embedding generation for cache validation';
+COMMENT ON COLUMN vendors.embedding_updated_at IS 'Timestamp of last embedding generation for cache validation';
