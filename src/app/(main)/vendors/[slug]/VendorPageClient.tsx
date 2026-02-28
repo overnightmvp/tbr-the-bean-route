@@ -31,7 +31,7 @@ export default function VendorPageClient({ slug }: VendorPageClientProps) {
           .select('*')
           .eq('slug', slug)
           .eq('verified', true)
-          .single()
+          .maybeSingle()
 
         if (error || !data) {
           setNotFound(true)
