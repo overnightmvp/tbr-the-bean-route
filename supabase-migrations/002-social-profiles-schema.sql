@@ -27,8 +27,8 @@
 
 CREATE TABLE work_history (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  barista_id UUID NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
-  shop_id UUID NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
+  barista_id TEXT NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
+  shop_id TEXT NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
   role TEXT NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE,
@@ -56,7 +56,7 @@ COMMENT ON COLUMN work_history.metadata_llm IS 'Structured data for LLM: respons
 
 CREATE TABLE profile_sections (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  vendor_id UUID NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
+  vendor_id TEXT NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
   section_type TEXT NOT NULL,
   is_unlocked BOOLEAN DEFAULT FALSE,
   unlocked_at TIMESTAMPTZ,
@@ -103,7 +103,7 @@ COMMENT ON COLUMN badges.criteria_llm IS 'Earning criteria: {type: manual|quiz|a
 -- Many-to-many: vendors to earned badges
 
 CREATE TABLE vendor_badges (
-  vendor_id UUID NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
+  vendor_id TEXT NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
   badge_id UUID NOT NULL REFERENCES badges(id) ON DELETE CASCADE,
   earned_at TIMESTAMPTZ DEFAULT NOW(),
   evidence_llm JSONB NOT NULL DEFAULT '{}',
@@ -139,7 +139,7 @@ COMMENT ON COLUMN quizzes.questions_llm IS 'Array of {q, options[], correct, exp
 
 CREATE TABLE quiz_attempts (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  vendor_id UUID NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
+  vendor_id TEXT NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
   quiz_id UUID NOT NULL REFERENCES quizzes(id) ON DELETE CASCADE,
   score INTEGER NOT NULL,
   passed BOOLEAN NOT NULL,
@@ -162,7 +162,7 @@ CREATE TABLE vendor_sessions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email TEXT NOT NULL UNIQUE,
   code TEXT NOT NULL,
-  vendor_id UUID REFERENCES vendors(id),
+  vendor_id TEXT REFERENCES vendors(id),
   expires_at TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
