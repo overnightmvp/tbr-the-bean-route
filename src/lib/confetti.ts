@@ -1,50 +1,37 @@
-/**
- * Confetti Utility
- *
- * Wrapper for canvas-confetti with preset configurations.
- * Used for success celebrations (form submissions, bookings, etc.)
- */
-
 import confetti from 'canvas-confetti'
 
+/**
+ * Trigger confetti celebration with branded colors
+ * Use for high-impact success moments:
+ * - Booking inquiry submitted
+ * - Quote submitted
+ * - Vendor application approved
+ * - First-time user signup
+ */
 export function triggerConfetti() {
-  const count = 200
-  const defaults = {
-    origin: { y: 0.7 },
-  }
-
-  function fire(particleRatio: number, opts: confetti.Options) {
-    confetti({
-      ...defaults,
-      ...opts,
-      particleCount: Math.floor(count * particleRatio),
-    })
-  }
-
-  fire(0.25, {
-    spread: 26,
-    startVelocity: 55,
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ['#D4A574', '#8B4513', '#FFD700'], // Brown/gold palette
+    ticks: 200,
   })
+}
 
-  fire(0.2, {
+/**
+ * Trigger confetti burst from specific element position
+ * @param element - DOM element to burst from
+ */
+export function triggerConfettiFrom(element: HTMLElement) {
+  const rect = element.getBoundingClientRect()
+  const x = (rect.left + rect.width / 2) / window.innerWidth
+  const y = (rect.top + rect.height / 2) / window.innerHeight
+
+  confetti({
+    particleCount: 50,
     spread: 60,
-  })
-
-  fire(0.35, {
-    spread: 100,
-    decay: 0.91,
-    scalar: 0.8,
-  })
-
-  fire(0.1, {
-    spread: 120,
-    startVelocity: 25,
-    decay: 0.92,
-    scalar: 1.2,
-  })
-
-  fire(0.1, {
-    spread: 120,
-    startVelocity: 45,
+    origin: { x, y },
+    colors: ['#D4A574', '#8B4513', '#FFD700'],
+    ticks: 150,
   })
 }

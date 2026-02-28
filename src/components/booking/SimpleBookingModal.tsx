@@ -113,6 +113,7 @@ export function InquiryModal({ vendor, isOpen, onClose, onSuccess }: InquiryModa
       }
 
       setSubmitted(true)
+      onSuccess() // Trigger confetti + toast in parent
     } catch (err) {
       console.error('Unexpected error:', err)
       toast.error('Failed to send inquiry', {
