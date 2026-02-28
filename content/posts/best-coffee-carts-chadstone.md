@@ -16,7 +16,7 @@ keywords:
   - "specialty coffee chadstone"
   - "coffee catering chadstone"
 metaDescription: "Top 10 coffee carts and cafés serving Chadstone events. Compare pricing ($130-280/hr), specialties, and book the perfect vendor for your wedding or corporate event."
-featuredImage: "https://images.unsplash.com/photo-1445991842772-097fea258e7b?w=1200&h=630&fit=crop&q=80"
+featuredImage: "/blog-images/hero/best-coffee-carts-chadstone.jpg"
 imageAlt: "Specialty coffee drinks prepared by experienced baristas at mobile coffee cart"
 imageCredit: "Nathan Dumlao on Unsplash"
 ---

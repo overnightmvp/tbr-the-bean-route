@@ -16,7 +16,7 @@ keywords:
   - "specialty vs commodity coffee"
   - "coffee beans freshness"
 metaDescription: "Learn to spot quality coffee: visual crema indicators, aroma complexity, taste balance. Simple guide for evaluating specialty vs commodity coffee, perfect for event planning."
-featuredImage: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&h=630&fit=crop&q=80"
+featuredImage: "/blog-images/hero/how-to-spot-good-coffee.jpg"
 imageAlt: "Close-up of freshly roasted specialty coffee beans showing color and texture"
 imageCredit: "Chevanon Photography on Unsplash"
 ---

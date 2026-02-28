@@ -16,7 +16,7 @@ keywords:
   - "cafe catering cost"
   - "hidden fees event coffee"
 metaDescription: "Melbourne coffee cart pricing 2026: hourly rates ($120-300/hr), per-cup costs ($4.50-9), hidden fees, packages. Budget calculator and vendor pricing examples included."
-featuredImage: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1200&h=630&fit=crop&q=80"
+featuredImage: "/blog-images/hero/event-catering-pricing.jpg"
 imageAlt: "Professional barista pouring steamed milk into espresso cup with artistic precision"
 imageCredit: "rawpixel on Unsplash"
 ---

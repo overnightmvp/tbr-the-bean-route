@@ -16,7 +16,7 @@ keywords:
   - "coffee cart staff"
   - "barista event service"
 metaDescription: "What to expect when hiring baristas: professional setup, service delivery, guest interaction, and quality standards. Guide for Melbourne event organizers planning barista hire."
-featuredImage: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1200&h=630&fit=crop&q=80"
+featuredImage: "/blog-images/hero/what-to-expect-barista-hire.jpg"
 imageAlt: "Professional barista focused on creating latte art with steamed milk and espresso"
 imageCredit: "rawpixel on Unsplash"
 ---

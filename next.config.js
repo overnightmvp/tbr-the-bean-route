@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+    ],
+  },
   webpack: (config, { isServer, isEdge }) => {
     // Fix for Edge Runtime - externalize OpenTelemetry
     if (isEdge) {
