@@ -5,6 +5,20 @@ publishedAt: "2026-02-24"
 status: "published"
 category: "guides"
 excerpt: "Complete guide to hiring mobile coffee carts in Melbourne. Learn pricing, booking timelines, vendor selection, and event planning tips from The Bean Route."
+author: "the-bean-route"
+contentType: "guide"
+keywords:
+  - "hire coffee cart melbourne"
+  - "mobile barista melbourne events"
+  - "coffee catering melbourne pricing"
+  - "event coffee service"
+  - "melbourne wedding coffee cart"
+  - "corporate coffee service melbourne"
+  - "mobile espresso cart hire"
+metaDescription: "Complete guide to hiring coffee carts in Melbourne. Find vendors, get quotes, understand pricing, book timelines, and coordinate logistics for your event."
+featuredImage: "https://images.unsplash.com/photo-1495474472301-4d71bcdd2085?w=1200&h=630&fit=crop&q=80"
+imageAlt: "Professional barista making specialty coffee with espresso machine at mobile coffee cart"
+imageCredit: "Taylor Kiser on Unsplash"
 ---
 
 # How to Hire a Coffee Cart for Your Melbourne Event
@@ -401,6 +415,23 @@ Learn from others' missteps and sidestep these frequent hiring pitfalls:
 **Mistake 7: Poor Communication**
 - **Problem:** Vendor shows up with wrong menu or at wrong time
 - **Solution:** Confirm details 1 week before, share written timeline
+
+## Frequently Asked Questions
+
+**Q: How far in advance should I book a coffee cart for my wedding?**
+A: For weekend weddings, we recommend booking 6-12 months ahead. Top vendors fill up 8+ months in advance during peak season (October-April). For weekday events or smaller weddings, 3-6 months is usually sufficient.
+
+**Q: What's the difference between hiring a coffee cart by the hour vs. per cup?**
+A: Hourly rates ($120-300/hr) work best for events with uncertain guest counts or long service duration (6+ hours). Per-cup pricing ($4.50-9.00/cup) is better for known guest counts and shorter events (2-3 hours). For a 150-person wedding with 4-hour service, per-cup often costs more, but hourly rates suit corporate conferences with variable attendance.
+
+**Q: Do I need to provide power and water for the coffee cart?**
+A: Yes, most vendors require a 15-amp power outlet within 10 meters of the cart location and access to water (either from venue taps or vendor-supplied jugs). Confirm both with your vendor and venue at least 2 weeks before the event to avoid day-of surprises.
+
+**Q: What if the vendor doesn't show up or gets sick on the day?**
+A: Professional vendors should have a backup plan or business continuity insurance. Always ask about this during the quote stage and have a contingency plan (backup vendor contact, alternative catering). Include a cancellation/emergency clause in your contract.
+
+**Q: Can coffee carts operate outdoors in Melbourne weather?**
+A: Yes, but outdoor events need contingency planning. Confirm with vendors if they can operate in wind and rain, and consider tent/marquee coverage. Some vendors provide weather-resistant equipment; others may need shelter. Discuss this before signing the contract, especially for events during Melbourne's rainy seasons.
 
 ## Conclusion and Next Steps
 

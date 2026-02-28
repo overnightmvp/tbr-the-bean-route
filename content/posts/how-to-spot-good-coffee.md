@@ -5,6 +5,20 @@ publishedAt: "2026-02-26"
 status: "published"
 category: "education"
 excerpt: "Learn how to identify quality coffee with this beginner's guide. Discover visual cues, aroma indicators, taste characteristics, and red flags to watch for."
+author: "the-bean-route"
+contentType: "howto"
+keywords:
+  - "how to spot good coffee"
+  - "coffee quality assessment"
+  - "identify specialty coffee"
+  - "coffee crema explained"
+  - "coffee tasting guide"
+  - "specialty vs commodity coffee"
+  - "coffee beans freshness"
+metaDescription: "Learn to spot quality coffee: visual crema indicators, aroma complexity, taste balance. Simple guide for evaluating specialty vs commodity coffee, perfect for event planning."
+featuredImage: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&h=630&fit=crop&q=80"
+imageAlt: "Close-up of freshly roasted specialty coffee beans showing color and texture"
+imageCredit: "Chevanon Photography on Unsplash"
 ---
 
 # How to Spot Good Coffee: A Beginner's Guide to Quality
@@ -258,6 +272,23 @@ Recognizing quality coffee is a skill that improves with practice. Here's how to
 - Explore brewing methods (espresso vs filter vs cold brew—same beans, different flavors)
 
 **Resource:** Read [What Makes a Great Barista](#) to understand how barista skill affects coffee quality, and [Specialty Coffee Benefits](#) to learn why investing in quality coffee is worthwhile.
+
+## FAQ: Coffee Quality & Event Hiring
+
+**Q: If a vendor uses "specialty beans," does that guarantee quality?**
+A: Not automatically. "Specialty" is loosely used. Better indicators: SCA score 85+, specific origin (Ethiopia Yirgacheffe, not just "Ethiopian blend"), roast date within 2-4 weeks. Ask vendors these specifics when evaluating.
+
+**Q: How can I tell if a coffee cart vendor uses quality beans without tasting first?**
+A: Ask directly: "What roasters do you partner with?" (Real roasteries = quality), "What's your bean rotation?" (Fresh beans weekly = quality), "Can I see your coffee?" (Transparency = confidence). Avoid vague answers.
+
+**Q: Why does specialty coffee cost more if it's "just coffee"?**
+A: Quality beans cost 2-3x more wholesale. Specialty roasters invest in sourcing, paying fair-trade prices, and testing. A $6/cup specialty latte reflects ethical sourcing and quality inputs—not markup.
+
+**Q: What's the best question to ask a barista about their coffee?**
+A: "Where are these beans from and how were they roasted?" A barista passionate about quality will eagerly share origin, processing method, and flavor profile. Disinterest suggests commodity beans.
+
+**Q: Should I hire a premium coffee vendor ($220-300/hr) or budget option ($130-160/hr) for my event?**
+A: For weddings where guests linger over coffee, premium is worth it (better beans, skilled barista = memorable experience). For corporate events focused on speed, mid-tier ($160-220) balances quality and value. Budget tier works for high-volume, speed-focused events only.
 
 ## Conclusion: Trust Your Taste
 

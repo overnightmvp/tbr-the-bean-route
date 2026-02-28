@@ -5,6 +5,20 @@ publishedAt: "2026-02-22"
 status: "published"
 category: "guides"
 excerpt: "Discover Glen Iris's top coffee carts and cafés for events. From organic specialty carts to neighborhood café catering—find your perfect event coffee solution."
+author: "the-bean-route"
+contentType: "guide"
+keywords:
+  - "coffee carts glen iris"
+  - "organic coffee melbourne"
+  - "garden wedding coffee"
+  - "glen iris event coffee"
+  - "specialty coffee ashburton"
+  - "sustainable coffee cart"
+  - "neighborhood cafe catering"
+metaDescription: "Glen Iris coffee carts & cafés guide. Organic specialty carts, neighborhood café catering, and garden wedding coffee services ($180-280/hr). Book your perfect vendor."
+featuredImage: "https://images.unsplash.com/photo-1559056199-641a0ac8b8d5?w=1200&h=630&fit=crop&q=80"
+imageAlt: "Elegant garden wedding setup with outdoor seating and natural decorations"
+imageCredit: "Elle Hughes on Unsplash"
 ---
 
 # Glen Iris Coffee Guide | Best Cafés & Mobile Baristas for Events
@@ -278,6 +292,23 @@ Glen Iris's daily café culture influences event coffee expectations. Local favo
 - **Personal relationships** with local café owners translating to event catering
 
 Event organizers benefit from this sophisticated coffee culture through vendor quality, diverse options, and professional service standards.
+
+## FAQ: Glen Iris Coffee & Garden Wedding Events
+
+**Q: Why do Glen Iris vendors charge more than outer suburban options?**
+A: Glen Iris has sophisticated local coffee culture with high quality expectations. Specialty vendors like Bean & Cart focus on organic beans and sustainable practices, which cost more. Premium pricing reflects quality tier, not just location.
+
+**Q: Is Bean & Cart worth the premium pricing for a garden wedding?**
+A: Yes, if sustainability and organic sourcing matter to you. Compostable cups, traceable bean origins, and minimal waste appeal to eco-conscious couples. Their beautiful cart also photographs well for wedding albums and social media.
+
+**Q: Can Java Junction do off-site catering for 60 guests?**
+A: Yes, they specialize in this. Pricing is around $270-408 (60 cups × $4.50-6.80/cup). They bring the same quality and personalized service they're known for, with flexibility for menu customization.
+
+**Q: What should I ask Glen Iris vendors about sustainability?**
+A: Ask: Where do your beans come from? What cups do you use (compostable vs plastic)? How do you handle waste? Do you use filtered water? These questions align with Glen Iris's environmental values and help you choose vendors matching your event's sustainability goals.
+
+**Q: How much space do I need for a mobile cart in a residential garden?**
+A: Plan for 2m × 3m (6m²) minimum. Confirm power access within 10m—most Glen Iris homes have outdoor outlets. Ensure flat ground and protection from foot traffic. Discuss cart placement with your vendor during planning.
 
 ## Conclusion: Your Glen Iris Coffee Event Solution
 

@@ -5,6 +5,20 @@ publishedAt: "2026-02-25"
 status: "published"
 category: "guides"
 excerpt: "Complete Melbourne coffee cart pricing guide for 2026. Hourly rates, per-cup costs, package deals, and hidden fees explained. Budget your event coffee service confidently."
+author: "the-bean-route"
+contentType: "guide"
+keywords:
+  - "coffee cart pricing melbourne"
+  - "event coffee cost australia"
+  - "mobile barista prices 2026"
+  - "wedding coffee cart budget"
+  - "corporate coffee service pricing"
+  - "cafe catering cost"
+  - "hidden fees event coffee"
+metaDescription: "Melbourne coffee cart pricing 2026: hourly rates ($120-300/hr), per-cup costs ($4.50-9), hidden fees, packages. Budget calculator and vendor pricing examples included."
+featuredImage: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1200&h=630&fit=crop&q=80"
+imageAlt: "Professional barista pouring steamed milk into espresso cup with artistic precision"
+imageCredit: "rawpixel on Unsplash"
 ---
 
 # Coffee Cart Pricing Guide: What to Expect in Melbourne (2026)
@@ -478,6 +492,23 @@ Coffee cart demand fluctuates with Melbourne's event calendar, impacting availab
 - Christmas/New Year period (Dec 20-Jan 10): +25-40%
 
 **Example:** Standard $180/hr rate becomes $270/hr on Melbourne Cup Day (+50%)
+
+## FAQ: Coffee Cart Pricing & Budget Questions
+
+**Q: Should I choose hourly or per-cup pricing for a 100-guest wedding?**
+A: Typically per-cup saves money if 80% of guests drink coffee (80 cups × $6 = $480 vs 4 hours × $180 = $720). But hourly pricing protects you if fewer guests drink coffee—flat rate = fixed budget.
+
+**Q: Are weekend surcharges standard across Melbourne vendors?**
+A: Yes, most charge +10-20% for Saturdays. Wedding season (Oct-Apr) adds another +10-15%. Weekday events cost 15-25% less. For budget-conscious events, Tuesday-Thursday dates save significantly.
+
+**Q: What's a realistic travel fee for hiring a cart outside their base area?**
+A: Budget $40-100 for travel within 10-25km of their location. Beyond 25km, expect $100-250 or vendors may decline. Choosing vendors near your venue often eliminates this cost.
+
+**Q: Can I negotiate coffee cart pricing?**
+A: Yes. Multi-event discounts (book 2+ events = 10-15% off), off-season discounts (May-Sept = 5-10% off), and package customization are all negotiable. Get multiple quotes and mention others' prices when negotiating.
+
+**Q: What hidden costs surprised people the most?**
+A: Peak season surcharges (+25% on public holidays), extra barista costs (suddenly your guest count requires 2 baristas = +$40-60/hr), and parking/access fees at venues. Always budget 10-15% buffer.
 
 ## Conclusion and Budgeting Tips
 
